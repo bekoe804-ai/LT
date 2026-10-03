@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "Last Testament",
+    "slug": "last-testament-owner",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Face ID confirms sensitive actions like revealing secrets and pausing check-ins."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "name": "Last Testament \u2014 Owner app"
+    },
+    "plugins": [
+      "expo-font",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Face ID confirms sensitive actions like revealing secrets and pausing check-ins."
+        }
+      ]
+    ],
+    "backgroundColor": "#F6F4EF"
+  }
+}
