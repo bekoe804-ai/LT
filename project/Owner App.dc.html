@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+[data-screen-label] > div > *{flex-shrink:0}
+body{margin:0;background:#EBE8E1;font-family:-apple-system,"SF Pro Text",system-ui,sans-serif;color:#1A1A1A;-webkit-font-smoothing:antialiased}
+a{color:#0B2D26}a:hover{color:#C9B595}
+</style>
+</helmet>
+<section id="1" style="padding:56px 64px;display:flex;flex-direction:column;gap:40px">
+<header style="display:flex;flex-direction:column;gap:12px;max-width:760px">
+  <img src="assets/logo-horizontal.png" alt="Last Testament" style="height:40px;width:auto;mix-blend-mode:multiply;align-self:flex-start">
+  <h1 style="margin:0;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:44px;line-height:1.05">Owner app — core screens</h1>
+  <p style="margin:0;font-size:15px;line-height:1.5;color:#5E5C56">Four tabs: Home · Testament · People · Settings. Check-ins and the release plan live on Home and under Settings → Check-ins &amp; release. Every screen answers: what am I protecting, who receives it, under what circumstances.</p>
+</header>
+
+<div style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+
+<!-- 1 HOME PROTECTED -->
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66">Home · protected</div>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div data-screen-label="Home protected" style="position:relative;height:100%;background:#F6F4EF;font-family:-apple-system,system-ui,sans-serif;color:#1A1A1A">
+  <div style="position:absolute;inset:0;overflow:auto;padding:70px 20px 120px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box">
+    <div style="display:flex;justify-content:space-between;align-items:center"><img src="assets/mark.png" alt="" style="height:26px;width:auto;mix-blend-mode:multiply"><div style="width:36px;height:36px;border-radius:50%;background:#EFE9DD;display:grid;place-items:center;font-size:14px;font-weight:600;color:#0B2D26">N</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1.1;font-weight:500">Good evening, Nana.</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:17px;color:#5E5C56"><span style="width:8px;height:8px;border-radius:50%;background:#2E6B4F"></span>Your Testament is protected.</div>
+    </div>
+    <div style="background:#fff;border-radius:12px;padding:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;box-shadow:0 0 0 1px #E8E4DC">
+      <div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:20px;font-weight:700">12 Sep</div><div style="font-size:12px;color:#5E5C56">Last reviewed</div></div>
+      <div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:20px;font-weight:700">23</div><div style="font-size:12px;color:#5E5C56">Records</div></div>
+      <div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:20px;font-weight:700">3</div><div style="font-size:12px;color:#5E5C56">Trusted people</div></div>
+    </div>
+    <div style="background:#fff;border-radius:12px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;box-shadow:0 0 0 1px #E8E4DC">
+      <div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px;font-weight:600">Next check-in</div><div style="font-size:13px;color:#5E5C56">Thursday 9 October · in 6 days</div></div>
+      <button style="height:40px;padding:0 16px;border-radius:10px;border:0;background:#EFE9DD;color:#0B2D26;font-size:15px;font-weight:600;font-family:inherit">I’m okay</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">Continue</div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+        <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px;font-weight:600">Letter to Ama</div><div style="font-size:13px;color:#5E5C56">Draft · private message</div></div><span style="color:#8A8781">›</span></div>
+        <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px;font-weight:600">3 records to review</div><div style="font-size:13px;color:#9A6B1E">Added over a year ago — still correct?</div></div><span style="color:#8A8781">›</span></div>
+        <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px;font-weight:600">Add insurance policies</div><div style="font-size:13px;color:#5E5C56">Suggested · nothing recorded yet</div></div><span style="color:#8A8781">›</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">Recently</div>
+      <div style="font-size:15px;color:#5E5C56;padding:0 2px;line-height:1.5">Kofi accepted your invitation · Yesterday<br>You confirmed 4 financial records · 12 Sep</div>
+    </div>
+  </div>
+  <div style="position:absolute;left:20px;right:20px;bottom:38px;height:64px;border-radius:999px;background:rgba(255,255,255,0.62);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 6px 18px rgba(0,0,0,0.08),inset 1.5px 1.5px 1px rgba(255,255,255,0.8);display:grid;grid-template-columns:repeat(4,1fr);align-items:center;padding:0 6px;box-sizing:border-box">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:#0B2D26;background:rgba(201,181,149,0.32);border-radius:999px;height:52px;justify-content:center"><svg width="23" height="23" viewBox="0 0 24 24" fill="rgba(201,181,149,0.35)" stroke="#0B2D26" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10.2a2 2 0 0 1 .7-1.5l7-6a2 2 0 0 1 2.6 0l7 6a2 2 0 0 1 .7 1.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9.5 21v-6.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V21"/></svg>Home</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 19.5v-15A2.5 2.5 0 0 1 7 2h12a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a2.5 2.5 0 0 1 0-5h13"/><path d="M9 7h6"/></svg>Testament</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="7.5" r="3.5"/><path d="M2.5 21v-1.5A4.5 4.5 0 0 1 7 15h4a4.5 4.5 0 0 1 4.5 4.5V21"/><path d="M16 4.1a3.5 3.5 0 0 1 0 6.8"/><path d="M21.5 21v-1.5a4.5 4.5 0 0 0-3.2-4.3"/></svg>People</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Settings</div>
+  </div>
+</div>
+</x-import>
+</div>
+
+<!-- 2 HOME MISSED CHECK-IN -->
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66">Home · missed check-in</div>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div data-screen-label="Home missed check-in" style="position:relative;height:100%;background:#F6F4EF;font-family:-apple-system,system-ui,sans-serif;color:#1A1A1A">
+  <div style="position:absolute;inset:0;overflow:auto;padding:70px 20px 120px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box">
+    <div style="display:flex;justify-content:space-between;align-items:center"><img src="assets/mark.png" alt="" style="height:26px;width:auto;mix-blend-mode:multiply"><div style="width:36px;height:36px;border-radius:50%;background:#EFE9DD;display:grid;place-items:center;font-size:14px;font-weight:600;color:#0B2D26">N</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1.1;font-weight:500">Nana, are you okay?</div>
+      <div style="font-size:17px;color:#5E5C56;line-height:1.4">We haven’t heard from you since Monday 29 September. A quick confirmation keeps everything as it is.</div>
+    </div>
+    <button style="height:56px;border-radius:14px;border:0;background:#0B2D26;color:#fff;font-size:17px;font-weight:600;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px"><span style="width:18px;height:18px;border-radius:5px;border:2px solid rgba(255,255,255,0.8);box-sizing:border-box"></span>I’m okay — confirm with Face ID</button>
+    <div style="background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;box-shadow:0 0 0 1px #E8E4DC">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;margin-bottom:14px">What happens if we don’t hear from you</div>
+      <div style="display:flex;gap:14px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:12px;height:12px;border-radius:50%;background:#9A6B1E;margin-top:4px;box-shadow:0 0 0 4px #F7EEDC"></div><div style="width:2px;flex:1;background:#E3DFD6"></div></div><div style="padding-bottom:16px;display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600">Reminders · now</div><div style="font-size:13px;color:#5E5C56">Here, by email and by text</div></div></div>
+      <div style="display:flex;gap:14px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:12px;height:12px;border-radius:50%;border:2px solid #CFCAC0;box-sizing:border-box;margin-top:4px"></div><div style="width:2px;flex:1;background:#E3DFD6"></div></div><div style="padding-bottom:16px;display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600;color:#5E5C56">We ask Ama to check on you</div><div style="font-size:13px;color:#8A8781">8 October</div></div></div>
+      <div style="display:flex;gap:14px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:12px;height:12px;border-radius:50%;border:2px solid #CFCAC0;box-sizing:border-box;margin-top:4px"></div></div><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600;color:#5E5C56">Nothing is released without verification</div><div style="font-size:13px;color:#8A8781">And a 7-day period you can stop at any time</div></div></div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button style="flex:1;height:48px;border-radius:12px;border:1px solid #CFCAC0;background:#fff;color:#0B2D26;font-size:15px;font-weight:600;font-family:inherit">Pause for 2 weeks</button>
+      <button style="flex:1;height:48px;border-radius:12px;border:1px solid #CFCAC0;background:#fff;color:#0B2D26;font-size:15px;font-weight:600;font-family:inherit">Change schedule</button>
+    </div>
+    <div style="font-size:13px;color:#8A8781;line-height:1.5;text-align:center">Pausing or changing the schedule needs Face ID.</div>
+  </div>
+  <div style="position:absolute;left:20px;right:20px;bottom:38px;height:64px;border-radius:999px;background:rgba(255,255,255,0.62);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 6px 18px rgba(0,0,0,0.08),inset 1.5px 1.5px 1px rgba(255,255,255,0.8);display:grid;grid-template-columns:repeat(4,1fr);align-items:center;padding:0 6px;box-sizing:border-box">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:#0B2D26;background:rgba(201,181,149,0.32);border-radius:999px;height:52px;justify-content:center"><svg width="23" height="23" viewBox="0 0 24 24" fill="rgba(201,181,149,0.35)" stroke="#0B2D26" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10.2a2 2 0 0 1 .7-1.5l7-6a2 2 0 0 1 2.6 0l7 6a2 2 0 0 1 .7 1.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9.5 21v-6.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V21"/></svg>Home</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 19.5v-15A2.5 2.5 0 0 1 7 2h12a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a2.5 2.5 0 0 1 0-5h13"/><path d="M9 7h6"/></svg>Testament</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="7.5" r="3.5"/><path d="M2.5 21v-1.5A4.5 4.5 0 0 1 7 15h4a4.5 4.5 0 0 1 4.5 4.5V21"/><path d="M16 4.1a3.5 3.5 0 0 1 0 6.8"/><path d="M21.5 21v-1.5a4.5 4.5 0 0 0-3.2-4.3"/></svg>People</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Settings</div>
+  </div>
+</div>
+</x-import>
+</div>
+
+<!-- 3 HOME NEW ACCOUNT -->
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66">Home · setup incomplete</div>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div data-screen-label="Home setup incomplete" style="position:relative;height:100%;background:#F6F4EF;font-family:-apple-system,system-ui,sans-serif;color:#1A1A1A">
+  <div style="position:absolute;inset:0;overflow:auto;padding:70px 20px 120px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box">
+    <div style="display:flex;justify-content:space-between;align-items:center"><img src="assets/mark.png" alt="" style="height:26px;width:auto;mix-blend-mode:multiply"><div style="width:36px;height:36px;border-radius:50%;background:#EFE9DD;display:grid;place-items:center;font-size:14px;font-weight:600;color:#0B2D26">N</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1.1;font-weight:500">Welcome, Nana.</div>
+      <div style="font-size:17px;color:#5E5C56;line-height:1.4">Your Testament isn’t protected yet. Three short steps remain — finish them whenever suits you.</div>
+    </div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div style="padding:14px 18px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #EFECE6"><div style="width:26px;height:26px;border-radius:50%;background:#2E6B4F;color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex-shrink:0">✓</div><div style="font-size:17px;color:#8A8781;text-decoration:line-through">Secure your account</div></div>
+      <div style="padding:14px 18px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #EFECE6"><div style="width:26px;height:26px;border-radius:50%;background:#2E6B4F;color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex-shrink:0">✓</div><div style="font-size:17px;color:#8A8781;text-decoration:line-through">Save recovery codes</div></div>
+      <div style="padding:14px 18px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #EFECE6;background:#FBFAF7"><div style="width:26px;height:26px;border-radius:50%;border:2px solid #0B2D26;box-sizing:border-box;display:grid;place-items:center;font-size:13px;font-weight:700;color:#0B2D26;flex-shrink:0">3</div><div style="display:flex;flex-direction:column;gap:2px;flex:1"><div style="font-size:17px;font-weight:600">Add a trusted person</div><div style="font-size:13px;color:#5E5C56">Someone who may one day receive what you preserve</div></div><span style="color:#8A8781">›</span></div>
+      <div style="padding:14px 18px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #EFECE6"><div style="width:26px;height:26px;border-radius:50%;border:2px solid #CFCAC0;box-sizing:border-box;display:grid;place-items:center;font-size:13px;font-weight:700;color:#8A8781;flex-shrink:0">4</div><div style="font-size:17px;color:#5E5C56">Add your first record</div></div>
+      <div style="padding:14px 18px;display:flex;gap:14px;align-items:center"><div style="width:26px;height:26px;border-radius:50%;border:2px solid #CFCAC0;box-sizing:border-box;display:grid;place-items:center;font-size:13px;font-weight:700;color:#8A8781;flex-shrink:0">5</div><div style="font-size:17px;color:#5E5C56">Choose how often we check in</div></div>
+    </div>
+    <button style="height:50px;border-radius:12px;border:0;background:#0B2D26;color:#fff;font-size:17px;font-weight:600;font-family:inherit">Add a trusted person</button>
+    <div style="background:#EFE9DD;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:4px"><div style="font-size:15px;font-weight:600">Preserving isn’t the same as a will</div><div style="font-size:13px;color:#5E5C56;line-height:1.45">Last Testament keeps information and wishes safe and delivers them to the right people. It doesn’t replace a legally executed will. <span style="color:#0B2D26;font-weight:600">Learn more</span></div></div>
+  </div>
+  <div style="position:absolute;left:20px;right:20px;bottom:38px;height:64px;border-radius:999px;background:rgba(255,255,255,0.62);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 6px 18px rgba(0,0,0,0.08),inset 1.5px 1.5px 1px rgba(255,255,255,0.8);display:grid;grid-template-columns:repeat(4,1fr);align-items:center;padding:0 6px;box-sizing:border-box">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:#0B2D26;background:rgba(201,181,149,0.32);border-radius:999px;height:52px;justify-content:center"><svg width="23" height="23" viewBox="0 0 24 24" fill="rgba(201,181,149,0.35)" stroke="#0B2D26" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10.2a2 2 0 0 1 .7-1.5l7-6a2 2 0 0 1 2.6 0l7 6a2 2 0 0 1 .7 1.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9.5 21v-6.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V21"/></svg>Home</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 19.5v-15A2.5 2.5 0 0 1 7 2h12a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a2.5 2.5 0 0 1 0-5h13"/><path d="M9 7h6"/></svg>Testament</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="7.5" r="3.5"/><path d="M2.5 21v-1.5A4.5 4.5 0 0 1 7 15h4a4.5 4.5 0 0 1 4.5 4.5V21"/><path d="M16 4.1a3.5 3.5 0 0 1 0 6.8"/><path d="M21.5 21v-1.5a4.5 4.5 0 0 0-3.2-4.3"/></svg>People</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Settings</div>
+  </div>
+</div>
+</x-import>
+</div>
+
+<!-- 4 TESTAMENT OVERVIEW -->
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66">Testament · overview</div>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div data-screen-label="Testament overview" style="position:relative;height:100%;background:#F6F4EF;font-family:-apple-system,system-ui,sans-serif;color:#1A1A1A">
+  <div style="position:absolute;inset:0;overflow:auto;padding:70px 20px 120px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end"><div style="font-size:32px;font-weight:700;letter-spacing:-0.01em">Testament</div><div style="height:44px;width:44px;border-radius:999px;background:#0B2D26;box-shadow:0 3px 10px rgba(0,0,0,0.15);display:grid;place-items:center;font-size:24px;color:#fff;line-height:1">+</div></div>
+    <div style="height:40px;border-radius:12px;background:#ECE9E2;display:flex;align-items:center;padding:0 14px;gap:8px;font-size:17px;color:#8A8781"><span style="width:14px;height:14px;border-radius:50%;border:2px solid #8A8781;box-sizing:border-box"></span>Search records</div>
+    <div style="background:#F7EEDC;border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600;color:#1A1A1A">3 records need a review</div><div style="font-size:13px;color:#9A6B1E">Not confirmed in over a year</div></div><span style="font-size:15px;font-weight:600;color:#0B2D26">Review</span></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">Pinned</div>
+      <div style="background:#fff;border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 0 0 1px #E8E4DC"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px;font-weight:600">Emergency information</div><div style="font-size:13px;color:#5E5C56">Blood type, GP, allergies · → Ama, Kofi · If unreachable</div></div><span style="color:#8A8781">›</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">By category · 23 records</div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+        <div style="padding:13px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Financial accounts</span><span style="display:flex;gap:10px;align-items:center;color:#5E5C56;font-size:15px">6 <span style="color:#8A8781">›</span></span></div>
+        <div style="padding:13px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Property &amp; assets</span><span style="display:flex;gap:10px;align-items:center;color:#5E5C56;font-size:15px">3 <span style="color:#8A8781">›</span></span></div>
+        <div style="padding:13px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Insurance</span><span style="display:flex;gap:10px;align-items:center;color:#5E5C56;font-size:15px">2 <span style="color:#8A8781">›</span></span></div>
+        <div style="padding:13px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Documents</span><span style="display:flex;gap:10px;align-items:center;color:#5E5C56;font-size:15px">4 <span style="color:#8A8781">›</span></span></div>
+        <div style="padding:13px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Digital life</span><span style="display:flex;gap:10px;align-items:center;color:#5E5C56;font-size:15px"><span style="font-size:12px;font-weight:600;padding:2px 7px;border-radius:6px;background:#F7EEDC;color:#9A6B1E">2 to review</span>5 <span style="color:#8A8781">›</span></span></div>
+        <div style="padding:13px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Messages &amp; memories</span><span style="display:flex;gap:10px;align-items:center;color:#5E5C56;font-size:15px">2 <span style="color:#8A8781">›</span></span></div>
+        <div style="padding:13px 18px;display:flex;justify-content:space-between;align-items:center;font-size:17px"><span>Wishes &amp; instructions</span><span style="display:flex;gap:10px;align-items:center;color:#5E5C56;font-size:15px">1 <span style="color:#8A8781">›</span></span></div>
+      </div>
+      <div style="font-size:13px;color:#8A8781;padding:4px 2px">Archived (2) · Recently updated</div>
+    </div>
+  </div>
+  <div style="position:absolute;left:20px;right:20px;bottom:38px;height:64px;border-radius:999px;background:rgba(255,255,255,0.62);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 6px 18px rgba(0,0,0,0.08),inset 1.5px 1.5px 1px rgba(255,255,255,0.8);display:grid;grid-template-columns:repeat(4,1fr);align-items:center;padding:0 6px;box-sizing:border-box">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10.2a2 2 0 0 1 .7-1.5l7-6a2 2 0 0 1 2.6 0l7 6a2 2 0 0 1 .7 1.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9.5 21v-6.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V21"/></svg>Home</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:#0B2D26;background:rgba(201,181,149,0.32);border-radius:999px;height:52px;justify-content:center"><svg width="23" height="23" viewBox="0 0 24 24" fill="rgba(201,181,149,0.35)" stroke="#0B2D26" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 19.5v-15A2.5 2.5 0 0 1 7 2h12a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a2.5 2.5 0 0 1 0-5h13"/><path d="M9 7h6"/></svg>Testament</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="7.5" r="3.5"/><path d="M2.5 21v-1.5A4.5 4.5 0 0 1 7 15h4a4.5 4.5 0 0 1 4.5 4.5V21"/><path d="M16 4.1a3.5 3.5 0 0 1 0 6.8"/><path d="M21.5 21v-1.5a4.5 4.5 0 0 0-3.2-4.3"/></svg>People</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Settings</div>
+  </div>
+</div>
+</x-import>
+</div>
+
+<!-- 5 RECORD DETAIL -->
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66">Record · detail (masked)</div>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div data-screen-label="Record detail" style="position:relative;height:100%;background:#F6F4EF;font-family:-apple-system,system-ui,sans-serif;color:#1A1A1A">
+  <div style="position:absolute;inset:0;overflow:auto;padding:64px 20px 60px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+    <div style="display:flex;justify-content:space-between;align-items:center"><div style="height:44px;width:44px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:20px;color:#0B2D26">‹</div><div style="height:44px;padding:0 16px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:15px;font-weight:600;color:#0B2D26">Edit</div></div>
+    <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66">Financial record</div><div style="font-size:26px;font-weight:700;line-height:1.15">Barclays current account</div><div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#5E5C56"><span style="width:8px;height:8px;border-radius:50%;background:#2E6B4F"></span>Confirmed correct 12 Sep 2026</div></div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div style="padding:13px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:13px;color:#5E5C56">Account holder</div><div style="font-size:17px">Nana Mensah</div></div></div>
+      <div style="padding:13px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:13px;color:#5E5C56">Account number</div><div style="font-size:17px;font-family:ui-monospace,monospace;letter-spacing:0.1em">•••• 4481</div></div><span style="font-size:15px;font-weight:600;color:#0B2D26">Reveal</span></div>
+      <div style="padding:13px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:13px;color:#5E5C56">Sort code</div><div style="font-size:17px;font-family:ui-monospace,monospace;letter-spacing:0.1em">••-••-••</div></div><span style="font-size:15px;font-weight:600;color:#0B2D26">Reveal</span></div>
+      <div style="padding:13px 18px;display:flex;justify-content:space-between;align-items:center;background:#EFE9DD"><div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:13px;color:#5E5C56">Online banking password</div><div style="font-size:17px;font-family:ui-monospace,monospace;letter-spacing:0.1em;color:#5E5C56">••••••••••</div></div><span style="font-size:15px;font-weight:600;color:#0B2D26">Face ID</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">Who receives this</div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+        <div style="padding:12px 18px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #EFECE6"><div style="width:32px;height:32px;border-radius:50%;background:#0B2D26;color:#fff;display:grid;place-items:center;font-size:13px;font-weight:600">A</div><div style="display:flex;flex-direction:column;gap:1px;flex:1"><div style="font-size:17px;font-weight:600">Ama</div><div style="font-size:13px;color:#5E5C56">After my passing</div></div><span style="color:#8A8781">›</span></div>
+        <div style="padding:12px 18px;display:flex;gap:12px;align-items:center"><div style="width:32px;height:32px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:13px;font-weight:600">K</div><div style="display:flex;flex-direction:column;gap:1px;flex:1"><div style="font-size:17px;font-weight:600">Kofi</div><div style="font-size:13px;color:#5E5C56">After my passing · if Ama is unavailable</div></div><span style="color:#8A8781">›</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">Documents · 2</div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+        <div style="padding:12px 18px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #EFECE6"><div style="width:32px;height:40px;border-radius:4px;background:#EFE9DD;border:1px solid #E3DFD6"></div><div style="display:flex;flex-direction:column;gap:1px;flex:1"><div style="font-size:15px;font-weight:600">Statement — Aug 2026.pdf</div><div style="font-size:13px;color:#5E5C56">1.2 MB · encrypted</div></div></div>
+        <div style="padding:12px 18px;display:flex;gap:12px;align-items:center"><div style="width:32px;height:40px;border-radius:4px;background:#EFE9DD;border:1px solid #E3DFD6"></div><div style="display:flex;flex-direction:column;gap:1px;flex:1"><div style="font-size:15px;font-weight:600">Account opening letter.jpg</div><div style="font-size:13px;color:#5E5C56">640 KB</div></div></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:24px;font-size:15px;font-weight:600;color:#0B2D26;padding:6px 0"><span>History</span><span>Archive</span><span style="color:#9B3B2E">Delete</span></div>
+  </div>
+</div>
+</x-import>
+</div>
+
+<!-- 6 ADD RECORD STEP -->
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66">Add record · step 4 of 6</div>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div data-screen-label="Add record recipients" style="position:relative;height:100%;background:#F6F4EF;font-family:-apple-system,system-ui,sans-serif;color:#1A1A1A">
+  <div style="position:absolute;inset:0;overflow:auto;padding:64px 20px 40px;display:flex;flex-direction:column;gap:20px;box-sizing:border-box">
+    <div style="display:flex;justify-content:space-between;align-items:center"><div style="height:44px;width:44px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:20px;color:#0B2D26">‹</div><span style="font-size:15px;font-weight:600;color:#0B2D26">Save &amp; finish later</span></div>
+    <div style="display:flex;gap:6px"><div style="flex:1;height:4px;border-radius:2px;background:#0B2D26"></div><div style="flex:1;height:4px;border-radius:2px;background:#0B2D26"></div><div style="flex:1;height:4px;border-radius:2px;background:#0B2D26"></div><div style="flex:1;height:4px;border-radius:2px;background:#0B2D26"></div><div style="flex:1;height:4px;border-radius:2px;background:#E3DFD6"></div><div style="flex:1;height:4px;border-radius:2px;background:#E3DFD6"></div></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:26px;font-weight:700;line-height:1.15">Who should receive this?</div><div style="font-size:15px;color:#5E5C56;line-height:1.45">Barclays current account. You’ll choose when in the next step. Only you can see it until then.</div></div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div style="padding:14px 18px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #EFECE6;background:#FBFAF7"><div style="width:24px;height:24px;border-radius:50%;background:#0B2D26;color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700">✓</div><div style="width:36px;height:36px;border-radius:50%;background:#0B2D26;color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600">A</div><div style="display:flex;flex-direction:column;gap:1px;flex:1"><div style="font-size:17px;font-weight:600">Ama Mensah</div><div style="font-size:13px;color:#5E5C56">Daughter · Primary contact</div></div></div>
+      <div style="padding:14px 18px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #EFECE6"><div style="width:24px;height:24px;border-radius:50%;border:2px solid #CFCAC0;box-sizing:border-box"></div><div style="width:36px;height:36px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:15px;font-weight:600">K</div><div style="display:flex;flex-direction:column;gap:1px;flex:1"><div style="font-size:17px;font-weight:600">Kofi Mensah</div><div style="font-size:13px;color:#5E5C56">Son · Backup contact</div></div></div>
+      <div style="padding:14px 18px;display:flex;gap:14px;align-items:center"><div style="width:24px;height:24px;border-radius:50%;border:2px solid #CFCAC0;box-sizing:border-box"></div><div style="width:36px;height:36px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:15px;font-weight:600">E</div><div style="display:flex;flex-direction:column;gap:1px;flex:1"><div style="font-size:17px;font-weight:600">Efua Boateng</div><div style="font-size:13px;color:#5E5C56">Solicitor · Recipient only</div></div></div>
+    </div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;padding:14px 18px;display:flex;gap:14px;align-items:center"><div style="width:24px;height:24px;border-radius:50%;border:2px solid #CFCAC0;box-sizing:border-box"></div><div style="display:flex;flex-direction:column;gap:1px;flex:1"><div style="font-size:17px;font-weight:600">No one yet</div><div style="font-size:13px;color:#5E5C56">Keep it private. You can add people later.</div></div></div>
+    <div style="font-size:15px;font-weight:600;color:#0B2D26;padding:0 2px">+ Add a new trusted person</div>
+    <div style="flex:1"></div>
+    <button style="height:50px;border-radius:12px;border:0;background:#0B2D26;color:#fff;font-size:17px;font-weight:600;font-family:inherit">Continue</button>
+  </div>
+</div>
+</x-import>
+</div>
+
+<!-- 7 PEOPLE -->
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66">People · overview</div>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div data-screen-label="People overview" style="position:relative;height:100%;background:#F6F4EF;font-family:-apple-system,system-ui,sans-serif;color:#1A1A1A">
+  <div style="position:absolute;inset:0;overflow:auto;padding:70px 20px 120px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end"><div style="font-size:32px;font-weight:700;letter-spacing:-0.01em">People</div><div style="height:44px;width:44px;border-radius:999px;background:#0B2D26;box-shadow:0 3px 10px rgba(0,0,0,0.15);display:grid;place-items:center;font-size:24px;color:#fff;line-height:1">+</div></div>
+    <div style="font-size:15px;color:#5E5C56;line-height:1.45">Each person receives only what you assign to them, only when the condition you set is met.</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="background:#fff;border-radius:12px;padding:16px;display:flex;gap:14px;align-items:center;box-shadow:0 0 0 1px #E8E4DC"><div style="width:44px;height:44px;border-radius:50%;background:#0B2D26;color:#fff;display:grid;place-items:center;font-size:17px;font-weight:600;flex-shrink:0">A</div><div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0"><div style="font-size:17px;font-weight:600">Ama Mensah</div><div style="font-size:13px;color:#5E5C56">Daughter · Primary contact</div><div style="font-size:13px;color:#5E5C56">Receives 14 records</div></div><span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#E4EFE8;color:#2E6B4F">Accepted</span></div>
+      <div style="background:#fff;border-radius:12px;padding:16px;display:flex;gap:14px;align-items:center;box-shadow:0 0 0 1px #E8E4DC"><div style="width:44px;height:44px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:17px;font-weight:600;flex-shrink:0">K</div><div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0"><div style="font-size:17px;font-weight:600">Kofi Mensah</div><div style="font-size:13px;color:#5E5C56">Son · Backup contact</div><div style="font-size:13px;color:#5E5C56">Receives 6 records</div></div><span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#E4EFE8;color:#2E6B4F">Accepted</span></div>
+      <div style="background:#fff;border-radius:12px;padding:16px;display:flex;gap:14px;align-items:center;box-shadow:0 0 0 1px #E8E4DC"><div style="width:44px;height:44px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:17px;font-weight:600;flex-shrink:0">E</div><div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0"><div style="font-size:17px;font-weight:600">Efua Boateng</div><div style="font-size:13px;color:#5E5C56">Solicitor · Recipient only</div><div style="font-size:13px;color:#5E5C56">Receives 2 documents</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#E7ECF2;color:#3D5A80">Invited · 3d</span><span style="font-size:13px;font-weight:600;color:#0B2D26">Resend</span></div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">Roles</div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+        <div style="padding:12px 18px;border-bottom:1px solid #EFECE6;display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600">Primary contact</div><div style="font-size:13px;color:#5E5C56;line-height:1.4">First person we ask to confirm if we can’t reach you.</div></div>
+        <div style="padding:12px 18px;border-bottom:1px solid #EFECE6;display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600">Backup contact</div><div style="font-size:13px;color:#5E5C56;line-height:1.4">Steps in if the primary contact is unavailable.</div></div>
+        <div style="padding:12px 18px;display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600">Recipient only</div><div style="font-size:13px;color:#5E5C56;line-height:1.4">Receives assigned records but plays no part in confirmation.</div></div>
+      </div>
+    </div>
+    <div style="font-size:15px;font-weight:600;color:#0B2D26;text-align:center">See the full access matrix</div>
+  </div>
+  <div style="position:absolute;left:20px;right:20px;bottom:38px;height:64px;border-radius:999px;background:rgba(255,255,255,0.62);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 6px 18px rgba(0,0,0,0.08),inset 1.5px 1.5px 1px rgba(255,255,255,0.8);display:grid;grid-template-columns:repeat(4,1fr);align-items:center;padding:0 6px;box-sizing:border-box">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10.2a2 2 0 0 1 .7-1.5l7-6a2 2 0 0 1 2.6 0l7 6a2 2 0 0 1 .7 1.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9.5 21v-6.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V21"/></svg>Home</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 19.5v-15A2.5 2.5 0 0 1 7 2h12a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a2.5 2.5 0 0 1 0-5h13"/><path d="M9 7h6"/></svg>Testament</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:#0B2D26;background:rgba(201,181,149,0.32);border-radius:999px;height:52px;justify-content:center"><svg width="23" height="23" viewBox="0 0 24 24" fill="rgba(201,181,149,0.35)" stroke="#0B2D26" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="7.5" r="3.5"/><path d="M2.5 21v-1.5A4.5 4.5 0 0 1 7 15h4a4.5 4.5 0 0 1 4.5 4.5V21"/><path d="M16 4.1a3.5 3.5 0 0 1 0 6.8"/><path d="M21.5 21v-1.5a4.5 4.5 0 0 0-3.2-4.3"/></svg>People</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Settings</div>
+  </div>
+</div>
+</x-import>
+</div>
+
+<!-- 8 PERSON PROFILE / ACCESS MATRIX -->
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66">Person · what Ama receives</div>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div data-screen-label="Person Ama access" style="position:relative;height:100%;background:#F6F4EF;font-family:-apple-system,system-ui,sans-serif;color:#1A1A1A">
+  <div style="position:absolute;inset:0;overflow:auto;padding:64px 20px 40px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+    <div style="display:flex;justify-content:space-between;align-items:center"><div style="height:44px;width:44px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:20px;color:#0B2D26">‹</div><div style="height:44px;padding:0 16px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:15px;font-weight:600;color:#0B2D26">Edit</div></div>
+    <div style="display:flex;gap:14px;align-items:center"><div style="width:56px;height:56px;border-radius:50%;background:#0B2D26;color:#fff;display:grid;place-items:center;font-size:22px;font-weight:600">A</div><div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:24px;font-weight:700">Ama Mensah</div><div style="font-size:15px;color:#5E5C56">Daughter · Primary contact · Accepted 2 Sep</div></div></div>
+    <div style="background:#EFE9DD;border-radius:12px;padding:16px 18px;font-size:15px;line-height:1.5">Ama will receive <strong>14 records</strong> under three different circumstances. Nothing is visible to her before then.</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;padding:0 2px"><div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66">If I’m unreachable</div><div style="font-size:12px;color:#8A8781">2 records</div></div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+        <div style="padding:12px 18px;border-bottom:1px solid #EFECE6;display:flex;justify-content:space-between;font-size:15px"><span>Emergency information</span><span style="color:#8A8781">›</span></div>
+        <div style="padding:12px 18px;display:flex;justify-content:space-between;font-size:15px"><span>Travel itinerary &amp; insurance</span><span style="color:#8A8781">›</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;padding:0 2px"><div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66">If I’m incapacitated</div><div style="font-size:12px;color:#8A8781">4 records</div></div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+        <div style="padding:12px 18px;border-bottom:1px solid #EFECE6;display:flex;justify-content:space-between;font-size:15px"><span>Medical wishes</span><span style="color:#8A8781">›</span></div>
+        <div style="padding:12px 18px;border-bottom:1px solid #EFECE6;display:flex;justify-content:space-between;font-size:15px"><span>Household bills &amp; direct debits</span><span style="color:#8A8781">›</span></div>
+        <div style="padding:12px 18px;display:flex;justify-content:space-between;font-size:15px;color:#5E5C56"><span>2 more</span><span style="color:#8A8781">›</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;padding:0 2px"><div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66">After my passing</div><div style="font-size:12px;color:#8A8781">8 records</div></div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+        <div style="padding:12px 18px;border-bottom:1px solid #EFECE6;display:flex;justify-content:space-between;font-size:15px"><span>Barclays current account</span><span style="color:#8A8781">›</span></div>
+        <div style="padding:12px 18px;border-bottom:1px solid #EFECE6;display:flex;justify-content:space-between;font-size:15px"><span>Letter to Ama</span><span style="font-size:12px;font-weight:600;color:#6B5A3A">Private message</span></div>
+        <div style="padding:12px 18px;display:flex;justify-content:space-between;font-size:15px;color:#5E5C56"><span>6 more</span><span style="color:#8A8781">›</span></div>
+      </div>
+    </div>
+    <button style="height:50px;border-radius:12px;border:1px solid #C9B595;background:transparent;color:#1A1A1A;font-size:17px;font-weight:600;font-family:inherit">Preview as Ama</button>
+    <div style="display:flex;justify-content:center;gap:24px;font-size:15px;font-weight:600;color:#0B2D26"><span>Change role</span><span>Replace</span><span style="color:#9B3B2E">Remove</span></div>
+  </div>
+</div>
+</x-import>
+</div>
+
+<!-- 9 RELEASE PLAN PREVIEW -->
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66">Release plan · scenario preview</div>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div data-screen-label="Release plan preview" style="position:relative;height:100%;background:#F6F4EF;font-family:-apple-system,system-ui,sans-serif;color:#1A1A1A">
+  <div style="position:absolute;inset:0;overflow:auto;padding:64px 20px 40px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+    <div style="display:flex;justify-content:space-between;align-items:center"><div style="height:44px;width:44px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:20px;color:#0B2D26">‹</div><div style="font-size:17px;font-weight:600">Release plan</div><div style="width:44px"></div></div>
+    <div style="font-size:15px;color:#5E5C56;line-height:1.45;text-align:center">If this happens, these people receive these things.</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:#ECE9E2;border-radius:12px;padding:4px">
+      <div style="height:40px;border-radius:9px;display:grid;place-items:center;font-size:13px;font-weight:600;color:#5E5C56">Unreachable</div>
+      <div style="height:40px;border-radius:9px;display:grid;place-items:center;font-size:13px;font-weight:600;color:#5E5C56">Incapacitated</div>
+      <div style="height:40px;border-radius:9px;display:grid;place-items:center;font-size:13px;font-weight:600;color:#1A1A1A;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.08)">After passing</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;line-height:1.1">After my passing</div><div style="font-size:15px;color:#5E5C56;line-height:1.45">Your broader legacy — accounts, property, documents and the messages you’ve written.</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">How this is confirmed</div>
+      <div style="background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 0 0 1px #E8E4DC;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4"><span style="width:22px;height:22px;border-radius:50%;background:#EFE9DD;display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0">1</span>Ama or Kofi reports it and verifies their identity</div>
+        <div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4"><span style="width:22px;height:22px;border-radius:50%;background:#EFE9DD;display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0">2</span>A second trusted person confirms, or a certificate is reviewed</div>
+        <div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4"><span style="width:22px;height:22px;border-radius:50%;background:#EFE9DD;display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0">3</span>7-day waiting period — we keep trying to reach you</div>
+        <div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4"><span style="width:22px;height:22px;border-radius:50%;background:#0B2D26;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0">4</span>Release to each person below</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">Who receives what</div>
+      <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+        <div style="padding:12px 18px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #EFECE6"><div style="width:32px;height:32px;border-radius:50%;background:#0B2D26;color:#fff;display:grid;place-items:center;font-size:13px;font-weight:600">A</div><div style="flex:1;font-size:17px;font-weight:600">Ama</div><div style="font-size:15px;color:#5E5C56">8 records ›</div></div>
+        <div style="padding:12px 18px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #EFECE6"><div style="width:32px;height:32px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:13px;font-weight:600">K</div><div style="flex:1;font-size:17px;font-weight:600">Kofi</div><div style="font-size:15px;color:#5E5C56">6 records ›</div></div>
+        <div style="padding:12px 18px;display:flex;gap:12px;align-items:center"><div style="width:32px;height:32px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:13px;font-weight:600">E</div><div style="flex:1;font-size:17px;font-weight:600">Efua</div><div style="font-size:15px;color:#5E5C56">2 documents ›</div></div>
+      </div>
+      <div style="font-size:13px;color:#8A8781;padding:4px 2px;line-height:1.5">5 records are assigned to no one and stay private. Missed check-ins alone never release anything.</div>
+    </div>
+  </div>
+</div>
+</x-import>
+</div>
+
+<!-- 10 CHECK-IN DESTINATION -->
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66">Check-in · from notification</div>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div data-screen-label="Check-in" style="position:relative;height:100%;background:#F6F4EF;font-family:-apple-system,system-ui,sans-serif;color:#1A1A1A">
+  <div style="position:absolute;inset:0;overflow:auto;padding:64px 24px 48px;display:flex;flex-direction:column;box-sizing:border-box">
+    <div style="display:flex;justify-content:flex-end"><div style="height:44px;padding:0 16px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:15px;font-weight:600;color:#0B2D26">Later</div></div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:18px">
+      <img src="assets/mark.png" alt="" style="height:48px;width:auto;mix-blend-mode:multiply;margin-bottom:12px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:40px;line-height:1.05;font-weight:500">Nana, are you okay?</div>
+      <div style="font-size:17px;color:#5E5C56;line-height:1.45;max-width:300px">It’s been 30 days. A quick confirmation keeps your Testament waiting, exactly as it is.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <button style="height:56px;border-radius:14px;border:0;background:#C9B595;color:#1A1A1A;font-size:17px;font-weight:600;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px"><span style="width:18px;height:18px;border-radius:5px;border:2px solid #1A1A1A;box-sizing:border-box;opacity:0.7"></span>I’m okay</button>
+      <button style="height:50px;border-radius:12px;border:0;background:transparent;color:#0B2D26;font-size:17px;font-weight:600;font-family:inherit">I need to pause check-ins</button>
+      <div style="font-size:13px;color:#8A8781;text-align:center;line-height:1.5">Confirmed with Face ID · Next check-in 2 November</div>
+    </div>
+  </div>
+</div>
+</x-import>
+</div>
+
+<!-- 11 SETTINGS -->
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66">Settings</div>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div data-screen-label="Settings" style="position:relative;height:100%;background:#F6F4EF;font-family:-apple-system,system-ui,sans-serif;color:#1A1A1A">
+  <div style="position:absolute;inset:0;overflow:auto;padding:70px 20px 120px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+    <div style="font-size:32px;font-weight:700;letter-spacing:-0.01em">Settings</div>
+    <div style="background:#fff;border-radius:12px;padding:14px 18px;display:flex;gap:14px;align-items:center;box-shadow:0 0 0 1px #E8E4DC"><div style="width:48px;height:48px;border-radius:50%;background:#EFE9DD;display:grid;place-items:center;font-size:18px;font-weight:600;color:#0B2D26">N</div><div style="display:flex;flex-direction:column;gap:2px;flex:1"><div style="font-size:17px;font-weight:600">Nana Mensah</div><div style="font-size:13px;color:#5E5C56">nana@example.com · +44 •••• 318</div></div><span style="color:#8A8781">›</span></div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px">Check-ins &amp; release plan</div><div style="font-size:13px;color:#5E5C56">Every 30 days · 3 scenarios set</div></div><span style="color:#8A8781">›</span></div>
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px">Security Centre</div><div style="font-size:13px;color:#9B3B2E">1 new sign-in to review</div></div><span style="display:flex;gap:10px;align-items:center"><span style="width:8px;height:8px;border-radius:50%;background:#9B3B2E"></span><span style="color:#8A8781">›</span></span></div>
+    </div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Notifications</span><span style="color:#8A8781">›</span></div>
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Privacy &amp; data</span><span style="color:#8A8781">›</span></div>
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;font-size:17px"><span>Accessibility &amp; time zone</span><span style="color:#8A8781">›</span></div>
+    </div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Help &amp; support</span><span style="color:#8A8781">›</span></div>
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;font-size:17px"><span>Terms, privacy &amp; legal</span><span style="color:#8A8781">›</span></div>
+    </div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;padding:14px 18px;font-size:17px;color:#0B2D26;text-align:center;font-weight:600">Sign out</div>
+
+  </div>
+  <div style="position:absolute;left:20px;right:20px;bottom:38px;height:64px;border-radius:999px;background:rgba(255,255,255,0.62);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 6px 18px rgba(0,0,0,0.08),inset 1.5px 1.5px 1px rgba(255,255,255,0.8);display:grid;grid-template-columns:repeat(4,1fr);align-items:center;padding:0 6px;box-sizing:border-box">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10.2a2 2 0 0 1 .7-1.5l7-6a2 2 0 0 1 2.6 0l7 6a2 2 0 0 1 .7 1.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9.5 21v-6.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V21"/></svg>Home</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 19.5v-15A2.5 2.5 0 0 1 7 2h12a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a2.5 2.5 0 0 1 0-5h13"/><path d="M9 7h6"/></svg>Testament</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="7.5" r="3.5"/><path d="M2.5 21v-1.5A4.5 4.5 0 0 1 7 15h4a4.5 4.5 0 0 1 4.5 4.5V21"/><path d="M16 4.1a3.5 3.5 0 0 1 0 6.8"/><path d="M21.5 21v-1.5a4.5 4.5 0 0 0-3.2-4.3"/></svg>People</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:#0B2D26;background:rgba(201,181,149,0.32);border-radius:999px;height:52px;justify-content:center"><svg width="23" height="23" viewBox="0 0 24 24" fill="rgba(201,181,149,0.35)" stroke="#0B2D26" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Settings</div>
+  </div>
+</div>
+</x-import>
+</div>
+
+<!-- 12 SECURITY CENTRE -->
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66">Security Centre</div>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div data-screen-label="Security Centre" style="position:relative;height:100%;background:#F6F4EF;font-family:-apple-system,system-ui,sans-serif;color:#1A1A1A">
+  <div style="position:absolute;inset:0;overflow:auto;padding:64px 20px 40px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+    <div style="display:flex;justify-content:space-between;align-items:center"><div style="height:44px;width:44px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:20px;color:#0B2D26">‹</div><div style="font-size:17px;font-weight:600">Security Centre</div><div style="width:44px"></div></div>
+    <div style="background:#F7E4E0;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px"><div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4"><span style="width:20px;height:20px;border-radius:50%;background:#9B3B2E;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0">!</span><span><strong>New sign-in · iPad · Lagos, Nigeria</strong><br>Today 14:02. Was this you?</span></div><div style="display:flex;gap:8px"><button style="flex:1;height:40px;border-radius:10px;border:0;background:#fff;color:#0B2D26;font-size:15px;font-weight:600;font-family:inherit">Yes, it was me</button><button style="flex:1;height:40px;border-radius:10px;border:0;background:#9B3B2E;color:#fff;font-size:15px;font-weight:600;font-family:inherit">Lock my account</button></div></div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px">Face ID</div><div style="font-size:13px;color:#5E5C56">Unlocks app and reveals secrets</div></div><div style="width:50px;height:30px;border-radius:15px;background:#2E6B4F;position:relative"><div style="position:absolute;top:2px;right:2px;width:26px;height:26px;border-radius:50%;background:#fff"></div></div></div>
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px">Two-step verification</div><div style="font-size:13px;color:#2E6B4F">On · authenticator app</div></div><span style="color:#8A8781">›</span></div>
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px">Recovery codes</div><div style="font-size:13px;color:#2E6B4F">Saved · 8 of 10 unused</div></div><span style="color:#8A8781">›</span></div>
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px">Password</div><div style="font-size:13px;color:#5E5C56">Changed 4 months ago</div></div><span style="color:#8A8781">›</span></div>
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;font-size:17px"><span>Recovery email &amp; phone</span><span style="color:#8A8781">›</span></div>
+    </div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><span style="font-size:17px">Trusted devices</span><span style="display:flex;gap:10px;color:#5E5C56;font-size:15px">2 <span style="color:#8A8781">›</span></span></div>
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><span style="font-size:17px">Active sessions</span><span style="display:flex;gap:10px;color:#5E5C56;font-size:15px">3 <span style="color:#8A8781">›</span></span></div>
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Sign-in activity</span><span style="color:#8A8781">›</span></div>
+      <div style="padding:14px 18px;font-size:17px;color:#0B2D26;font-weight:600">Sign out of all other sessions</div>
+    </div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px">Emergency lock</div><div style="font-size:13px;color:#5E5C56">Freeze all access and releases immediately</div></div><span style="color:#8A8781">›</span></div>
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Pause account</span><span style="color:#8A8781">›</span></div>
+      <div style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;font-size:17px;color:#9B3B2E"><span>Delete account</span><span style="color:#8A8781">›</span></div>
+    </div>
+  </div>
+</div>
+</x-import>
+</div>
+
+</div>
+</section>
+</x-dc>
+</body>
+</html>

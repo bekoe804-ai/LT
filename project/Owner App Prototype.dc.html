@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EBE8E1;font-family:-apple-system,"SF Pro Text",system-ui,sans-serif;color:#1A1A1A;-webkit-font-smoothing:antialiased}
+a{color:#0B2D26}a:hover{color:#C9B595}
+[data-screen] > *{flex-shrink:0}
+[data-tap]{cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+[data-tap]:active{opacity:.7}
+@keyframes pushA{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes pushB{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes popA{from{transform:translateX(-30%);opacity:.4}to{transform:translateX(0);opacity:1}}
+@keyframes popB{from{transform:translateX(-30%);opacity:.4}to{transform:translateX(0);opacity:1}}
+@keyframes fadeA{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes fadeB{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.08);opacity:1}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;gap:48px;padding:40px 48px;box-sizing:border-box;align-items:flex-start;flex-wrap:wrap">
+
+<aside style="width:280px;display:flex;flex-direction:column;gap:20px;position:sticky;top:40px">
+  <img src="assets/logo-horizontal.png" alt="Last Testament" style="height:34px;width:auto;mix-blend-mode:multiply;align-self:flex-start">
+  <div style="font-family:'Cormorant Garamond',serif;font-size:30px;line-height:1.1;font-weight:500">Owner app — clickable demo</div>
+  <div style="font-size:14px;line-height:1.5;color:#5E5C56">Tap anything in the phone. Sensitive actions ask for Face ID; the tab bar, cards, rows and buttons navigate.</div>
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <div style="font-family:Jost,sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#6B6A66;margin-bottom:4px">Start from</div>
+    <div data-tap onClick="{{ jump.homeOk }}" style="padding:10px 12px;border-radius:10px;background:#fff;box-shadow:0 0 0 1px #E3DFD6;font-size:14px;font-weight:600">Home · protected</div>
+    <div data-tap onClick="{{ jump.homeMissed }}" style="padding:10px 12px;border-radius:10px;background:#fff;box-shadow:0 0 0 1px #E3DFD6;font-size:14px;font-weight:600">Home · missed check-in</div>
+    <div data-tap onClick="{{ jump.homeNew }}" style="padding:10px 12px;border-radius:10px;background:#fff;box-shadow:0 0 0 1px #E3DFD6;font-size:14px;font-weight:600">Home · new account</div>
+    <div data-tap onClick="{{ jump.checkin }}" style="padding:10px 12px;border-radius:10px;background:#fff;box-shadow:0 0 0 1px #E3DFD6;font-size:14px;font-weight:600">Check-in notification</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <div style="font-family:Jost,sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#6B6A66;margin-bottom:4px">Try these flows</div>
+    <div style="font-size:13px;line-height:1.6;color:#5E5C56">Home → “I’m okay” → Face ID<br>Home → “3 records to review” → review each<br>Home → “Add car insurance” → Insurance<br>Testament → any category → open a record → Reveal / Face ID<br>Testament → + → choose people → Save<br>People → Ama → scenarios → Preview<br>Settings → Security → Lock account<br>Settings → Check-ins → switch scenario</div>
+  </div>
+  <div style="font-size:12px;color:#8A8781">Current: {{ screenName }}</div>
+</aside>
+
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div style="position:relative;height:100%;background:#F6F4EF;font-family:-apple-system,system-ui,sans-serif;color:#1A1A1A;overflow:hidden">
+<div style="{{ screenAnim }}">
+
+<!-- HOME OK -->
+<sc-if value="{{ is.homeOk }}" hint-placeholder-val="{{ true }}">
+<div data-screen="homeOk" style="position:absolute;inset:0;overflow:auto;padding:70px 20px 120px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:center"><img src="assets/mark.png" alt="" style="height:26px;width:auto;mix-blend-mode:multiply"><div data-tap onClick="{{ to.settings }}" style="width:36px;height:36px;border-radius:50%;background:#EFE9DD;display:grid;place-items:center;font-size:14px;font-weight:600;color:#0B2D26">N</div></div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1.1;font-weight:500">Good evening, Nana.</div>
+    <div style="display:flex;align-items:center;gap:8px;font-size:17px;color:#5E5C56"><span style="width:8px;height:8px;border-radius:50%;background:#2E6B4F"></span>Your Testament is protected.</div>
+  </div>
+  <div style="background:#fff;border-radius:12px;padding:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;box-shadow:0 0 0 1px #E8E4DC">
+    <div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:20px;font-weight:700">12 Sep</div><div style="font-size:12px;color:#5E5C56">Last reviewed</div></div>
+    <div data-tap onClick="{{ tab.testament }}" style="display:flex;flex-direction:column;gap:2px"><div style="font-size:20px;font-weight:700">{{ recordCount }}</div><div style="font-size:12px;color:#5E5C56">Records</div></div>
+    <div data-tap onClick="{{ tab.people }}" style="display:flex;flex-direction:column;gap:2px"><div style="font-size:20px;font-weight:700">3</div><div style="font-size:12px;color:#5E5C56">Trusted people</div></div>
+  </div>
+  <div style="background:#fff;border-radius:12px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;box-shadow:0 0 0 1px #E8E4DC">
+    <div data-tap onClick="{{ to.checkin }}" style="display:flex;flex-direction:column;gap:2px;flex:1"><div style="font-size:17px;font-weight:600">Next check-in</div><div style="font-size:13px;color:#5E5C56">{{ nextCheckin }}</div></div>
+    <button data-tap onClick="{{ act.imOkay }}" style="height:40px;padding:0 16px;border-radius:10px;border:0;background:#EFE9DD;color:#0B2D26;font-size:15px;font-weight:600;font-family:inherit">I’m okay</button>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">Continue</div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div data-tap onClick="{{ openLetter }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px;font-weight:600">Letter to Ama</div><div style="font-size:13px;color:#5E5C56">Draft · private message</div></div><span style="color:#8A8781">›</span></div>
+      <sc-if value="{{ hasReview }}" hint-placeholder-val="{{ true }}"><div data-tap onClick="{{ to.review }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px;font-weight:600">{{ reviewCount }} records to review</div><div style="font-size:13px;color:#9A6B1E">Added over a year ago — still correct?</div></div><span style="color:#8A8781">›</span></div></sc-if>
+      <div data-tap onClick="{{ openInsurance }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px;font-weight:600">Add car insurance</div><div style="font-size:13px;color:#5E5C56">Suggested · 2 policies recorded, car not yet</div></div><span style="color:#8A8781">›</span></div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">Recently</div>
+    <div style="font-size:15px;color:#5E5C56;padding:0 2px;line-height:1.5">Kofi accepted your invitation · Yesterday<br>You updated Aviva life insurance · 12 Sep<br>Voice note for Kofi saved · 3 Sep</div>
+  </div>
+</div>
+</sc-if>
+
+<!-- HOME MISSED -->
+<sc-if value="{{ is.homeMissed }}" hint-placeholder-val="{{ false }}">
+<div data-screen="homeMissed" style="position:absolute;inset:0;overflow:auto;padding:70px 20px 120px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:center"><img src="assets/mark.png" alt="" style="height:26px;width:auto;mix-blend-mode:multiply"><div data-tap onClick="{{ to.settings }}" style="width:36px;height:36px;border-radius:50%;background:#EFE9DD;display:grid;place-items:center;font-size:14px;font-weight:600;color:#0B2D26">N</div></div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1.1;font-weight:500">Nana, are you okay?</div>
+    <div style="font-size:17px;color:#5E5C56;line-height:1.4">We haven’t heard from you since Monday 29 September. A quick confirmation keeps everything as it is.</div>
+  </div>
+  <button data-tap onClick="{{ act.imOkay }}" style="height:56px;border-radius:14px;border:0;background:#0B2D26;color:#fff;font-size:17px;font-weight:600;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px"><span style="width:18px;height:18px;border-radius:5px;border:2px solid rgba(255,255,255,0.8);box-sizing:border-box"></span>I’m okay — confirm with Face ID</button>
+  <div style="background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;box-shadow:0 0 0 1px #E8E4DC">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;margin-bottom:14px">What happens if we don’t hear from you</div>
+    <div style="display:flex;gap:14px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:12px;height:12px;border-radius:50%;background:#9A6B1E;margin-top:4px;box-shadow:0 0 0 4px #F7EEDC"></div><div style="width:2px;flex:1;background:#E3DFD6"></div></div><div style="padding-bottom:16px;display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600">Reminders · now</div><div style="font-size:13px;color:#5E5C56">Here, by email and by text</div></div></div>
+    <div style="display:flex;gap:14px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:12px;height:12px;border-radius:50%;border:2px solid #CFCAC0;box-sizing:border-box;margin-top:4px"></div><div style="width:2px;flex:1;background:#E3DFD6"></div></div><div style="padding-bottom:16px;display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600;color:#5E5C56">We ask Ama to check on you</div><div style="font-size:13px;color:#8A8781">8 October</div></div></div>
+    <div style="display:flex;gap:14px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:12px;height:12px;border-radius:50%;border:2px solid #CFCAC0;box-sizing:border-box;margin-top:4px"></div></div><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600;color:#5E5C56">Nothing is released without verification</div><div style="font-size:13px;color:#8A8781">And a 7-day period you can stop at any time</div></div></div>
+  </div>
+  <div style="display:flex;gap:10px">
+    <button data-tap onClick="{{ act.pause }}" style="flex:1;height:48px;border-radius:12px;border:1px solid #CFCAC0;background:#fff;color:#0B2D26;font-size:15px;font-weight:600;font-family:inherit">Pause for 2 weeks</button>
+    <button data-tap onClick="{{ to.releasePlan }}" style="flex:1;height:48px;border-radius:12px;border:1px solid #CFCAC0;background:#fff;color:#0B2D26;font-size:15px;font-weight:600;font-family:inherit">See release plan</button>
+  </div>
+  <div style="font-size:13px;color:#8A8781;line-height:1.5;text-align:center">Pausing or changing the schedule needs Face ID.</div>
+</div>
+</sc-if>
+
+<!-- HOME NEW -->
+<sc-if value="{{ is.homeNew }}" hint-placeholder-val="{{ false }}">
+<div data-screen="homeNew" style="position:absolute;inset:0;overflow:auto;padding:70px 20px 120px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:center"><img src="assets/mark.png" alt="" style="height:26px;width:auto;mix-blend-mode:multiply"><div data-tap onClick="{{ to.settings }}" style="width:36px;height:36px;border-radius:50%;background:#EFE9DD;display:grid;place-items:center;font-size:14px;font-weight:600;color:#0B2D26">N</div></div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1.1;font-weight:500">Welcome, Nana.</div>
+    <div style="font-size:17px;color:#5E5C56;line-height:1.4">Your Testament isn’t protected yet. Three short steps remain — finish them whenever suits you.</div>
+  </div>
+  <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+    <div style="padding:14px 18px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #EFECE6"><div style="width:26px;height:26px;border-radius:50%;background:#2E6B4F;color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex-shrink:0">✓</div><div style="font-size:17px;color:#8A8781;text-decoration:line-through">Secure your account</div></div>
+    <div style="padding:14px 18px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #EFECE6"><div style="width:26px;height:26px;border-radius:50%;background:#2E6B4F;color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex-shrink:0">✓</div><div style="font-size:17px;color:#8A8781;text-decoration:line-through">Save recovery codes</div></div>
+    <div data-tap onClick="{{ tab.people }}" style="padding:14px 18px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #EFECE6;background:#FBFAF7"><div style="width:26px;height:26px;border-radius:50%;border:2px solid #0B2D26;box-sizing:border-box;display:grid;place-items:center;font-size:13px;font-weight:700;color:#0B2D26;flex-shrink:0">3</div><div style="display:flex;flex-direction:column;gap:2px;flex:1"><div style="font-size:17px;font-weight:600">Add a trusted person</div><div style="font-size:13px;color:#5E5C56">Someone who may one day receive what you preserve</div></div><span style="color:#8A8781">›</span></div>
+    <div data-tap onClick="{{ to.addRecord }}" style="padding:14px 18px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #EFECE6"><div style="width:26px;height:26px;border-radius:50%;border:2px solid #CFCAC0;box-sizing:border-box;display:grid;place-items:center;font-size:13px;font-weight:700;color:#8A8781;flex-shrink:0">4</div><div style="font-size:17px;color:#5E5C56">Add your first record</div></div>
+    <div data-tap onClick="{{ to.releasePlan }}" style="padding:14px 18px;display:flex;gap:14px;align-items:center"><div style="width:26px;height:26px;border-radius:50%;border:2px solid #CFCAC0;box-sizing:border-box;display:grid;place-items:center;font-size:13px;font-weight:700;color:#8A8781;flex-shrink:0">5</div><div style="font-size:17px;color:#5E5C56">Choose how often we check in</div></div>
+  </div>
+  <button data-tap onClick="{{ tab.people }}" style="height:50px;border-radius:12px;border:0;background:#0B2D26;color:#fff;font-size:17px;font-weight:600;font-family:inherit">Add a trusted person</button>
+  <div style="background:#EFE9DD;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:4px"><div style="font-size:15px;font-weight:600">Preserving isn’t the same as a will</div><div style="font-size:13px;color:#5E5C56;line-height:1.45">Last Testament keeps information and wishes safe and delivers them to the right people. It doesn’t replace a legally executed will.</div></div>
+</div>
+</sc-if>
+
+<!-- TESTAMENT -->
+<sc-if value="{{ is.testament }}" hint-placeholder-val="{{ false }}">
+<div data-screen="testament" style="position:absolute;inset:0;overflow:auto;padding:70px 20px 120px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end"><div style="font-size:32px;font-weight:700;letter-spacing:-0.01em">Testament</div><div data-tap onClick="{{ to.addRecord }}" style="height:44px;width:44px;border-radius:999px;background:#0B2D26;box-shadow:0 3px 10px rgba(0,0,0,0.15);display:grid;place-items:center;font-size:24px;color:#fff;line-height:1">+</div></div>
+  <div style="height:40px;border-radius:12px;background:#ECE9E2;display:flex;align-items:center;padding:0 14px;gap:8px;font-size:17px;color:#8A8781"><span style="width:14px;height:14px;border-radius:50%;border:2px solid #8A8781;box-sizing:border-box"></span>Search records</div>
+  <sc-if value="{{ hasReview }}" hint-placeholder-val="{{ true }}">
+  <div data-tap onClick="{{ to.review }}" style="background:#F7EEDC;border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600">{{ reviewCount }} records need a review</div><div style="font-size:13px;color:#9A6B1E">Not confirmed in over a year</div></div><span style="font-size:15px;font-weight:600;color:#0B2D26">Review</span></div>
+  </sc-if>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">Pinned</div>
+    <div data-tap onClick="{{ openEmergency }}" style="background:#fff;border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 0 0 1px #E8E4DC"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px;font-weight:600">Emergency information</div><div style="font-size:13px;color:#5E5C56">Blood type, GP, allergies · → Ama, Kofi · If unreachable</div></div><span style="color:#8A8781">›</span></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">By category · {{ recordCount }} records</div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <sc-for list="{{ cats }}" as="c" hint-placeholder-count="7">
+      <div data-tap onClick="{{ c.open }}" style="padding:13px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>{{ c.name }}</span><span style="display:flex;gap:10px;align-items:center;color:#5E5C56;font-size:15px"><sc-if value="{{ c.hasReview }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;padding:2px 7px;border-radius:6px;background:#F7EEDC;color:#9A6B1E">{{ c.reviewLabel }}</span></sc-if>{{ c.count }} <span style="color:#8A8781">›</span></span></div>
+      </sc-for>
+    </div>
+    <div style="font-size:13px;color:#8A8781;padding:4px 2px">Archived (2) · Recently updated</div>
+  </div>
+</div>
+</sc-if>
+
+<!-- CATEGORY -->
+<sc-if value="{{ is.category }}" hint-placeholder-val="{{ false }}">
+<div data-screen="category" style="position:absolute;inset:0;overflow:auto;padding:64px 20px 60px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:center"><div data-tap onClick="{{ back }}" style="height:44px;width:44px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:20px;color:#0B2D26">‹</div><div data-tap onClick="{{ to.addRecord }}" style="height:44px;width:44px;border-radius:999px;background:#0B2D26;box-shadow:0 3px 10px rgba(0,0,0,0.15);display:grid;place-items:center;font-size:24px;color:#fff;line-height:1">+</div></div>
+  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:28px;font-weight:700;line-height:1.15">{{ cat.name }}</div><div style="font-size:15px;color:#5E5C56;line-height:1.45">{{ cat.blurb }}</div></div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{ cat.records }}" as="r" hint-placeholder-count="3">
+    <div data-tap onClick="{{ r.open }}" style="background:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 0 0 1px #E8E4DC">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><div style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B6A66">{{ r.type }}</div><div style="font-size:17px;font-weight:600;line-height:1.25">{{ r.title }}</div></div>
+        <sc-if value="{{ r.needsReview }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#F7EEDC;color:#9A6B1E;white-space:nowrap">Review</span></sc-if>
+        <sc-if value="{{ r.peek }}" hint-placeholder-val="{{ false }}"><div style="font-family:ui-monospace,monospace;font-size:14px;color:#5E5C56;letter-spacing:0.08em;white-space:nowrap">{{ r.peek }}</div></sc-if>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:#5E5C56;line-height:1.4">
+        <span style="display:flex;align-items:center;gap:6px"><span style="{{ r.dot }}"></span>{{ r.confirmedShort }}</span>
+        <span>→ {{ r.recipientsShort }} · {{ r.condition }}</span>
+        <sc-if value="{{ r.docCount }}" hint-placeholder-val="{{ false }}"><span>{{ r.docCount }} documents</span></sc-if>
+      </div>
+    </div>
+    </sc-for>
+  </div>
+  <sc-if value="{{ cat.suggest }}" hint-placeholder-val="{{ false }}">
+  <div data-tap onClick="{{ to.addRecord }}" style="border:1px dashed #C9B595;border-radius:12px;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600">{{ cat.suggest }}</div><div style="font-size:13px;color:#5E5C56">Not recorded yet</div></div><span style="font-size:15px;font-weight:600;color:#0B2D26">Add</span></div>
+  </sc-if>
+</div>
+</sc-if>
+
+<!-- REVIEW -->
+<sc-if value="{{ is.review }}" hint-placeholder-val="{{ false }}">
+<div data-screen="review" style="position:absolute;inset:0;overflow:auto;padding:64px 20px 40px;display:flex;flex-direction:column;gap:20px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:center"><div data-tap onClick="{{ back }}" style="height:44px;width:44px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:20px;color:#0B2D26">‹</div><div style="font-size:17px;font-weight:600">Review</div><div style="width:44px"></div></div>
+  <sc-if value="{{ reviewing }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex;gap:6px"><sc-for list="{{ reviewDots }}" as="d" hint-placeholder-count="3"><div style="{{ d }}"></div></sc-for></div>
+  <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:26px;font-weight:700;line-height:1.15">Is this still correct?</div><div style="font-size:15px;color:#5E5C56;line-height:1.45">{{ reviewIntro }}</div></div>
+  <div style="{{ reviewAnim }}">
+  <div style="background:#fff;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 8px 24px rgba(26,26,26,0.08),0 0 0 1px #E8E4DC">
+    <div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B6A66">{{ rv.type }}</div><div style="font-size:22px;font-weight:700;line-height:1.2">{{ rv.title }}</div><div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#9A6B1E"><span style="width:8px;height:8px;border-radius:50%;background:#9A6B1E"></span>{{ rv.confirmedLong }}</div></div>
+    <div style="display:flex;flex-direction:column;border-top:1px solid #EFECE6">
+      <sc-for list="{{ rv.fields }}" as="f" hint-placeholder-count="3">
+      <div style="padding:11px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid #EFECE6"><div style="font-size:13px;color:#5E5C56">{{ f.label }}</div><div style="font-size:15px;text-align:right;font-family:{{ f.font }};letter-spacing:{{ f.ls }}">{{ f.shown }}</div></div>
+      </sc-for>
+    </div>
+    <div style="font-size:13px;color:#5E5C56;line-height:1.45">→ {{ rv.recipientsShort }} · {{ rv.condition }}</div>
+  </div>
+  </div>
+  <div style="flex:1"></div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <button data-tap onClick="{{ act.reviewYes }}" style="height:50px;border-radius:12px;border:0;background:#0B2D26;color:#fff;font-size:17px;font-weight:600;font-family:inherit">Yes, still correct</button>
+    <div style="display:flex;gap:10px"><button data-tap onClick="{{ act.reviewUpdate }}" style="flex:1;height:48px;border-radius:12px;border:1px solid #CFCAC0;background:#fff;color:#0B2D26;font-size:15px;font-weight:600;font-family:inherit">Needs updating</button><button data-tap onClick="{{ act.reviewSkip }}" style="flex:1;height:48px;border-radius:12px;border:0;background:transparent;color:#0B2D26;font-size:15px;font-weight:600;font-family:inherit">Ask me later</button></div>
+  </div>
+  </sc-if>
+  <sc-if value="{{ reviewDone }}" hint-placeholder-val="{{ false }}">
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:14px;animation:fadeA .4s">
+    <div style="width:56px;height:56px;border-radius:50%;background:#E4EFE8;color:#2E6B4F;display:grid;place-items:center;font-size:24px;font-weight:700">✓</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1.1;font-weight:500">All reviewed.</div>
+    <div style="font-size:15px;color:#5E5C56;line-height:1.5;max-width:300px">{{ reviewSummary }}</div>
+  </div>
+  <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+    <sc-for list="{{ reviewResults }}" as="x" hint-placeholder-count="3">
+    <div data-tap onClick="{{ x.open }}" style="padding:12px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:15px;gap:12px"><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ x.title }}</span><span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:{{ x.bg }};color:{{ x.fg }};white-space:nowrap">{{ x.label }}</span></div>
+    </sc-for>
+  </div>
+  <button data-tap onClick="{{ tab.home }}" style="height:50px;border-radius:12px;border:0;background:#0B2D26;color:#fff;font-size:17px;font-weight:600;font-family:inherit">Back to Home</button>
+  </sc-if>
+</div>
+</sc-if>
+
+<!-- RECORD -->
+<sc-if value="{{ is.record }}" hint-placeholder-val="{{ false }}">
+<div data-screen="record" style="position:absolute;inset:0;overflow:auto;padding:64px 20px 60px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:center"><div data-tap onClick="{{ back }}" style="height:44px;width:44px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:20px;color:#0B2D26">‹</div><div data-tap onClick="{{ to.addRecord }}" style="height:44px;padding:0 16px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:15px;font-weight:600;color:#0B2D26">Edit</div></div>
+  <div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;gap:8px;align-items:center"><div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66">{{ rec.type }}</div><sc-if value="{{ rec.badge }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;padding:3px 7px;border-radius:6px;background:#EFE9DD;color:#6B5A3A">{{ rec.badge }}</span></sc-if></div><div style="font-size:26px;font-weight:700;line-height:1.15">{{ rec.title }}</div><div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#5E5C56"><span style="{{ rec.dot }}"></span>{{ rec.confirmedLong }}</div></div>
+  <sc-if value="{{ rec.needsReview }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#F7EEDC;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:12px"><div style="font-size:15px;line-height:1.4">{{ rec.reviewPrompt }}</div><div style="display:flex;gap:8px"><button data-tap onClick="{{ act.confirmRecord }}" style="flex:1;height:40px;border-radius:10px;border:0;background:#0B2D26;color:#fff;font-size:15px;font-weight:600;font-family:inherit">Yes, still correct</button><button data-tap onClick="{{ to.addRecord }}" style="flex:1;height:40px;border-radius:10px;border:0;background:#fff;color:#0B2D26;font-size:15px;font-weight:600;font-family:inherit">Update</button></div></div>
+  </sc-if>
+  <sc-if value="{{ rec.note }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#fff;border-radius:12px;padding:18px;box-shadow:0 0 0 1px #E8E4DC;font-family:'Cormorant Garamond',serif;font-size:20px;line-height:1.45;color:#1A1A1A;white-space:pre-line">{{ rec.note }}</div>
+  </sc-if>
+  <sc-if value="{{ rec.hasFields }}" hint-placeholder-val="{{ true }}">
+  <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+    <sc-for list="{{ rec.fields }}" as="f" hint-placeholder-count="3">
+    <div style="{{ f.row }}"><div style="display:flex;flex-direction:column;gap:3px;min-width:0"><div style="font-size:13px;color:#5E5C56">{{ f.label }}</div><div style="font-size:17px;line-height:1.35;font-family:{{ f.font }};letter-spacing:{{ f.ls }};color:{{ f.color }};overflow-wrap:anywhere">{{ f.shown }}</div></div><sc-if value="{{ f.action }}" hint-placeholder-val="{{ false }}"><span data-tap onClick="{{ f.toggle }}" style="font-size:15px;font-weight:600;color:#0B2D26;padding:8px 0 8px 12px;white-space:nowrap">{{ f.action }}</span></sc-if></div>
+    </sc-for>
+  </div>
+  </sc-if>
+  <sc-if value="{{ rec.hasRecipients }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">Who receives this</div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <sc-for list="{{ rec.recipients }}" as="p" hint-placeholder-count="2">
+      <div data-tap onClick="{{ to.ama }}" style="padding:12px 18px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #EFECE6"><div style="{{ p.avatar }}">{{ p.initial }}</div><div style="display:flex;flex-direction:column;gap:1px;flex:1"><div style="font-size:17px;font-weight:600">{{ p.name }}</div><div style="font-size:13px;color:#5E5C56">{{ p.when }}</div></div><span style="color:#8A8781">›</span></div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+  <sc-if value="{{ rec.noRecipients }}" hint-placeholder-val="{{ false }}">
+  <div data-tap onClick="{{ to.addRecord }}" style="border:1px dashed #C9B595;border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600">Only you can see this</div><div style="font-size:13px;color:#5E5C56">No recipient chosen yet</div></div><span style="font-size:15px;font-weight:600;color:#0B2D26">Choose</span></div>
+  </sc-if>
+  <sc-if value="{{ rec.hasDocs }}" hint-placeholder-val="{{ false }}">
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">Documents · {{ rec.docCount }}</div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <sc-for list="{{ rec.docs }}" as="d" hint-placeholder-count="2">
+      <div data-tap onClick="{{ act.openDoc }}" style="padding:12px 18px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #EFECE6"><div style="width:32px;height:40px;border-radius:4px;background:#EFE9DD;border:1px solid #E3DFD6;flex-shrink:0"></div><div style="display:flex;flex-direction:column;gap:1px;flex:1;min-width:0"><div style="font-size:15px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ d.name }}</div><div style="font-size:13px;color:#5E5C56">{{ d.meta }}</div></div></div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+  <div style="display:flex;justify-content:center;gap:24px;font-size:15px;font-weight:600;color:#0B2D26;padding:6px 0"><span data-tap onClick="{{ act.soon }}">History</span><span data-tap onClick="{{ act.archive }}">Archive</span><span data-tap onClick="{{ act.askDelete }}" style="color:#9B3B2E">Delete</span></div>
+</div>
+</sc-if>
+
+<!-- ADD RECORD -->
+<sc-if value="{{ is.addRecord }}" hint-placeholder-val="{{ false }}">
+<div data-screen="addRecord" style="position:absolute;inset:0;overflow:auto;padding:64px 20px 40px;display:flex;flex-direction:column;gap:20px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:center"><div data-tap onClick="{{ back }}" style="height:44px;width:44px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:20px;color:#0B2D26">‹</div><span data-tap onClick="{{ act.saveLater }}" style="font-size:15px;font-weight:600;color:#0B2D26;padding:10px 0">Save &amp; finish later</span></div>
+  <div style="display:flex;gap:6px"><div style="flex:1;height:4px;border-radius:2px;background:#0B2D26"></div><div style="flex:1;height:4px;border-radius:2px;background:#0B2D26"></div><div style="flex:1;height:4px;border-radius:2px;background:#0B2D26"></div><div style="flex:1;height:4px;border-radius:2px;background:#0B2D26"></div><div style="flex:1;height:4px;border-radius:2px;background:#E3DFD6"></div><div style="flex:1;height:4px;border-radius:2px;background:#E3DFD6"></div></div>
+  <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:26px;font-weight:700;line-height:1.15">Who should receive this?</div><div style="font-size:15px;color:#5E5C56;line-height:1.45">Barclays current account. You’ll choose when in the next step. Only you can see it until then.</div></div>
+  <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+    <div data-tap onClick="{{ act.pickAma }}" style="{{ rowAma }}"><div style="{{ checkAma }}">✓</div><div style="width:36px;height:36px;border-radius:50%;background:#0B2D26;color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600">A</div><div style="display:flex;flex-direction:column;gap:1px;flex:1"><div style="font-size:17px;font-weight:600">Ama Mensah</div><div style="font-size:13px;color:#5E5C56">Daughter · Primary contact</div></div></div>
+    <div data-tap onClick="{{ act.pickKofi }}" style="{{ rowKofi }}"><div style="{{ checkKofi }}">✓</div><div style="width:36px;height:36px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:15px;font-weight:600">K</div><div style="display:flex;flex-direction:column;gap:1px;flex:1"><div style="font-size:17px;font-weight:600">Kofi Mensah</div><div style="font-size:13px;color:#5E5C56">Son · Backup contact</div></div></div>
+    <div data-tap onClick="{{ act.pickEfua }}" style="{{ rowEfua }}"><div style="{{ checkEfua }}">✓</div><div style="width:36px;height:36px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:15px;font-weight:600">E</div><div style="display:flex;flex-direction:column;gap:1px;flex:1"><div style="font-size:17px;font-weight:600">Efua Boateng</div><div style="font-size:13px;color:#5E5C56">Solicitor · Recipient only</div></div></div>
+  </div>
+  <div data-tap onClick="{{ act.pickNone }}" style="{{ rowNone }}"><div style="{{ checkNone }}">✓</div><div style="display:flex;flex-direction:column;gap:1px;flex:1"><div style="font-size:17px;font-weight:600">No one yet</div><div style="font-size:13px;color:#5E5C56">Keep it private. You can add people later.</div></div></div>
+  <div data-tap onClick="{{ tab.people }}" style="font-size:15px;font-weight:600;color:#0B2D26;padding:0 2px">+ Add a new trusted person</div>
+  <div style="flex:1"></div>
+  <button data-tap onClick="{{ act.saveRecord }}" style="height:50px;border-radius:12px;border:0;background:#0B2D26;color:#fff;font-size:17px;font-weight:600;font-family:inherit">Continue</button>
+</div>
+</sc-if>
+
+<!-- PEOPLE -->
+<sc-if value="{{ is.people }}" hint-placeholder-val="{{ false }}">
+<div data-screen="people" style="position:absolute;inset:0;overflow:auto;padding:70px 20px 120px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end"><div style="font-size:32px;font-weight:700;letter-spacing:-0.01em">People</div><div data-tap onClick="{{ act.soon }}" style="height:44px;width:44px;border-radius:999px;background:#0B2D26;box-shadow:0 3px 10px rgba(0,0,0,0.15);display:grid;place-items:center;font-size:24px;color:#fff;line-height:1">+</div></div>
+  <div style="font-size:15px;color:#5E5C56;line-height:1.45">Each person receives only what you assign to them, only when the condition you set is met.</div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div data-tap onClick="{{ to.ama }}" style="background:#fff;border-radius:12px;padding:16px;display:flex;gap:14px;align-items:center;box-shadow:0 0 0 1px #E8E4DC"><div style="width:44px;height:44px;border-radius:50%;background:#0B2D26;color:#fff;display:grid;place-items:center;font-size:17px;font-weight:600;flex-shrink:0">A</div><div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0"><div style="font-size:17px;font-weight:600">Ama Mensah</div><div style="font-size:13px;color:#5E5C56">Daughter · Primary contact</div><div style="font-size:13px;color:#5E5C56">Receives 14 records</div></div><span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#E4EFE8;color:#2E6B4F">Accepted</span></div>
+    <div data-tap onClick="{{ to.ama }}" style="background:#fff;border-radius:12px;padding:16px;display:flex;gap:14px;align-items:center;box-shadow:0 0 0 1px #E8E4DC"><div style="width:44px;height:44px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:17px;font-weight:600;flex-shrink:0">K</div><div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0"><div style="font-size:17px;font-weight:600">Kofi Mensah</div><div style="font-size:13px;color:#5E5C56">Son · Backup contact</div><div style="font-size:13px;color:#5E5C56">Receives 6 records</div></div><span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#E4EFE8;color:#2E6B4F">Accepted</span></div>
+    <div style="background:#fff;border-radius:12px;padding:16px;display:flex;gap:14px;align-items:center;box-shadow:0 0 0 1px #E8E4DC"><div style="width:44px;height:44px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:17px;font-weight:600;flex-shrink:0">E</div><div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0"><div style="font-size:17px;font-weight:600">Efua Boateng</div><div style="font-size:13px;color:#5E5C56">Solicitor · Recipient only</div><div style="font-size:13px;color:#5E5C56">Receives 3 records · 1 sealed</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#E7ECF2;color:#3D5A80">{{ efuaStatus }}</span><span data-tap onClick="{{ act.resend }}" style="font-size:13px;font-weight:600;color:#0B2D26">Resend</span></div></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">Roles</div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div style="padding:12px 18px;border-bottom:1px solid #EFECE6;display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600">Primary contact</div><div style="font-size:13px;color:#5E5C56;line-height:1.4">First person we ask to confirm if we can’t reach you.</div></div>
+      <div style="padding:12px 18px;border-bottom:1px solid #EFECE6;display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600">Backup contact</div><div style="font-size:13px;color:#5E5C56;line-height:1.4">Steps in if the primary contact is unavailable.</div></div>
+      <div style="padding:12px 18px;display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600">Recipient only</div><div style="font-size:13px;color:#5E5C56;line-height:1.4">Receives assigned records but plays no part in confirmation.</div></div>
+    </div>
+  </div>
+  <div data-tap onClick="{{ to.releasePlan }}" style="font-size:15px;font-weight:600;color:#0B2D26;text-align:center;padding:8px">See the full release plan</div>
+</div>
+</sc-if>
+
+<!-- AMA -->
+<sc-if value="{{ is.ama }}" hint-placeholder-val="{{ false }}">
+<div data-screen="ama" style="position:absolute;inset:0;overflow:auto;padding:64px 20px 40px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:center"><div data-tap onClick="{{ back }}" style="height:44px;width:44px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:20px;color:#0B2D26">‹</div><div data-tap onClick="{{ act.soon }}" style="height:44px;padding:0 16px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:15px;font-weight:600;color:#0B2D26">Edit</div></div>
+  <div style="display:flex;gap:14px;align-items:center"><div style="width:56px;height:56px;border-radius:50%;background:#0B2D26;color:#fff;display:grid;place-items:center;font-size:22px;font-weight:600">A</div><div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:24px;font-weight:700">Ama Mensah</div><div style="font-size:15px;color:#5E5C56">Daughter · Primary contact · Accepted 2 Sep</div></div></div>
+  <div style="background:#EFE9DD;border-radius:12px;padding:16px 18px;font-size:15px;line-height:1.5">Ama will receive <strong>14 records</strong> under three different circumstances. Nothing is visible to her before then.</div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;justify-content:space-between;padding:0 2px"><div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66">If I’m unreachable</div><div style="font-size:12px;color:#8A8781">2 records</div></div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div data-tap onClick="{{ openRec.emergency }}" style="padding:12px 18px;border-bottom:1px solid #EFECE6;display:flex;justify-content:space-between;font-size:15px"><span>Emergency information</span><span style="color:#8A8781">›</span></div>
+      <div data-tap onClick="{{ openRec.travel }}" style="padding:12px 18px;display:flex;justify-content:space-between;font-size:15px"><span>Travel itinerary &amp; insurance</span><span style="color:#8A8781">›</span></div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;justify-content:space-between;padding:0 2px"><div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66">If I’m incapacitated</div><div style="font-size:12px;color:#8A8781">4 records</div></div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div data-tap onClick="{{ openRec.medical }}" style="padding:12px 18px;border-bottom:1px solid #EFECE6;display:flex;justify-content:space-between;font-size:15px"><span>Medical wishes</span><span style="color:#8A8781">›</span></div>
+      <div data-tap onClick="{{ openRec.bills }}" style="padding:12px 18px;border-bottom:1px solid #EFECE6;display:flex;justify-content:space-between;font-size:15px"><span>Household bills &amp; direct debits</span><span style="color:#8A8781">›</span></div>
+      <div data-tap onClick="{{ openRec.more }}" style="padding:12px 18px;display:flex;justify-content:space-between;font-size:15px;color:#5E5C56"><span>2 more</span><span style="color:#8A8781">›</span></div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;justify-content:space-between;padding:0 2px"><div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66">After my passing</div><div style="font-size:12px;color:#8A8781">8 records</div></div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div data-tap onClick="{{ openRec.barclays }}" style="padding:12px 18px;border-bottom:1px solid #EFECE6;display:flex;justify-content:space-between;font-size:15px"><span>Barclays current account</span><span style="color:#8A8781">›</span></div>
+      <div data-tap onClick="{{ openRec.letter }}" style="padding:12px 18px;border-bottom:1px solid #EFECE6;display:flex;justify-content:space-between;font-size:15px"><span>Letter to Ama</span><span style="font-size:12px;font-weight:600;color:#6B5A3A">Private message</span></div>
+      <div data-tap onClick="{{ openRec.more }}" style="padding:12px 18px;display:flex;justify-content:space-between;font-size:15px;color:#5E5C56"><span>6 more</span><span style="color:#8A8781">›</span></div>
+    </div>
+  </div>
+  <button data-tap onClick="{{ act.previewAma }}" style="height:50px;border-radius:12px;border:1px solid #C9B595;background:transparent;color:#1A1A1A;font-size:17px;font-weight:600;font-family:inherit">Preview as Ama</button>
+  <div style="display:flex;justify-content:center;gap:24px;font-size:15px;font-weight:600;color:#0B2D26"><span data-tap onClick="{{ act.soon }}">Change role</span><span data-tap onClick="{{ act.soon }}">Replace</span><span data-tap onClick="{{ act.askRemove }}" style="color:#9B3B2E">Remove</span></div>
+</div>
+</sc-if>
+
+<!-- RELEASE PLAN -->
+<sc-if value="{{ is.releasePlan }}" hint-placeholder-val="{{ false }}">
+<div data-screen="releasePlan" style="position:absolute;inset:0;overflow:auto;padding:64px 20px 40px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:center"><div data-tap onClick="{{ back }}" style="height:44px;width:44px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:20px;color:#0B2D26">‹</div><div style="font-size:17px;font-weight:600">Release plan</div><div style="width:44px"></div></div>
+  <div style="font-size:15px;color:#5E5C56;line-height:1.45;text-align:center">If this happens, these people receive these things.</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:#ECE9E2;border-radius:12px;padding:4px">
+    <div data-tap onClick="{{ act.scen0 }}" style="{{ seg0 }}">Unreachable</div>
+    <div data-tap onClick="{{ act.scen1 }}" style="{{ seg1 }}">Incapacitated</div>
+    <div data-tap onClick="{{ act.scen2 }}" style="{{ seg2 }}">After passing</div>
+  </div>
+  <div style="{{ scenAnim }}">
+  <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;line-height:1.1">{{ scen.title }}</div><div style="font-size:15px;color:#5E5C56;line-height:1.45">{{ scen.desc }}</div></div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:18px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">How this is confirmed</div>
+    <div style="background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 0 0 1px #E8E4DC;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4"><span style="width:22px;height:22px;border-radius:50%;background:#EFE9DD;display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0">1</span>{{ scen.s1 }}</div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4"><span style="width:22px;height:22px;border-radius:50%;background:#EFE9DD;display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0">2</span>{{ scen.s2 }}</div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4"><span style="width:22px;height:22px;border-radius:50%;background:#EFE9DD;display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0">3</span>{{ scen.s3 }}</div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4"><span style="width:22px;height:22px;border-radius:50%;background:#0B2D26;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0">4</span>Release to each person below</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:18px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;padding:0 2px">Who receives what</div>
+    <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+      <div data-tap onClick="{{ to.ama }}" style="padding:12px 18px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #EFECE6"><div style="width:32px;height:32px;border-radius:50%;background:#0B2D26;color:#fff;display:grid;place-items:center;font-size:13px;font-weight:600">A</div><div style="flex:1;font-size:17px;font-weight:600">Ama</div><div style="font-size:15px;color:#5E5C56">{{ scen.ama }} ›</div></div>
+      <div data-tap onClick="{{ to.ama }}" style="padding:12px 18px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #EFECE6"><div style="width:32px;height:32px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:13px;font-weight:600">K</div><div style="flex:1;font-size:17px;font-weight:600">Kofi</div><div style="font-size:15px;color:#5E5C56">{{ scen.kofi }} ›</div></div>
+      <div style="padding:12px 18px;display:flex;gap:12px;align-items:center"><div style="width:32px;height:32px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:13px;font-weight:600">E</div><div style="flex:1;font-size:17px;font-weight:600">Efua</div><div style="font-size:15px;color:#5E5C56">{{ scen.efua }} ›</div></div>
+    </div>
+    <div style="font-size:13px;color:#8A8781;padding:4px 2px;line-height:1.5">{{ scen.note }} Missed check-ins alone never release anything.</div>
+  </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- CHECK-IN -->
+<sc-if value="{{ is.checkin }}" hint-placeholder-val="{{ false }}">
+<div data-screen="checkin" style="position:absolute;inset:0;overflow:auto;padding:64px 24px 48px;display:flex;flex-direction:column;box-sizing:border-box">
+  <div style="display:flex;justify-content:flex-end"><div data-tap onClick="{{ back }}" style="height:44px;padding:0 16px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:15px;font-weight:600;color:#0B2D26">Later</div></div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:18px">
+    <img src="assets/mark.png" alt="" style="height:48px;width:auto;mix-blend-mode:multiply;margin-bottom:12px">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:40px;line-height:1.05;font-weight:500">Nana, are you okay?</div>
+    <div style="font-size:17px;color:#5E5C56;line-height:1.45;max-width:300px">It’s been 30 days. A quick confirmation keeps your Testament waiting, exactly as it is.</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <button data-tap onClick="{{ act.imOkay }}" style="height:56px;border-radius:14px;border:0;background:#C9B595;color:#1A1A1A;font-size:17px;font-weight:600;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px"><span style="width:18px;height:18px;border-radius:5px;border:2px solid #1A1A1A;box-sizing:border-box;opacity:0.7"></span>I’m okay</button>
+    <button data-tap onClick="{{ act.pause }}" style="height:50px;border-radius:12px;border:0;background:transparent;color:#0B2D26;font-size:17px;font-weight:600;font-family:inherit">I need to pause check-ins</button>
+    <div style="font-size:13px;color:#8A8781;text-align:center;line-height:1.5">Confirmed with Face ID · Next check-in 2 November</div>
+  </div>
+</div>
+</sc-if>
+
+<!-- SETTINGS -->
+<sc-if value="{{ is.settings }}" hint-placeholder-val="{{ false }}">
+<div data-screen="settings" style="position:absolute;inset:0;overflow:auto;padding:70px 20px 120px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+  <div style="font-size:32px;font-weight:700;letter-spacing:-0.01em">Settings</div>
+  <div data-tap onClick="{{ act.soon }}" style="background:#fff;border-radius:12px;padding:14px 18px;display:flex;gap:14px;align-items:center;box-shadow:0 0 0 1px #E8E4DC"><div style="width:48px;height:48px;border-radius:50%;background:#EFE9DD;display:grid;place-items:center;font-size:18px;font-weight:600;color:#0B2D26">N</div><div style="display:flex;flex-direction:column;gap:2px;flex:1"><div style="font-size:17px;font-weight:600">Nana Mensah</div><div style="font-size:13px;color:#5E5C56">nana@example.com · +44 •••• 318</div></div><span style="color:#8A8781">›</span></div>
+  <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+    <div data-tap onClick="{{ to.releasePlan }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px">Check-ins &amp; release plan</div><div style="font-size:13px;color:#5E5C56">Every 30 days · 3 scenarios set</div></div><span style="color:#8A8781">›</span></div>
+    <div data-tap onClick="{{ to.security }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px">Security Centre</div><div style="font-size:13px;color:{{ secSubColor }}">{{ secSub }}</div></div><span style="display:flex;gap:10px;align-items:center"><sc-if value="{{ secAlert }}" hint-placeholder-val="{{ true }}"><span style="width:8px;height:8px;border-radius:50%;background:#9B3B2E"></span></sc-if><span style="color:#8A8781">›</span></span></div>
+  </div>
+  <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+    <div data-tap onClick="{{ act.soon }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Notifications</span><span style="color:#8A8781">›</span></div>
+    <div data-tap onClick="{{ act.soon }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Privacy &amp; data</span><span style="color:#8A8781">›</span></div>
+    <div data-tap onClick="{{ act.soon }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;font-size:17px"><span>Accessibility &amp; time zone</span><span style="color:#8A8781">›</span></div>
+  </div>
+  <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+    <div data-tap onClick="{{ act.soon }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Help &amp; support</span><span style="color:#8A8781">›</span></div>
+    <div data-tap onClick="{{ act.soon }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;font-size:17px"><span>Terms, privacy &amp; legal</span><span style="color:#8A8781">›</span></div>
+  </div>
+  <div data-tap onClick="{{ act.signOut }}" style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;padding:14px 18px;font-size:17px;color:#0B2D26;text-align:center;font-weight:600">Sign out</div>
+</div>
+</sc-if>
+
+<!-- SECURITY -->
+<sc-if value="{{ is.security }}" hint-placeholder-val="{{ false }}">
+<div data-screen="security" style="position:absolute;inset:0;overflow:auto;padding:64px 20px 40px;display:flex;flex-direction:column;gap:18px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:center"><div data-tap onClick="{{ back }}" style="height:44px;width:44px;border-radius:999px;background:rgba(255,255,255,0.7);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:20px;color:#0B2D26">‹</div><div style="font-size:17px;font-weight:600">Security Centre</div><div style="width:44px"></div></div>
+  <sc-if value="{{ secAlert }}" hint-placeholder-val="{{ true }}">
+  <div style="background:#F7E4E0;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px"><div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4"><span style="width:20px;height:20px;border-radius:50%;background:#9B3B2E;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0">!</span><span><strong>New sign-in · iPad · Lagos, Nigeria</strong><br>Today 14:02. Was this you?</span></div><div style="display:flex;gap:8px"><button data-tap onClick="{{ act.wasMe }}" style="flex:1;height:40px;border-radius:10px;border:0;background:#fff;color:#0B2D26;font-size:15px;font-weight:600;font-family:inherit">Yes, it was me</button><button data-tap onClick="{{ act.askLock }}" style="flex:1;height:40px;border-radius:10px;border:0;background:#9B3B2E;color:#fff;font-size:15px;font-weight:600;font-family:inherit">Lock my account</button></div></div>
+  </sc-if>
+  <sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}">
+  <div style="background:#1A1A1A;color:#fff;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:6px"><div style="font-size:15px;font-weight:600">Account locked</div><div style="font-size:13px;color:rgba(255,255,255,0.7);line-height:1.45">All sessions signed out. Releases and check-ins are frozen until you unlock with your recovery code.</div><div data-tap onClick="{{ act.unlock }}" style="font-size:15px;font-weight:600;color:#C9B595;padding-top:6px">Unlock account</div></div>
+  </sc-if>
+  <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+    <div data-tap onClick="{{ act.toggleFace }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px">Face ID</div><div style="font-size:13px;color:#5E5C56">Unlocks app and reveals secrets</div></div><div style="{{ toggleTrack }}"><div style="{{ toggleKnob }}"></div></div></div>
+    <div data-tap onClick="{{ act.soon }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px">Two-step verification</div><div style="font-size:13px;color:#2E6B4F">On · authenticator app</div></div><span style="color:#8A8781">›</span></div>
+    <div data-tap onClick="{{ act.soon }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px">Recovery codes</div><div style="font-size:13px;color:#2E6B4F">Saved · 8 of 10 unused</div></div><span style="color:#8A8781">›</span></div>
+    <div data-tap onClick="{{ act.soon }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px">Password</div><div style="font-size:13px;color:#5E5C56">Changed 4 months ago</div></div><span style="color:#8A8781">›</span></div>
+    <div data-tap onClick="{{ act.soon }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;font-size:17px"><span>Recovery email &amp; phone</span><span style="color:#8A8781">›</span></div>
+  </div>
+  <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+    <div data-tap onClick="{{ act.soon }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><span style="font-size:17px">Trusted devices</span><span style="display:flex;gap:10px;color:#5E5C56;font-size:15px">2 <span style="color:#8A8781">›</span></span></div>
+    <div data-tap onClick="{{ act.soon }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><span style="font-size:17px">Active sessions</span><span style="display:flex;gap:10px;color:#5E5C56;font-size:15px">{{ sessions }} <span style="color:#8A8781">›</span></span></div>
+    <div data-tap onClick="{{ act.soon }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Sign-in activity</span><span style="color:#8A8781">›</span></div>
+    <div data-tap onClick="{{ act.signOutOthers }}" style="padding:14px 18px;font-size:17px;color:#0B2D26;font-weight:600">Sign out of all other sessions</div>
+  </div>
+  <div style="background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;overflow:hidden">
+    <div data-tap onClick="{{ act.askLock }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:17px">Emergency lock</div><div style="font-size:13px;color:#5E5C56">Freeze all access and releases immediately</div></div><span style="color:#8A8781">›</span></div>
+    <div data-tap onClick="{{ act.soon }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EFECE6;font-size:17px"><span>Pause account</span><span style="color:#8A8781">›</span></div>
+    <div data-tap onClick="{{ act.askDeleteAccount }}" style="padding:14px 18px;display:flex;justify-content:space-between;align-items:center;font-size:17px;color:#9B3B2E"><span>Delete account</span><span style="color:#8A8781">›</span></div>
+  </div>
+</div>
+</sc-if>
+
+</div>
+
+<!-- TAB BAR -->
+<sc-if value="{{ showTabs }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;left:20px;right:20px;bottom:38px;height:64px;border-radius:999px;background:rgba(255,255,255,0.62);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 6px 18px rgba(0,0,0,0.08),inset 1.5px 1.5px 1px rgba(255,255,255,0.8);display:grid;grid-template-columns:repeat(4,1fr);align-items:center;padding:0 6px;box-sizing:border-box;z-index:5">
+  <div data-tap onClick="{{ tab.home }}" style="{{ tabHome }}"><svg width="23" height="23" viewBox="0 0 24 24" fill="{{ ic.home.fill }}" stroke="{{ ic.home.stroke }}" strokeWidth="{{ ic.home.w }}" strokeLinecap="round" strokeLinejoin="round" style="transition:all .25s"><path d="M3 10.2a2 2 0 0 1 .7-1.5l7-6a2 2 0 0 1 2.6 0l7 6a2 2 0 0 1 .7 1.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9.5 21v-6.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V21"/></svg>Home</div>
+  <div data-tap onClick="{{ tab.testament }}" style="{{ tabTestament }}"><svg width="23" height="23" viewBox="0 0 24 24" fill="{{ ic.testament.fill }}" stroke="{{ ic.testament.stroke }}" strokeWidth="{{ ic.testament.w }}" strokeLinecap="round" strokeLinejoin="round" style="transition:all .25s"><path d="M4.5 19.5v-15A2.5 2.5 0 0 1 7 2h12a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a2.5 2.5 0 0 1 0-5h13"/><path d="M9 7h6"/></svg>Testament</div>
+  <div data-tap onClick="{{ tab.people }}" style="{{ tabPeople }}"><svg width="23" height="23" viewBox="0 0 24 24" fill="{{ ic.people.fill }}" stroke="{{ ic.people.stroke }}" strokeWidth="{{ ic.people.w }}" strokeLinecap="round" strokeLinejoin="round" style="transition:all .25s"><circle cx="9" cy="7.5" r="3.5"/><path d="M2.5 21v-1.5A4.5 4.5 0 0 1 7 15h4a4.5 4.5 0 0 1 4.5 4.5V21"/><path d="M16 4.1a3.5 3.5 0 0 1 0 6.8"/><path d="M21.5 21v-1.5a4.5 4.5 0 0 0-3.2-4.3"/></svg>People</div>
+  <div data-tap onClick="{{ tab.settings }}" style="{{ tabSettings }}"><svg width="23" height="23" viewBox="0 0 24 24" fill="{{ ic.settings.fill }}" stroke="{{ ic.settings.stroke }}" strokeWidth="{{ ic.settings.w }}" strokeLinecap="round" strokeLinejoin="round" style="transition:all .25s"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Settings</div>
+</div>
+</sc-if>
+
+<!-- DIALOG SHEET -->
+<sc-if value="{{ dialog }}" hint-placeholder-val="{{ false }}">
+<div data-tap onClick="{{ act.dismiss }}" style="position:absolute;inset:0;background:rgba(26,26,26,0.35);z-index:20;backdrop-filter:blur(2px)"></div>
+<div style="position:absolute;left:12px;right:12px;bottom:12px;z-index:21;background:#fff;border-radius:20px;padding:24px 22px 20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 12px 32px rgba(26,26,26,0.2);animation:sheetUp .36s cubic-bezier(.2,.8,.2,1)">
+  <div style="width:36px;height:5px;border-radius:3px;background:#D6D1C7;align-self:center;margin-top:-10px"></div>
+  <div style="font-size:20px;font-weight:700;line-height:1.2">{{ dialog.title }}</div>
+  <div style="font-size:15px;line-height:1.45;color:#5E5C56">{{ dialog.body }}</div>
+  <sc-if value="{{ dialog.typed }}" hint-placeholder-val="{{ false }}">
+  <div data-tap onClick="{{ act.typeConfirm }}" style="height:50px;border-radius:12px;border:1px solid #D6D1C7;padding:0 14px;display:flex;align-items:center;font-size:17px;color:{{ typedColor }};font-family:ui-monospace,monospace;letter-spacing:0.08em">{{ typedText }}</div>
+  </sc-if>
+  <button data-tap onClick="{{ act.dialogConfirm }}" style="{{ dialogBtn }}">{{ dialog.confirm }}</button>
+  <button data-tap onClick="{{ act.dismiss }}" style="height:50px;border-radius:12px;border:0;background:transparent;color:#0B2D26;font-size:17px;font-weight:600;font-family:inherit">{{ dialog.cancel }}</button>
+</div>
+</sc-if>
+
+<!-- FACE ID -->
+<sc-if value="{{ faceId }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;z-index:30;display:grid;place-items:center;background:rgba(246,244,239,0.6);backdrop-filter:blur(10px);animation:fadeA .2s">
+  <div style="width:160px;height:160px;border-radius:28px;background:rgba(255,255,255,0.85);box-shadow:0 12px 32px rgba(26,26,26,0.16),inset 1px 1px 1px #fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
+    <div style="width:56px;height:56px;border-radius:16px;border:3px solid #0B2D26;box-sizing:border-box;animation:pulse .9s ease-in-out infinite;position:relative"><div style="position:absolute;left:14px;top:16px;width:5px;height:5px;border-radius:50%;background:#0B2D26"></div><div style="position:absolute;right:14px;top:16px;width:5px;height:5px;border-radius:50%;background:#0B2D26"></div><div style="position:absolute;left:16px;right:16px;bottom:13px;height:8px;border-bottom:3px solid #0B2D26;border-radius:0 0 10px 10px"></div></div>
+    <div style="font-size:15px;font-weight:600">{{ faceLabel }}</div>
+  </div>
+</div>
+</sc-if>
+
+<!-- TOAST -->
+<sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:20px;right:20px;bottom:116px;z-index:40;background:#1A1A1A;color:#fff;border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:15px;line-height:1.35;box-shadow:0 8px 24px rgba(0,0,0,0.2);animation:toastIn .28s cubic-bezier(.2,.8,.2,1)"><span>{{ toast.text }}</span><sc-if value="{{ toast.action }}" hint-placeholder-val="{{ false }}"><span data-tap onClick="{{ act.toastAction }}" style="font-weight:600;color:#C9B595;white-space:nowrap">{{ toast.action }}</span></sc-if></div>
+</sc-if>
+
+</div>
+</x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const NAMES = { homeOk:'Home · protected', homeMissed:'Home · missed check-in', homeNew:'Home · new account', testament:'Testament', category:'Category', record:'Record', review:'Review', addRecord:'Add record · recipients', people:'People', ama:'Ama Mensah', releasePlan:'Release plan', checkin:'Check-in', settings:'Settings', security:'Security Centre' };
+const PEOPLE = { ama:{name:'Ama', initial:'A', dark:true}, kofi:{name:'Kofi', initial:'K'}, efua:{name:'Efua', initial:'E'} };
+const COND = { pass:'After my passing', inc:'If I’m incapacitated', unr:'If I’m unreachable' };
+// field: [label, value, secure] — secure: 'mask' (tap to reveal), 'face' (Face ID), or masked display string via m
+const F = (label, value, secure, m) => ({label, value, secure: secure||null, m: m||null});
+const CATS = [
+ { id:'fin', name:'Financial accounts', blurb:'Bank accounts, savings, pensions and money owed either way.', records:[
+  { id:'barclays', type:'Financial record', title:'Barclays current account', confirmed:'12 Sep 2026', months:0, cond:'pass', to:['ama','kofi'], peek:'•••• 4481', fields:[F('Account holder','Nana Mensah'),F('Account number','20936611 0027 4481','mask','•••• 4481'),F('Sort code','20-45-77','mask','••-••-••'),F('Online banking password','Harm@ttan!2024','face','••••••••••'),F('Notes','Salary and pension are paid here. Direct debits for the mortgage, council tax and energy.')], docs:[['Statement — Aug 2026.pdf','1.2 MB · encrypted'],['Account opening letter.jpg','640 KB']] },
+  { id:'isa', type:'Financial record', title:'Barclays Stocks & Shares ISA', confirmed:'12 Sep 2026', months:0, cond:'pass', to:['ama'], peek:'•••• 9920', fields:[F('Provider','Barclays Smart Investor'),F('Account number','SI-7731-9920','mask','•••• 9920'),F('Approx. value','£48,300 (Sep 2026)'),F('Notes','Invested in two index funds. Ama should speak to Efua before selling anything.')], docs:[['Valuation — Sep 2026.pdf','380 KB']] },
+  { id:'nationwide', type:'Financial record', title:'Nationwide savings account', confirmed:'3 Jun 2026', months:4, cond:'pass', to:['ama','kofi'], peek:'•••• 1183', fields:[F('Account number','07115 1183','mask','•••• 1183'),F('Sort code','07-01-16','mask','••-••-••'),F('Approx. balance','£12,400')], docs:[] },
+  { id:'sipp', type:'Financial record', title:'Vanguard personal pension (SIPP)', confirmed:'12 Sep 2026', months:0, cond:'pass', to:['ama'], peek:'•••• 2207', fields:[F('Account number','VG-2207-5581','mask','•••• 2207'),F('Nominated beneficiary','Ama Mensah (100%) — expression of wish filed 2024'),F('Approx. value','£186,000')], docs:[['Expression of wish — 2024.pdf','210 KB']] },
+  { id:'gcb', type:'Financial record', title:'GCB Bank account, Accra', confirmed:'29 Aug 2025', months:13, cond:'pass', to:['kofi'], peek:'•••• 6604', fields:[F('Branch','GCB Bank, Osu branch, Accra'),F('Account number','1011 6604 2231','mask','•••• 6604'),F('Approx. balance','GH₵ 38,000'),F('Notes','Used for the Kumasi house upkeep. Auntie Akosua has signing authority.')], docs:[] },
+  { id:'yaw', type:'Money I owe', title:'Loan from Uncle Yaw Darko', confirmed:'2 Jul 2026', months:3, cond:'pass', to:['ama'], fields:[F('Amount outstanding','£9,500 of £15,000'),F('Borrowed','March 2023 · for the catering van'),F('Repayment','£300 a month · standing order from Barclays current'),F('Contact','+233 24 ••• 7781','mask','+233 24 ••• 7781'),F('My wish','Please repay him in full from my estate before anything else is shared. He trusted me without paperwork.')], docs:[['Handwritten IOU — signed.jpg','940 KB']] },
+  { id:'abena', type:'Money owed to me', title:'Loan to cousin Abena — school fees', confirmed:'10 Sep 2026', months:0, cond:'pass', to:['ama'], fields:[F('Amount','GH₵ 25,000 · given Sept 2025'),F('Agreed','Repay when she finishes nursing school (2027)'),F('My wish','If I’m gone, forgive half. The rest goes to Kofi’s twins’ education fund.')], docs:[] },
+  { id:'kwame', type:'Money owed to me', title:'Loan to Kwame Asante', confirmed:'15 Jan 2026', months:8, cond:'pass', to:['ama','kofi'], fields:[F('Amount outstanding','£4,000 of £6,000'),F('Agreed repayment','£250 a month by bank transfer'),F('Contact','+44 7700 ••• 442','mask','+44 7700 ••• 442'),F('Notes','No written agreement. Kwame is honest — don’t chase him hard, but it is owed.')], docs:[['WhatsApp agreement — screenshot.jpg','1.1 MB']] },
+ ]},
+ { id:'prop', name:'Property & assets', blurb:'Homes, land, vehicles and valuable items.', records:[
+  { id:'elm', type:'Asset record', title:'14 Elm Road, Croydon CR0', confirmed:'12 Sep 2026', months:0, cond:'pass', to:['ama','kofi'], fields:[F('Ownership','Sole owner · freehold'),F('Mortgage','Halifax · approx. £61,000 remaining · ends 2031'),F('Title number','SGL 448 712','mask','SGL ••• •••'),F('Keys & alarm','Spare keys with Mrs Patel at no. 16. Alarm code:','face','Alarm code ••••'),F('Notes','Boiler serviced every March (British Gas HomeCare).')], docs:[['Title deeds — Land Registry.pdf','2.4 MB'],['Halifax mortgage statement 2026.pdf','410 KB']] },
+  { id:'kumasi', type:'Asset record', title:'Family house, Asokwa, Kumasi', confirmed:'29 Aug 2025', months:13, cond:'pass', to:['kofi','ama'], fields:[F('Ownership','Inherited from my father · shared with Auntie Akosua'),F('Land title','Indenture held by Lawyer Mensah-Bonsu, Kumasi'),F('Notes','My wish is that it stays in the family. Kofi should take the lead with Auntie Akosua.')], docs:[['Indenture — scanned.pdf','3.8 MB']] },
+  { id:'dubai', type:'Asset record', badge:'Sealed', title:'Apartment 1204, Marina Gate, Dubai', confirmed:'18 Aug 2026', months:1, cond:'pass', to:['efua'], fields:[F('Ownership','Sole owner · freehold · bought 2019'),F('Title deed no.','DLD 0441-••••-2019','face','DLD ••••-••••-2019'),F('Managed by','Haus & Haus property management · rented out'),F('Rental income','AED 9,500 a month → Emirates NBD account'),F('Emirates NBD account','AE07 0260 •••• •••• 5512','face','AE07 •••• •••• •••• ••••'),F('Who knows','Only Efua. The children do not know about this yet.'),F('My wish','Efua should tell Ama and Kofi together, in person, and read them my letter first. Sell it and split it equally.')], docs:[['Title deed — DLD.pdf','1.4 MB · encrypted'],['Haus & Haus management agreement.pdf','860 KB'],['A letter to explain — for Ama & Kofi.pdf','90 KB']] },
+  { id:'rav4', type:'Asset record', title:'Toyota RAV4 Hybrid, 2022', confirmed:'5 Apr 2026', months:6, cond:'inc', to:['kofi'], peek:'LB22 •••', fields:[F('Registration','LB22 KVP','mask','LB22 •••'),F('V5C logbook','In the grey folder, study desk, bottom drawer'),F('Finance','None — owned outright'),F('Spare key','Kitchen drawer, left of the cooker')], docs:[] },
+ ]},
+ { id:'ins', name:'Insurance', blurb:'Policies that pay out or need to be claimed.', suggest:'Car insurance', records:[
+  { id:'aviva', type:'Insurance record', title:'Aviva life insurance', confirmed:'12 Sep 2026', months:0, cond:'pass', to:['ama','kofi'], peek:'•••• 3310', fields:[F('Policy number','AV-LT-883310','mask','•••• 3310'),F('Cover','£250,000 level term · ends Nov 2039'),F('Beneficiaries','Ama 50% · Kofi 50% (written in trust)'),F('Claims line','0800 015 ••••','mask','0800 015 ••••'),F('Premium','£42.10 a month from Barclays current account')], docs:[['Policy schedule.pdf','520 KB'],['Trust form — signed.pdf','300 KB']] },
+  { id:'lg', type:'Insurance record', title:'Legal & General home insurance', confirmed:'14 Feb 2026', months:7, cond:'inc', to:['ama'], peek:'•••• 7745', fields:[F('Policy number','LG-HM-227745','mask','•••• 7745'),F('Cover','Buildings & contents · 14 Elm Road'),F('Renewal','14 February each year — auto-renews'),F('Claims line','0370 900 ••••','mask','0370 900 ••••')], docs:[['Policy documents 2026.pdf','1.6 MB']] },
+ ]},
+ { id:'biz', name:'Business & ideas', blurb:'Companies you own, and the ideas you haven’t finished yet.', records:[
+  { id:'catering', type:'Business record', title:'Nana’s Kitchen Catering Ltd', confirmed:'12 Sep 2026', months:0, cond:'inc', to:['kofi','efua'], fields:[F('Company no.','11829043 · Companies House'),F('Shareholding','Nana 80% · Kofi 20%'),F('Accountant','Dapo Adeyemi, Adeyemi & Co · 020 8771 ••••','mask','Dapo Adeyemi, Adeyemi & Co'),F('Business bank','Starling · •••• 0938','mask','Starling · •••• ••••'),F('If I’m incapacitated','Kofi runs day to day. Honour the church Christmas booking (deposit taken).'),F('After my passing','Kofi has first right to buy my shares at a fair value.')], docs:[['Shareholders agreement.pdf','720 KB'],['2025 accounts.pdf','1.1 MB']] },
+  { id:'shito', type:'Unfinished idea', badge:'Intellectual property', title:'Shito sauce brand — “Mama Nana’s”', confirmed:'1 Sep 2026', months:1, cond:'pass', to:['ama','kofi'], note:'The recipe is my mother’s, with my changes: more dried shrimp, less oil, a little smoked mackerel. I tested it with Waitrose’s local buyer in July and they asked for a second sample. Someone should finish this.', fields:[F('Recipe','Full recipe & quantities (batch of 40 jars)','face','Recipe locked · Face ID'),F('Trademark','“Mama Nana’s” · UK00003981122 · filed, pending'),F('Contact','Waitrose local sourcing · Hannah Clarke','mask','Waitrose local sourcing · ••••••'),F('Status','Packaging designs done, need food-safety certificate')], docs:[['Label designs v3.pdf','4.2 MB'],['Trademark filing receipt.pdf','180 KB']] },
+  { id:'app', type:'Unfinished idea', badge:'Intellectual property', title:'Idea: app for booking Ghanaian caterers', confirmed:'15 Jun 2025', months:15, cond:'pass', to:['ama'], note:'A simple way for families in the UK to book Ghanaian caterers for weddings, funerals and outdoorings. I spoke to 12 caterers and 9 said they would pay. Ama — you’re the one who understands tech. Do something with it if you want to.', fields:[F('Notes & research','Interview notes from 12 caterers'),F('Domain','chopbook.co.uk · renews every April')], docs:[['Interview notes.pdf','300 KB'],['Rough sketches.jpg','2.0 MB']] },
+ ]},
+ { id:'docs', name:'Documents', blurb:'Scans of the originals, and where to find them.', records:[
+  { id:'will', type:'Legal document', badge:'Legal document', title:'Will — signed copy', confirmed:'12 Sep 2026', months:0, cond:'pass', to:['efua','ama'], fields:[F('Executed','18 March 2024 · witnessed'),F('Original held by','Efua Boateng, Boateng & Co Solicitors, Croydon'),F('Executors','Ama Mensah and Efua Boateng'),F('Notes','This is a scan of the signed will. The original is what counts.')], docs:[['Last Will & Testament — signed scan.pdf','1.9 MB']] },
+  { id:'ukpass', type:'Identity document', title:'UK passport', confirmed:'5 Apr 2026', months:6, cond:'inc', to:['ama'], fields:[F('Passport number','5411 ••••','mask','•••• ••••'),F('Expires','22 Oct 2031'),F('Where it is','Fireproof box, wardrobe, master bedroom')], docs:[['Passport — photo page.jpg','880 KB']] },
+  { id:'ghpass', type:'Identity document', title:'Ghana passport', confirmed:'5 Apr 2026', months:6, cond:'inc', to:['kofi'], fields:[F('Passport number','G1 ••••','mask','•••• ••••'),F('Expires','9 Jan 2029'),F('Where it is','Same fireproof box as UK passport')], docs:[['Passport — photo page.jpg','790 KB']] },
+  { id:'marriage', type:'Record', title:'Marriage certificate', confirmed:'5 Apr 2026', months:6, cond:'pass', to:['ama','kofi'], fields:[F('Registered','Croydon Register Office · 14 June 1986'),F('Where it is','Fireproof box, master bedroom'),F('Notes','Needed for the Aviva claim and the pension.')], docs:[['Marriage certificate — scan.pdf','640 KB']] },
+ ]},
+ { id:'dig', name:'Digital life', blurb:'Accounts, devices and what should happen to them.', records:[
+  { id:'apple', type:'Digital account', title:'Apple ID & iPhone passcode', confirmed:'1 Aug 2025', months:14, cond:'inc', to:['ama'], fields:[F('Apple ID','nana.mensah@icloud.com'),F('iPhone passcode','••••••','face','••••••'),F('Apple ID password','••••••••••••','face','••••••••••••'),F('Legacy Contact','Ama is set as Apple Legacy Contact (access key in Documents)'),F('Notes','All family photos are in iCloud. Please keep them.')], docs:[['Apple legacy access key.pdf','120 KB']] },
+  { id:'gmail', type:'Digital account', title:'Gmail', confirmed:'12 Sep 2026', months:0, cond:'inc', to:['ama'], fields:[F('Email','nana.mensah62@gmail.com'),F('Password','••••••••••••','face','••••••••••••'),F('Two-step','Codes go to my iPhone — see Apple ID record'),F('Inactive Account Manager','Set to notify Ama after 3 months')], docs:[] },
+  { id:'facebook', type:'Digital account', title:'Facebook', confirmed:'3 Jun 2026', months:4, cond:'pass', to:['ama'], fields:[F('Profile','facebook.com/nana.mensah.62'),F('My wish','Memorialise the account — do not delete it. Ama is the Legacy Contact.')], docs:[] },
+  { id:'whatsapp', type:'Digital account', title:'WhatsApp', confirmed:'3 Jun 2026', months:4, cond:'pass', to:['kofi'], fields:[F('Number','+44 7700 ••• 318','mask','+44 7700 ••• 318'),F('Backup','Daily to iCloud'),F('My wish','Please post one message in the church group and the family group, then close it.')], docs:[] },
+  { id:'subs', type:'Digital account', title:'Subscriptions to cancel', confirmed:'15 May 2025', months:16, cond:'inc', to:['ama','kofi'], fields:[F('Netflix','£10.99 · Barclays card ending 4481'),F('Sky','£68 · direct debit · 0333 759 ••••','mask','£68 · direct debit · 0333 759 ••••'),F('Amazon Prime','£95 a year · renews March'),F('Gym — PureGym Croydon','£24.99 · cancel via app')], docs:[] },
+ ]},
+ { id:'msg', name:'Messages & memories', blurb:'Letters, recordings and photos meant for specific people.', records:[
+  { id:'letter', type:'Private message', badge:'Private message', title:'Letter to Ama', confirmed:'Draft · 28 Sep 2026', months:0, cond:'pass', to:['ama'], note:'My dear Ama,\n\nIf you are reading this, then the time has come that we both knew would arrive and neither of us wanted to talk about. I want you to know first that I was not afraid —\n\n(draft continues · 640 words)', fields:[F('Format','Written letter · 640 words'),F('Status','Draft — only you can see it until you mark it ready')], docs:[] },
+  { id:'voice', type:'Recorded message', badge:'Private message', title:'Voice note for Kofi’s 40th', confirmed:'3 Sep 2026', months:1, cond:'pass', to:['kofi'], fields:[F('Recording','2 min 14 sec · recorded 3 Sep 2026'),F('Deliver','On or after 11 May 2029 (Kofi’s 40th birthday)'),F('Note to self','Re-record if the twins arrive before then.')], docs:[['Kofi-40th.m4a','3.1 MB · encrypted']] },
+ ]},
+ { id:'wish', name:'Wishes & instructions', blurb:'What you would like to happen. These are wishes, not legal documents.', records:[
+  { id:'funeral', type:'Legacy instruction', badge:'Wishes · not a will', title:'Funeral wishes', confirmed:'12 Sep 2026', months:0, cond:'pass', to:['ama','kofi'], note:'A service at St Andrew’s, Croydon, then burial at Asokwa beside my mother. No black — wear kente if you have it. Play “Amazing Grace” and Daddy Lumba. Keep it simple and let people eat well afterwards.', fields:[F('Prepaid plan','Co-op Funeralcare plan no. ••• 2210','mask','Co-op Funeralcare plan no. ••• 2210'),F('Notes','These are my wishes. The will is the legal document.')], docs:[['Co-op funeral plan.pdf','450 KB']] },
+  { id:'medical', type:'Legacy instruction', badge:'Wishes · not a will', title:'Medical wishes', confirmed:'12 Sep 2026', months:0, cond:'inc', to:['ama','kofi'], note:'If I cannot speak for myself: I do not want to be kept alive on machines with no real hope of recovery. Comfort first. Ama has Lasting Power of Attorney for health.', fields:[F('LPA — health & welfare','Registered 2023 · OPG ref 1177 ••••','mask','Registered 2023 · OPG ref 1177 ••••'),F('GP','Dr Osei, Thornton Heath Medical Centre · 020 8684 ••••','mask','Dr Osei, Thornton Heath Medical Centre · 020 8684 ••••'),F('Allergies','Penicillin'),F('Medication','Amlodipine 5mg daily')], docs:[['LPA — health & welfare.pdf','2.2 MB']] },
+  { id:'emergency', type:'Emergency information', title:'Emergency information', confirmed:'12 Sep 2026', months:0, cond:'unr', to:['ama','kofi'], fields:[F('Blood type','O positive'),F('Allergies','Penicillin'),F('GP','Dr Osei, Thornton Heath Medical Centre'),F('Next of kin','Ama Mensah · +44 7700 ••• 901','mask','Ama Mensah · +44 7700 ••• 901'),F('Neighbour with key','Mrs Patel, 16 Elm Road')], docs:[] },
+  { id:'bills', type:'Legacy instruction', title:'Household bills & direct debits', confirmed:'14 Feb 2026', months:7, cond:'inc', to:['ama'], fields:[F('Mortgage','Halifax · 1st of month · Barclays current'),F('Council tax','Croydon · 15th · Barclays current'),F('Energy','Octopus · monthly · Barclays current'),F('Water','Thames Water · quarterly')], docs:[] },
+  { id:'travel', type:'Travel information', title:'Travel itinerary & insurance', confirmed:'20 Sep 2026', months:0, cond:'unr', to:['ama','kofi'], fields:[F('Current trip','Accra & Kumasi · 4–25 Oct 2026'),F('Flights','BA 081 out · BA 078 back · ref ••••••','mask','BA 081 out · BA 078 back · ref ••••••'),F('Travel insurance','Post Office · policy ••• 5520 · 24h line 020 8865 ••••','mask','Post Office · policy ••• 5520'),F('Staying with','Auntie Akosua, Asokwa')], docs:[['Itinerary.pdf','220 KB']] },
+ ]},
+];
+const REC = {}; CATS.forEach(c => c.records.forEach(r => { r.cat = c; REC[r.id] = r; }));
+const TABS = { homeOk:'home', homeMissed:'home', homeNew:'home', testament:'testament', people:'people', settings:'settings' };
+const SCEN = [
+  { title:'If I’m unreachable', desc:'Only what helps people find or help you — nothing financial, nothing private.', s1:'Two check-ins missed and 14 days without a reply', s2:'Ama confirms she can’t reach you either', s3:'48-hour waiting period — we keep trying', ama:'2 records', kofi:'2 records', efua:'Nothing', note:'21 records stay sealed.' },
+  { title:'If I’m incapacitated', desc:'What your family needs to keep life running while you can’t.', s1:'Ama or Kofi reports it and verifies their identity', s2:'A second trusted person confirms, or a medical letter is reviewed', s3:'3-day waiting period — we keep trying to reach you', ama:'4 records', kofi:'4 records', efua:'Nothing', note:'19 records stay sealed.' },
+  { title:'After my passing', desc:'Your broader legacy — accounts, property, documents and the messages you’ve written.', s1:'Ama or Kofi reports it and verifies their identity', s2:'A second trusted person confirms, or a certificate is reviewed', s3:'7-day waiting period — we keep trying to reach you', ama:'8 records', kofi:'6 records', efua:'2 documents', note:'5 records are assigned to no one and stay private.' }
+];
+const SEG_ON = 'height:40px;border-radius:9px;display:grid;place-items:center;font-size:13px;font-weight:600;color:#1A1A1A;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.08);transition:all .2s';
+const SEG_OFF = 'height:40px;border-radius:9px;display:grid;place-items:center;font-size:13px;font-weight:600;color:#5E5C56;transition:all .2s';
+const TAB_ON = 'display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:#0B2D26;background:rgba(201,181,149,0.32);border-radius:999px;height:52px;justify-content:center;transition:background .25s';
+const TAB_OFF = 'display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56;height:52px;justify-content:center;border-radius:999px;transition:background .25s';
+const ROW = 'padding:14px 18px;display:flex;gap:14px;align-items:center;border-bottom:1px solid #EFECE6;transition:background .2s;';
+const CHK_ON = 'width:24px;height:24px;border-radius:50%;background:#0B2D26;color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex-shrink:0;transition:all .2s';
+const CHK_OFF = 'width:24px;height:24px;border-radius:50%;border:2px solid #CFCAC0;box-sizing:border-box;color:transparent;display:grid;place-items:center;font-size:13px;flex-shrink:0;transition:all .2s';
+const css = s => Object.fromEntries(s.split(';').filter(Boolean).map(p => { const i = p.indexOf(':'); const k = p.slice(0,i).trim().replace(/-([a-z])/g,(m,c)=>c.toUpperCase()); return [k, p.slice(i+1).trim()]; }));
+
+class Component extends DCLogic {
+  state = { screen:'homeOk', stack:[], anim:'fadeA', n:0, scen:2, scenN:0, catId:'fin', recId:'barclays', revealed:{}, confirmed:{}, reviewIdx:0, reviewN:0, reviewResults:[], picks:{ama:true,kofi:false,efua:false,none:false}, faceId:null, toast:null, dialog:null, typed:0, secAlert:true, locked:false, face:true, sessions:3, efuaStatus:'Invited · 3d', records:23, financial:6 };
+  nav(screen, kind) {
+    this.setState(s => { const base = kind==='push'?'push':kind==='pop'?'pop':'fade'; const anim = base + (s.n%2?'A':'B'); return { screen, anim, n:s.n+1, stack: kind==='push'?[...s.stack,s.screen]:kind==='pop'?s.stack.slice(0,-1):[] , copied:false }; });
+  }
+  push(screen){ return () => this.nav(screen,'push'); }
+  back = () => { const prev = this.state.stack[this.state.stack.length-1] || 'homeOk'; this.nav(prev,'pop'); };
+  tabTo(screen){ return () => { if (TABS[this.state.screen]===TABS[screen]) return; this.nav(screen,'fade'); }; }
+  openCat(id){ return () => { this.setState({catId:id}); this.nav('category','push'); }; }
+  openRec(id){ return () => { this.setState({recId:id}); this.nav('record','push'); }; }
+  reviewList(){ return Object.values(REC).filter(r => r.months >= 12 && !this.state.confirmed[r.id]); }
+  fieldView(r, f, i, allowToggle){
+    const key = r.id + ':' + i; const on = !!this.state.revealed[key];
+    const shown = f.secure && !on ? f.m : f.value;
+    const mono = !!f.secure;
+    const toggle = !allowToggle ? null : () => {
+      if (on) return this.setState(s => ({revealed:{...s.revealed,[key]:false}}));
+      const reveal = () => { this.setState(s => ({revealed:{...s.revealed,[key]:true}})); setTimeout(()=>this.setState(s => ({revealed:{...s.revealed,[key]:false}})), 30000); };
+      f.secure==='face' ? this.withFace('Reveal ' + f.label.toLowerCase(), reveal) : reveal();
+    };
+    return { label:f.label, shown, font: mono ? 'ui-monospace, monospace' : 'inherit', ls: mono ? '0.08em' : 'normal', color: f.secure==='face' && !on ? '#5E5C56' : '#1A1A1A',
+      action: !f.secure ? null : on ? 'Hide' : f.secure==='face' ? 'Face ID' : 'Reveal', toggle,
+      row: css('padding:13px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid #EFECE6;' + (f.secure==='face' ? 'background:#EFE9DD;' : '')) };
+  }
+  recView(r){
+    const stale = r.months >= 12 && !this.state.confirmed[r.id];
+    const confirmedNow = !!this.state.confirmed[r.id];
+    const dotColor = stale ? '#9A6B1E' : '#2E6B4F';
+    const recips = r.to.map((p,i) => ({ name:PEOPLE[p].name, initial:PEOPLE[p].initial, when: COND[r.cond] + (i>0 ? ' · if ' + PEOPLE[r.to[0]].name + ' is unavailable' : ''), avatar: css('width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:600;flex-shrink:0;' + (PEOPLE[p].dark ? 'background:#0B2D26;color:#fff' : 'background:#EFE9DD;color:#0B2D26')) }));
+    return { ...r, open: this.openRec(r.id), needsReview: stale, dot: css('width:8px;height:8px;border-radius:50%;flex-shrink:0;background:' + dotColor),
+      confirmedShort: confirmedNow ? 'Confirmed today' : stale ? 'Added ' + r.months + ' months ago' : (r.confirmed.startsWith('Draft') ? r.confirmed : 'Confirmed ' + r.confirmed.replace(/ \d{4}$/,'')),
+      confirmedLong: confirmedNow ? 'Confirmed correct today' : stale ? 'Last confirmed ' + r.months + ' months ago' : (r.confirmed.startsWith('Draft') ? r.confirmed : 'Confirmed correct ' + r.confirmed),
+      reviewPrompt: 'You added this ' + r.months + ' months ago. Is it still correct?',
+      condition: COND[r.cond], recipientsShort: r.to.map(p => PEOPLE[p].name).join(', '),
+      recipients: recips, hasRecipients: recips.length > 0, noRecipients: recips.length === 0,
+      fields: r.fields.map((f,i) => this.fieldView(r, f, i, true)), hasFields: r.fields.length > 0,
+      docs: r.docs.map(d => ({name:d[0], meta:d[1]})), docCount: r.docs.length, hasDocs: r.docs.length > 0 };
+  }
+  toast(text, action, onAction){ clearTimeout(this._t); this.setState({toast:{text,action}}); this._onToast = onAction; this._t = setTimeout(()=>this.setState({toast:null}), 2800); }
+  withFace(label, then){ this.setState({faceId:true, faceLabel:label}); setTimeout(()=>{ this.setState({faceId:null}); then(); }, 1100); }
+  renderVals() {
+    const s = this.state;
+    const is = {}; Object.keys(NAMES).forEach(k => is[k] = s.screen===k);
+    const activeTab = TABS[s.screen];
+    const tabS = t => css(activeTab===t?TAB_ON:TAB_OFF);
+    const ico = (t, shape) => { const on = activeTab===t; const base = {width:20,height:20,boxSizing:'border-box',borderRadius: shape==='circle'?'50%':5, transition:'all .25s'}; if (shape==='diamond') base.transform='rotate(45deg) scale(0.8)'; return on? {...base,background:'#0B2D26'} : {...base,border:'2px solid #5E5C56'}; };
+    const sc = SCEN[s.scen];
+    const dialogBtn = css(s.dialog && s.dialog.danger ? 'height:50px;border-radius:12px;border:0;background:#9B3B2E;color:#fff;font-size:17px;font-weight:600;font-family:inherit;transition:opacity .2s' : 'height:50px;border-radius:12px;border:0;background:#0B2D26;color:#fff;font-size:17px;font-weight:600;font-family:inherit');
+    if (s.dialog && s.dialog.typed && s.typed < 6) dialogBtn.opacity = 0.4;
+    const to = { settings:this.push('settings'), checkin:this.push('checkin'), addRecord:this.push('addRecord'), review:() => { this.setState({reviewIdx:0, reviewResults:[]}); this.nav('review','push'); }, ama:this.push('ama'), releasePlan:this.push('releasePlan'), security:this.push('security') };
+    const cat = CATS.find(c => c.id === s.catId) || CATS[0];
+    const rec = this.recView(REC[s.recId] || REC.barclays);
+    const reviewList = this.reviewList();
+    const rvRaw = reviewList[s.reviewIdx];
+    const rv = rvRaw ? { ...this.recView(rvRaw), fields: rvRaw.fields.slice(0,3).map((f,i) => this.fieldView(rvRaw, f, i, false)) } : null;
+    const reviewTotal = s.reviewResults.length + Math.max(0, reviewList.length - s.reviewIdx);
+    const finishReview = (label, bg, fg) => { const r = rvRaw; if (!r) return; this.setState(st => ({ reviewResults:[...st.reviewResults, {title:r.title, label, bg, fg, open:this.openRec(r.id)}], reviewN: st.reviewN+1 })); };
+    const cats = CATS.map(c => { const n = c.records.filter(r => r.months >= 12 && !s.confirmed[r.id]).length; return { name:c.name, count:c.records.length, open:this.openCat(c.id), hasReview:n>0, reviewLabel: n + ' to review' }; });
+    const openRec = { emergency:this.openRec('emergency'), travel:this.openRec('travel'), medical:this.openRec('medical'), bills:this.openRec('bills'), barclays:this.openRec('barclays'), letter:this.openRec('letter'), more:this.openCat('wish') };
+    const tab = { home:this.tabTo('homeOk'), testament:this.tabTo('testament'), people:this.tabTo('people'), settings:this.tabTo('settings') };
+    const jump = { homeOk:()=>this.nav('homeOk','fade'), homeMissed:()=>this.nav('homeMissed','fade'), homeNew:()=>this.nav('homeNew','fade'), checkin:()=>this.nav('checkin','fade') };
+    const pick = k => () => this.setState(st => { const p = {...st.picks}; if (k==='none') { return {picks:{ama:false,kofi:false,efua:false,none:!p.none}}; } p[k]=!p[k]; p.none=false; return {picks:p}; });
+    const act = {
+      imOkay: () => this.withFace('Confirming you’re okay', () => { this.nav('homeOk','fade'); this.toast('Thank you, Nana. Next check-in 2 November.'); }),
+      pause: () => this.withFace('Pausing check-ins', () => { this.nav('homeOk','fade'); this.toast('Check-ins paused until 17 October', 'Undo', ()=>this.toast('Check-ins resumed')); }),
+      confirmRecord: () => { const id = rec.id; this.setState(st => ({confirmed:{...st.confirmed,[id]:true}})); const left = reviewList.filter(r => r.id !== id).length; this.toast(left ? 'Confirmed · ' + left + ' more to review' : 'Confirmed · everything is up to date', left ? 'Review' : null, ()=>to.review()); },
+      reviewYes: () => { const id = rvRaw && rvRaw.id; if (!id) return; finishReview('Confirmed','#E4EFE8','#2E6B4F'); this.setState(st => ({confirmed:{...st.confirmed,[id]:true}})); },
+      reviewUpdate: () => { finishReview('To update','#F7EEDC','#9A6B1E'); this.setState(st => ({reviewIdx: st.reviewIdx+1})); },
+      reviewSkip: () => { finishReview('Later','#ECEAE5','#5E5C56'); this.setState(st => ({reviewIdx: st.reviewIdx+1})); },
+      openDoc: () => this.toast('Secure document viewer — coming in stage 3'),
+      archive: () => { this.back(); this.toast(rec.title + ' archived', 'Undo', ()=>{}); },
+      askDelete: () => this.setState({dialog:{title:'Delete this record?', body:'Ama and Kofi will no longer receive it. The record and its 2 documents are kept for 30 days in case you change your mind.', confirm:'Delete record', cancel:'Keep it', danger:true, then:()=>{ this.back(); this.toast('Record deleted · recoverable for 30 days','Undo',()=>{}); }}}),
+      askRemove: () => this.setState({dialog:{title:'Remove Ama?', body:'Ama is your primary contact and receives 14 records. Kofi becomes primary. Those 14 records will have no recipient until you choose one.', confirm:'Remove Ama', cancel:'Keep Ama', danger:true, then:()=>{ this.back(); this.toast('Ama removed','Undo',()=>{}); }}}),
+      askLock: () => this.setState({dialog:{title:'Lock your account now?', body:'Every device is signed out, releases and check-ins freeze, and nothing can be changed until you unlock with a recovery code. Takes effect immediately.', confirm:'Lock account', cancel:'Not now', danger:true, then:()=>{ this.setState({locked:true, secAlert:false, sessions:1}); this.toast('Account locked · all other sessions ended'); }}}),
+      askDeleteAccount: () => this.setState({dialog:{title:'Delete your account?', body:'Your Testament holds 23 records that have not been released. They will be permanently erased for you and for Ama, Kofi and Efua. Nothing will ever reach them. Type DELETE to continue.', confirm:'Delete permanently', cancel:'Keep my Testament', danger:true, typed:true, then:()=>this.toast('This is a prototype — nothing was deleted.')}, typed:0}),
+      typeConfirm: () => this.setState(st => ({typed: Math.min(6, st.typed+1)})),
+      dialogConfirm: () => { const d = s.dialog; if (!d) return; if (d.typed && s.typed<6) return; this.setState({dialog:null, typed:0}); this.withFace('Confirm with Face ID', d.then); },
+      dismiss: () => this.setState({dialog:null, typed:0}),
+      wasMe: () => { this.setState({secAlert:false}); this.toast('Thanks — iPad added to trusted devices'); },
+      unlock: () => this.withFace('Unlocking', ()=>{ this.setState({locked:false}); this.toast('Account unlocked'); }),
+      toggleFace: () => s.face ? this.setState({dialog:{title:'Turn off Face ID?', body:'You’ll enter your password to open the app and reveal secrets.', confirm:'Turn off', cancel:'Keep Face ID', danger:false, then:()=>this.setState({face:false})}}) : this.setState({face:true}),
+      signOutOthers: () => this.withFace('Signing out other sessions', ()=>{ this.setState({sessions:1}); this.toast('2 other sessions signed out'); }),
+      signOut: () => this.toast('Signed out (prototype)'),
+      resend: () => { this.setState({efuaStatus:'Resent · just now'}); this.toast('Invitation resent to Efua'); },
+      previewAma: () => this.toast('Recipient portal preview — coming in stage 3'),
+      saveLater: () => { this.back(); this.toast('Draft saved · finish any time'); },
+      saveRecord: () => { this.nav('record','push'); this.toast('Saved · Barclays current account'); },
+      scen0: () => this.setState(st=>({scen:0, scenN:st.scenN+1})), scen1: () => this.setState(st=>({scen:1, scenN:st.scenN+1})), scen2: () => this.setState(st=>({scen:2, scenN:st.scenN+1})),
+      pickAma: pick('ama'), pickKofi: pick('kofi'), pickEfua: pick('efua'), pickNone: pick('none'),
+      soon: () => this.toast('Not in this prototype yet'),
+      toastAction: () => { const f = this._onToast; this.setState({toast:null}); if (f) f(); },
+    };
+    const rowStyle = on => css(ROW + (on?'background:#FBFAF7':''));
+    const noneStyle = css('background:#fff;border-radius:12px;box-shadow:0 0 0 1px #E8E4DC;padding:14px 18px;display:flex;gap:14px;align-items:center;transition:background .2s;' + (s.picks.none?'background:#FBFAF7':''));
+    return {
+      is, to, tab, jump, act, back:this.back,
+      screenName: NAMES[s.screen],
+      screenAnim: { position:'absolute', inset:0, animation: `${s.anim} .34s cubic-bezier(.2,.8,.2,1)` },
+      scenAnim: { animation: `${s.scenN%2?'fadeA':'fadeB'} .3s ease-out` },
+      showTabs: !!activeTab && !s.faceId,
+      tabHome:tabS('home'), tabTestament:tabS('testament'), tabPeople:tabS('people'), tabSettings:tabS('settings'),
+      ic: Object.fromEntries(['home','testament','people','settings'].map(t => [t, activeTab===t ? {fill:'rgba(201,181,149,0.35)', stroke:'#0B2D26', w:2} : {fill:'none', stroke:'#5E5C56', w:1.7}])),
+      icoHome:ico('home'), icoTestament:ico('testament'), icoPeople:ico('people','circle'), icoSettings:ico('settings','diamond'),
+      nextCheckin: 'Thursday 9 October · in 6 days',
+      recordCount: Object.keys(REC).length, cats, cat: { ...cat, records: cat.records.map(r => this.recView(r)) }, rec, openRec,
+      openEmergency: openRec.emergency, openLetter: openRec.letter, openInsurance: this.openCat('ins'),
+      hasReview: reviewList.length > 0, reviewCount: reviewList.length,
+      reviewing: !!rv, reviewDone: !rv, rv,
+      reviewIntro: rvRaw ? 'Record ' + (s.reviewResults.length + 1) + ' of ' + reviewTotal + ' · ' + rvRaw.cat.name : '',
+      reviewDots: Array.from({length: Math.max(reviewTotal, 1)}, (_, i) => css('flex:1;height:4px;border-radius:2px;background:' + (i < s.reviewResults.length ? '#0B2D26' : '#E3DFD6'))),
+      reviewAnim: { animation: (s.reviewN % 2 ? 'fadeA' : 'fadeB') + ' .3s ease-out' },
+      reviewResults: s.reviewResults,
+      reviewSummary: (() => { const c = s.reviewResults.filter(x => x.label === 'Confirmed').length; const u = s.reviewResults.filter(x => x.label === 'To update').length; return (c ? c + ' confirmed' : 'Nothing confirmed') + (u ? ', ' + u + ' to update' : '') + '. We’ll ask again in a year.'; })(),
+      rowAma: rowStyle(s.picks.ama), rowKofi: rowStyle(s.picks.kofi), rowEfua: {...rowStyle(s.picks.efua), borderBottom:'0'}, rowNone: noneStyle,
+      checkAma: css(s.picks.ama?CHK_ON:CHK_OFF), checkKofi: css(s.picks.kofi?CHK_ON:CHK_OFF), checkEfua: css(s.picks.efua?CHK_ON:CHK_OFF), checkNone: css(s.picks.none?CHK_ON:CHK_OFF),
+      seg0: css(s.scen===0?SEG_ON:SEG_OFF), seg1: css(s.scen===1?SEG_ON:SEG_OFF), seg2: css(s.scen===2?SEG_ON:SEG_OFF),
+      scen: sc,
+      secAlert: s.secAlert, locked: s.locked, sessions: s.sessions, efuaStatus: s.efuaStatus,
+      secSub: s.locked ? 'Account locked' : s.secAlert ? '1 new sign-in to review' : 'Everything looks good',
+      secSubColor: s.secAlert || s.locked ? '#9B3B2E' : '#2E6B4F',
+      toggleTrack: { width:50, height:30, borderRadius:15, background: s.face?'#2E6B4F':'#CFCAC0', position:'relative', transition:'background .25s', flexShrink:0 },
+      toggleKnob: { position:'absolute', top:2, left: s.face?22:2, width:26, height:26, borderRadius:'50%', background:'#fff', transition:'left .25s', boxShadow:'0 1px 3px rgba(0,0,0,0.2)' },
+      dialog: s.dialog, dialogBtn,
+      typedText: 'DELETE'.slice(0, s.typed) + (s.typed<6 ? '|' : ''), typedColor: s.typed ? '#1A1A1A' : '#8A8781',
+      faceId: s.faceId, faceLabel: s.faceLabel || 'Face ID',
+      toast: s.toast,
+    };
+  }
+}
+</script>
+</body>
+</html>

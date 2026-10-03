@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EBE8E1;font-family:-apple-system,"SF Pro Text",system-ui,sans-serif;color:#1A1A1A;-webkit-font-smoothing:antialiased}
+a{color:#0B2D26}a:hover{color:#C9B595}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+</style>
+</helmet>
+<div style="padding:56px 64px;display:flex;flex-direction:column;gap:56px;max-width:1360px">
+
+<header style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <img src="assets/logo-horizontal.png" alt="Last Testament" style="height:44px;width:auto;mix-blend-mode:multiply">
+    <h1 style="margin:0;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:44px;line-height:1.05;letter-spacing:-0.01em">Foundations &amp; components</h1>
+    <p style="margin:0;max-width:620px;font-size:15px;line-height:1.5;color:#5E5C56">Design tokens and reusable parts for the Owner app, Recipient portal and Admin platform. Brand serif for ceremonial moments; system type for everything people operate.</p>
+  </div>
+  <div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6A66">v0.1 · Architecture stage</div>
+</header>
+
+<!-- COLOR -->
+<section style="display:flex;flex-direction:column;gap:20px">
+  <div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6A66">01 — Colour tokens</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px">
+    <div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:12px;background:#0B2D26"></div><div style="font-size:13px;font-weight:600">brand.green</div><div style="font-size:12px;color:#6B6A66;font-family:ui-monospace,monospace">#0B2D26 · primary action, selected</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:12px;background:#C9B595"></div><div style="font-size:13px;font-weight:600">brand.stone</div><div style="font-size:12px;color:#6B6A66;font-family:ui-monospace,monospace">#C9B595 · emphasis, ceremony</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:12px;background:#F6F4EF;box-shadow:inset 0 0 0 1px #E3DFD6"></div><div style="font-size:13px;font-weight:600">surface.canvas</div><div style="font-size:12px;color:#6B6A66;font-family:ui-monospace,monospace">#F6F4EF · app background</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:12px;background:#FFFFFF;box-shadow:inset 0 0 0 1px #E3DFD6"></div><div style="font-size:13px;font-weight:600">surface.card</div><div style="font-size:12px;color:#6B6A66;font-family:ui-monospace,monospace">#FFFFFF · solid content cards</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:12px;background:#1A1A1A"></div><div style="font-size:13px;font-weight:600">ink.primary</div><div style="font-size:12px;color:#6B6A66;font-family:ui-monospace,monospace">#1A1A1A · text</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:12px;background:#5E5C56"></div><div style="font-size:13px;font-weight:600">ink.secondary</div><div style="font-size:12px;color:#6B6A66;font-family:ui-monospace,monospace">#5E5C56 · 7.0:1 on canvas</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:12px;background:#E3DFD6"></div><div style="font-size:13px;font-weight:600">line.default</div><div style="font-size:12px;color:#6B6A66;font-family:ui-monospace,monospace">#E3DFD6 · hairlines</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:12px;background:#EFE9DD"></div><div style="font-size:13px;font-weight:600">surface.stoneTint</div><div style="font-size:12px;color:#6B6A66;font-family:ui-monospace,monospace">#EFE9DD · selected rows</div></div>
+  </div>
+  <div style="font-family:Jost,sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66;margin-top:8px">Semantic — never colour alone; always paired with label or icon</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px">
+    <div style="display:flex;flex-direction:column;gap:8px"><div style="height:56px;border-radius:12px;background:#2E6B4F"></div><div style="font-size:13px;font-weight:600">status.protected</div><div style="font-size:12px;color:#6B6A66;font-family:ui-monospace,monospace">#2E6B4F · current, confirmed</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><div style="height:56px;border-radius:12px;background:#9A6B1E"></div><div style="font-size:13px;font-weight:600">status.attention</div><div style="font-size:12px;color:#6B6A66;font-family:ui-monospace,monospace">#9A6B1E · review, due soon</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><div style="height:56px;border-radius:12px;background:#9B3B2E"></div><div style="font-size:13px;font-weight:600">status.critical</div><div style="font-size:12px;color:#6B6A66;font-family:ui-monospace,monospace">#9B3B2E · missed, release, destructive</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><div style="height:56px;border-radius:12px;background:#3D5A80"></div><div style="font-size:13px;font-weight:600">status.info</div><div style="font-size:12px;color:#6B6A66;font-family:ui-monospace,monospace">#3D5A80 · pending, in progress</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><div style="height:56px;border-radius:12px;background:#8A8781"></div><div style="font-size:13px;font-weight:600">status.inactive</div><div style="font-size:12px;color:#6B6A66;font-family:ui-monospace,monospace">#8A8781 · archived, paused</div></div>
+  </div>
+</section>
+
+<!-- TYPE -->
+<section style="display:flex;flex-direction:column;gap:20px">
+  <div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6A66">02 — Typography</div>
+  <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px">
+    <div style="background:#fff;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:22px;box-shadow:inset 0 0 0 1px #E3DFD6">
+      <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66;font-family:Jost,sans-serif">Brand · Cormorant Garamond — ceremonial moments only</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:40px;line-height:1.1;font-weight:500">Your Testament is protected.</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;line-height:1.15;font-weight:500">Good evening, Nana.</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.3;font-style:italic;color:#5E5C56">“A letter for Ama, to be opened after my passing.”</div>
+      <div style="font-family:Jost,sans-serif;font-size:14px;letter-spacing:0.28em;text-transform:uppercase">Last Testament</div>
+      <div style="font-size:12px;color:#6B6A66">Display 40 / Title 28 / Quote 22 italic · Wordmark: Jost 500, 0.28em tracking</div>
+    </div>
+    <div style="background:#fff;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:16px;box-shadow:inset 0 0 0 1px #E3DFD6">
+      <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#6B6A66;font-family:Jost,sans-serif">UI · SF Pro / system — Dynamic Type ready</div>
+      <div style="font-size:22px;font-weight:700;line-height:1.2">Title 22 / 700 — screen titles</div>
+      <div style="font-size:17px;font-weight:600;line-height:1.3">Headline 17 / 600 — card titles, rows</div>
+      <div style="font-size:17px;line-height:1.4">Body 17 / 400 — the default reading size. Never smaller for recipients.</div>
+      <div style="font-size:15px;line-height:1.4;color:#5E5C56">Subhead 15 / 400 — secondary description</div>
+      <div style="font-size:13px;line-height:1.35;color:#5E5C56">Footnote 13 — metadata, dates. Minimum for owner app.</div>
+      <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#6B6A66;font-weight:600">Section label 12 / 600 / caps</div>
+      <div style="font-family:ui-monospace,'SF Mono',monospace;font-size:15px;letter-spacing:0.06em">Mono 15 — •••• 4481 · recovery codes · OTP</div>
+    </div>
+  </div>
+</section>
+
+<!-- SPACING / RADIUS / ELEVATION -->
+<section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px">
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6A66">03 — Spacing · 4pt</div>
+    <div style="display:flex;align-items:flex-end;gap:10px">
+      <div style="width:4px;height:4px;background:#0B2D26"></div><div style="width:8px;height:8px;background:#0B2D26"></div><div style="width:12px;height:12px;background:#0B2D26"></div><div style="width:16px;height:16px;background:#0B2D26"></div><div style="width:24px;height:24px;background:#0B2D26"></div><div style="width:32px;height:32px;background:#0B2D26"></div><div style="width:48px;height:48px;background:#0B2D26"></div>
+    </div>
+    <div style="font-size:13px;color:#5E5C56;line-height:1.5">4 · 8 · 12 · 16 · 24 · 32 · 48. Screen gutter 20 (mobile) / 32 (web). Minimum touch target 44.</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6A66">04 — Radius</div>
+    <div style="display:flex;gap:12px;align-items:flex-end">
+      <div style="width:56px;height:56px;border-radius:8px;background:#fff;box-shadow:inset 0 0 0 1px #E3DFD6;display:grid;place-items:center;font-size:12px">8</div>
+      <div style="width:56px;height:56px;border-radius:12px;background:#fff;box-shadow:inset 0 0 0 1px #E3DFD6;display:grid;place-items:center;font-size:12px">12</div>
+      <div style="width:56px;height:56px;border-radius:16px;background:#fff;box-shadow:inset 0 0 0 1px #E3DFD6;display:grid;place-items:center;font-size:12px">16</div>
+      <div style="width:56px;height:56px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px #E3DFD6;display:grid;place-items:center;font-size:12px">pill</div>
+    </div>
+    <div style="font-size:13px;color:#5E5C56;line-height:1.5">8 inputs/badges · 12 cards · 16 sheets · pill for glass controls only.</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6A66">05 — Elevation</div>
+    <div style="display:flex;gap:16px;align-items:center">
+      <div style="width:84px;height:56px;border-radius:12px;background:#fff;box-shadow:inset 0 0 0 1px #E3DFD6;display:grid;place-items:center;font-size:12px">0 flat</div>
+      <div style="width:84px;height:56px;border-radius:12px;background:#fff;box-shadow:0 1px 2px rgba(26,26,26,0.06),0 0 0 1px #E8E4DC;display:grid;place-items:center;font-size:12px">1 card</div>
+      <div style="width:84px;height:56px;border-radius:16px;background:#fff;box-shadow:0 12px 32px rgba(26,26,26,0.14);display:grid;place-items:center;font-size:12px">2 sheet</div>
+      <div style="width:84px;height:44px;border-radius:999px;background:rgba(255,255,255,0.55);backdrop-filter:blur(14px) saturate(160%);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06),inset 1px 1px 1px rgba(255,255,255,0.7);display:grid;place-items:center;font-size:12px">glass</div>
+    </div>
+    <div style="font-size:13px;color:#5E5C56;line-height:1.5">Content cards stay flat. Glass is reserved for the functional layer: tab bar, nav bar, sheets, floating actions.</div>
+  </div>
+</section>
+
+<!-- BUTTONS -->
+<section style="display:flex;flex-direction:column;gap:20px">
+  <div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6A66">06 — Buttons</div>
+  <div style="background:#F6F4EF;border-radius:16px;padding:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;box-shadow:inset 0 0 0 1px #E3DFD6">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:12px;color:#6B6A66">Primary</div>
+      <button style="height:50px;border-radius:12px;border:0;background:#0B2D26;color:#fff;font-size:17px;font-weight:600;font-family:inherit">Continue</button>
+      <button style="height:50px;border-radius:12px;border:0;background:#0B2D26;color:#fff;font-size:17px;font-weight:600;font-family:inherit;opacity:0.4">Continue</button>
+      <button style="height:50px;border-radius:12px;border:0;background:#0B2D26;color:#fff;font-size:17px;font-weight:600;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px"><span style="width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff"></span>Saving</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:12px;color:#6B6A66">Secondary</div>
+      <button style="height:50px;border-radius:12px;border:1px solid #CFCAC0;background:#fff;color:#0B2D26;font-size:17px;font-weight:600;font-family:inherit">Finish later</button>
+      <button style="height:50px;border-radius:12px;border:0;background:transparent;color:#0B2D26;font-size:17px;font-weight:600;font-family:inherit">Not now</button>
+      <button style="height:50px;border-radius:12px;border:0;background:#EFE9DD;color:#0B2D26;font-size:17px;font-weight:600;font-family:inherit">Tinted</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:12px;color:#6B6A66">Destructive — never the default focus</div>
+      <button style="height:50px;border-radius:12px;border:0;background:#9B3B2E;color:#fff;font-size:17px;font-weight:600;font-family:inherit">Delete record</button>
+      <button style="height:50px;border-radius:12px;border:1px solid #CFCAC0;background:#fff;color:#9B3B2E;font-size:17px;font-weight:600;font-family:inherit">Remove Ama</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:12px;color:#6B6A66">Ceremonial · stone — one per screen max</div>
+      <button style="height:50px;border-radius:12px;border:0;background:#C9B595;color:#1A1A1A;font-size:17px;font-weight:600;font-family:inherit">I’m okay</button>
+      <button style="height:50px;border-radius:12px;border:1px solid #C9B595;background:transparent;color:#1A1A1A;font-size:17px;font-weight:600;font-family:inherit">Preview what Ama receives</button>
+    </div>
+  </div>
+</section>
+
+<!-- INPUTS -->
+<section style="display:flex;flex-direction:column;gap:20px">
+  <div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6A66">07 — Inputs · secure inputs · OTP</div>
+  <div style="background:#F6F4EF;border-radius:16px;padding:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;box-shadow:inset 0 0 0 1px #E3DFD6">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#5E5C56">Default<div style="height:50px;border-radius:12px;background:#fff;border:1px solid #D6D1C7;padding:0 14px;display:flex;align-items:center;font-size:17px;font-weight:400;color:#8A8781">Account name</div></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#5E5C56">Focused<div style="height:50px;border-radius:12px;background:#fff;border:2px solid #0B2D26;padding:0 13px;display:flex;align-items:center;font-size:17px;font-weight:400;color:#1A1A1A">Barclays current account|</div></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#5E5C56">Validation<div style="height:50px;border-radius:12px;background:#fff;border:2px solid #9B3B2E;padding:0 13px;display:flex;align-items:center;font-size:17px;font-weight:400;color:#1A1A1A">ama@</div><div style="font-size:13px;color:#9B3B2E;font-weight:400">Enter a complete email address, e.g. ama@example.com</div></label>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#5E5C56">Secure value · masked by default<div style="height:50px;border-radius:12px;background:#fff;border:1px solid #D6D1C7;padding:0 14px;display:flex;align-items:center;justify-content:space-between;font-family:ui-monospace,monospace;font-size:17px;font-weight:400;color:#1A1A1A;letter-spacing:0.1em">•••• •••• •••• 4481<span style="font-family:-apple-system,system-ui;font-size:15px;font-weight:600;color:#0B2D26;letter-spacing:0">Reveal</span></div></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#5E5C56">Revealed · 30s, then re-masks<div style="height:50px;border-radius:12px;background:#fff;border:1px solid #D6D1C7;padding:0 14px;display:flex;align-items:center;justify-content:space-between;font-family:ui-monospace,monospace;font-size:17px;font-weight:400;color:#1A1A1A;letter-spacing:0.1em">2093 6611 0027 4481<span style="display:flex;gap:14px;font-family:-apple-system,system-ui;font-size:15px;font-weight:600;color:#0B2D26;letter-spacing:0"><span>Copy</span><span>Hide</span></span></div><div style="font-size:13px;color:#2E6B4F;font-weight:400">Copied · clipboard clears in 60 seconds</div></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#5E5C56">Requires Face ID to reveal<div style="height:50px;border-radius:12px;background:#EFE9DD;border:1px solid #E3DFD6;padding:0 14px;display:flex;align-items:center;justify-content:space-between;font-family:ui-monospace,monospace;font-size:17px;font-weight:400;color:#5E5C56;letter-spacing:0.1em">••••••••••••<span style="font-family:-apple-system,system-ui;font-size:15px;font-weight:600;color:#0B2D26;letter-spacing:0">Unlock</span></div></label>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="font-size:13px;font-weight:600;color:#5E5C56">OTP · 6 digits</div>
+      <div style="display:flex;gap:8px">
+        <div style="flex:1;height:56px;border-radius:12px;background:#fff;border:1px solid #D6D1C7;display:grid;place-items:center;font-size:24px;font-weight:600">4</div>
+        <div style="flex:1;height:56px;border-radius:12px;background:#fff;border:1px solid #D6D1C7;display:grid;place-items:center;font-size:24px;font-weight:600">7</div>
+        <div style="flex:1;height:56px;border-radius:12px;background:#fff;border:1px solid #D6D1C7;display:grid;place-items:center;font-size:24px;font-weight:600">1</div>
+        <div style="flex:1;height:56px;border-radius:12px;background:#fff;border:2px solid #0B2D26;display:grid;place-items:center;font-size:24px;font-weight:600">|</div>
+        <div style="flex:1;height:56px;border-radius:12px;background:#fff;border:1px solid #D6D1C7"></div>
+        <div style="flex:1;height:56px;border-radius:12px;background:#fff;border:1px solid #D6D1C7"></div>
+      </div>
+      <div style="font-size:13px;color:#5E5C56">Code sent to +44 •••• 318. Resend in 0:42</div>
+      <div style="font-size:13px;font-weight:600;color:#5E5C56;margin-top:8px">Recovery code · mono, copy &amp; save</div>
+      <div style="border-radius:12px;background:#fff;border:1px dashed #C9B595;padding:14px;font-family:ui-monospace,monospace;font-size:15px;letter-spacing:0.08em;line-height:1.7">H7K2-PX9Q-3WML<br>N4DV-8ZRT-Q6BA</div>
+    </div>
+  </div>
+</section>
+
+<!-- CARDS -->
+<section style="display:flex;flex-direction:column;gap:20px">
+  <div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6A66">08 — Record card · Person card · status</div>
+  <div style="background:#F6F4EF;border-radius:16px;padding:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;box-shadow:inset 0 0 0 1px #E3DFD6">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="font-size:12px;color:#6B6A66">Record card — answers what / who / when at a glance</div>
+      <div style="background:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 0 0 1px #E8E4DC">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B6A66">Financial record</div><div style="font-size:17px;font-weight:600">Barclays current account</div></div>
+          <div style="font-family:ui-monospace,monospace;font-size:14px;color:#5E5C56;letter-spacing:0.08em;white-space:nowrap">•••• 4481</div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:#5E5C56">
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#2E6B4F"></span>Confirmed 12 Sep</span>
+          <span>→ Ama · After my passing</span>
+          <span>2 documents</span>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 0 0 1px #E8E4DC">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B6A66">Digital account</div><div style="font-size:17px;font-weight:600">iCloud &amp; device passcode</div></div>
+          <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#F7EEDC;color:#9A6B1E;white-space:nowrap">Review</span>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:#5E5C56">
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#9A6B1E"></span>Added 14 months ago</span>
+          <span>→ Ama, Kofi · If I’m unreachable</span>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 0 0 1px #E8E4DC;opacity:0.6">
+        <div style="display:flex;justify-content:space-between;gap:12px"><div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B6A66">Private message</div><div style="font-size:17px;font-weight:600;text-decoration:line-through">Letter to Ama (draft 1)</div></div><span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#ECEAE5;color:#5E5C56">Archived</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="font-size:12px;color:#6B6A66">Person card — role and reach, not just a contact</div>
+      <div style="background:#fff;border-radius:12px;padding:16px;display:flex;gap:14px;align-items:center;box-shadow:0 0 0 1px #E8E4DC">
+        <div style="width:44px;height:44px;border-radius:50%;background:#0B2D26;color:#fff;display:grid;place-items:center;font-size:17px;font-weight:600;flex-shrink:0">A</div>
+        <div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0"><div style="font-size:17px;font-weight:600">Ama Mensah</div><div style="font-size:13px;color:#5E5C56">Daughter · Primary contact · Receives 14 records</div></div>
+        <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#E4EFE8;color:#2E6B4F">Accepted</span>
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:16px;display:flex;gap:14px;align-items:center;box-shadow:0 0 0 1px #E8E4DC">
+        <div style="width:44px;height:44px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:17px;font-weight:600;flex-shrink:0">K</div>
+        <div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0"><div style="font-size:17px;font-weight:600">Kofi Mensah</div><div style="font-size:13px;color:#5E5C56">Son · Backup contact · Receives 6 records</div></div>
+        <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#E7ECF2;color:#3D5A80">Invited · 3d</span>
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:16px;display:flex;gap:14px;align-items:center;box-shadow:0 0 0 1px #E8E4DC">
+        <div style="width:44px;height:44px;border-radius:50%;background:#EFE9DD;color:#0B2D26;display:grid;place-items:center;font-size:17px;font-weight:600;flex-shrink:0">E</div>
+        <div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0"><div style="font-size:17px;font-weight:600">Efua Boateng</div><div style="font-size:13px;color:#5E5C56">Solicitor · Recipient only · Receives 2 documents</div></div>
+        <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#F7E4E0;color:#9B3B2E">Declined</span>
+      </div>
+      <div style="font-size:12px;color:#6B6A66;margin-top:6px">Status badges</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#E4EFE8;color:#2E6B4F">Protected</span>
+        <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#F7EEDC;color:#9A6B1E">Needs review</span>
+        <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#F7E4E0;color:#9B3B2E">Check-in missed</span>
+        <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#E7ECF2;color:#3D5A80">Verification pending</span>
+        <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#ECEAE5;color:#5E5C56">Paused</span>
+        <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#EFE9DD;color:#6B5A3A">Legal document</span>
+        <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;background:#EFE9DD;color:#6B5A3A">Wishes · not a will</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE / STEPPER / CONFIRMATION -->
+<section style="display:flex;flex-direction:column;gap:20px">
+  <div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6A66">09 — Release timeline · stepper · confirmation · toast · skeleton · empty</div>
+  <div style="background:#F6F4EF;border-radius:16px;padding:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;box-shadow:inset 0 0 0 1px #E3DFD6">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="font-size:12px;color:#6B6A66">Escalation timeline — plain language, stage reached</div>
+      <div style="background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;box-shadow:0 0 0 1px #E8E4DC">
+        <div style="display:flex;gap:14px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:12px;height:12px;border-radius:50%;background:#2E6B4F;margin-top:4px"></div><div style="width:2px;flex:1;background:#2E6B4F"></div></div><div style="padding-bottom:18px;display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600">Check-in missed</div><div style="font-size:13px;color:#5E5C56">Mon 29 Sep · we reminded you</div></div></div>
+        <div style="display:flex;gap:14px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:12px;height:12px;border-radius:50%;background:#9A6B1E;margin-top:4px;box-shadow:0 0 0 4px #F7EEDC"></div><div style="width:2px;flex:1;background:#E3DFD6"></div></div><div style="padding-bottom:18px;display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600">Second reminder · now</div><div style="font-size:13px;color:#5E5C56">Email, SMS and this notification</div></div></div>
+        <div style="display:flex;gap:14px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:12px;height:12px;border-radius:50%;border:2px solid #CFCAC0;box-sizing:border-box;margin-top:4px"></div><div style="width:2px;flex:1;background:#E3DFD6"></div></div><div style="padding-bottom:18px;display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600;color:#5E5C56">We ask Ama to confirm</div><div style="font-size:13px;color:#8A8781">In 5 days, if we still haven’t heard</div></div></div>
+        <div style="display:flex;gap:14px"><div style="display:flex;flex-direction:column;align-items:center"><div style="width:12px;height:12px;border-radius:50%;border:2px solid #CFCAC0;box-sizing:border-box;margin-top:4px"></div></div><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:15px;font-weight:600;color:#5E5C56">Release begins · 7-day cooling-off</div><div style="font-size:13px;color:#8A8781">You can stop it at any point</div></div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="font-size:12px;color:#6B6A66">Stepper — short decisions, visible progress</div>
+      <div style="background:#fff;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 0 0 1px #E8E4DC">
+        <div style="display:flex;gap:6px"><div style="flex:1;height:4px;border-radius:2px;background:#0B2D26"></div><div style="flex:1;height:4px;border-radius:2px;background:#0B2D26"></div><div style="flex:1;height:4px;border-radius:2px;background:#0B2D26"></div><div style="flex:1;height:4px;border-radius:2px;background:#E3DFD6"></div><div style="flex:1;height:4px;border-radius:2px;background:#E3DFD6"></div><div style="flex:1;height:4px;border-radius:2px;background:#E3DFD6"></div></div>
+        <div style="font-size:13px;color:#5E5C56">Step 3 of 6 · Who should receive this?</div>
+      </div>
+      <div style="font-size:12px;color:#6B6A66;margin-top:6px">Consequential confirmation — not an “Are you sure?”</div>
+      <div style="background:#fff;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 12px 32px rgba(26,26,26,0.14)">
+        <div style="font-size:20px;font-weight:700;line-height:1.2">Delete this account?</div>
+        <div style="font-size:15px;line-height:1.45;color:#5E5C56">Your Testament holds 23 records that have not been released. They will be permanently erased for you and for Ama, Kofi and Efua. Nothing will ever reach them.</div>
+        <label style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4"><span style="width:22px;height:22px;border-radius:6px;border:2px solid #CFCAC0;flex-shrink:0"></span>I understand this cannot be undone</label>
+        <div style="height:50px;border-radius:12px;border:1px solid #D6D1C7;padding:0 14px;display:flex;align-items:center;font-size:17px;color:#8A8781">Type DELETE to confirm</div>
+        <div style="display:flex;flex-direction:column;gap:8px"><button style="height:50px;border-radius:12px;border:0;background:#9B3B2E;color:#fff;font-size:17px;font-weight:600;font-family:inherit;opacity:0.4">Delete permanently</button><button style="height:50px;border-radius:12px;border:0;background:transparent;color:#0B2D26;font-size:17px;font-weight:600;font-family:inherit">Keep my Testament</button></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="font-size:12px;color:#6B6A66">Toast · inline alert</div>
+      <div style="background:#1A1A1A;color:#fff;border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;font-size:15px;box-shadow:0 8px 24px rgba(0,0,0,0.2)">Ama removed from 3 records<span style="font-weight:600;color:#C9B595">Undo</span></div>
+      <div style="background:#F7E4E0;border-radius:12px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4;color:#1A1A1A"><span style="width:20px;height:20px;border-radius:50%;background:#9B3B2E;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0">!</span><span><strong>New sign-in from Lagos, Nigeria.</strong> If this wasn’t you, lock your account now.</span></div>
+      <div style="font-size:12px;color:#6B6A66;margin-top:6px">Skeleton loader</div>
+      <div style="background:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 0 0 1px #E8E4DC">
+        <div style="height:12px;width:30%;border-radius:6px;background:linear-gradient(90deg,#EFECE6 25%,#F8F6F2 50%,#EFECE6 75%);background-size:200% 100%;animation:shimmer 1.6s infinite"></div>
+        <div style="height:18px;width:70%;border-radius:6px;background:linear-gradient(90deg,#EFECE6 25%,#F8F6F2 50%,#EFECE6 75%);background-size:200% 100%;animation:shimmer 1.6s infinite"></div>
+        <div style="height:12px;width:55%;border-radius:6px;background:linear-gradient(90deg,#EFECE6 25%,#F8F6F2 50%,#EFECE6 75%);background-size:200% 100%;animation:shimmer 1.6s infinite"></div>
+      </div>
+      <div style="font-size:12px;color:#6B6A66;margin-top:6px">Empty state — one sentence, one action</div>
+      <div style="background:#fff;border-radius:12px;padding:28px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;box-shadow:0 0 0 1px #E8E4DC">
+        <div style="width:40px;height:40px;border-radius:12px;background:#EFE9DD"></div>
+        <div style="font-size:17px;font-weight:600">No one trusted yet</div>
+        <div style="font-size:15px;color:#5E5C56;line-height:1.4">Choose the first person who may one day receive what you preserve.</div>
+        <button style="height:44px;padding:0 20px;border-radius:12px;border:0;background:#0B2D26;color:#fff;font-size:15px;font-weight:600;font-family:inherit;margin-top:4px">Add a trusted person</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NAV -->
+<section style="display:flex;flex-direction:column;gap:20px">
+  <div style="font-family:Jost,sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#6B6A66">10 — Navigation · glass functional layer</div>
+  <div style="background:#F6F4EF;border-radius:16px;padding:28px;display:flex;gap:32px;flex-wrap:wrap;align-items:flex-end;box-shadow:inset 0 0 0 1px #E3DFD6;background-image:repeating-linear-gradient(0deg,transparent 0 38px,#E8E4DC 38px 39px)">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;color:#6B6A66">Tab bar · 4 destinations · 15% stone selected</div>
+      <div style="width:360px;height:64px;border-radius:999px;background:rgba(255,255,255,0.6);backdrop-filter:blur(16px) saturate(160%);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 6px 18px rgba(0,0,0,0.08),inset 1.5px 1.5px 1px rgba(255,255,255,0.8);display:grid;grid-template-columns:repeat(4,1fr);align-items:center;padding:0 8px;box-sizing:border-box">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:#0B2D26;background:rgba(201,181,149,0.3);border-radius:999px;height:52px;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="rgba(201,181,149,0.35)" stroke="#0B2D26" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10.2a2 2 0 0 1 .7-1.5l7-6a2 2 0 0 1 2.6 0l7 6a2 2 0 0 1 .7 1.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9.5 21v-6.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V21"/></svg>Home</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 19.5v-15A2.5 2.5 0 0 1 7 2h12a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a2.5 2.5 0 0 1 0-5h13"/><path d="M9 7h6"/></svg>Testament</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="7.5" r="3.5"/><path d="M2.5 21v-1.5A4.5 4.5 0 0 1 7 15h4a4.5 4.5 0 0 1 4.5 4.5V21"/><path d="M16 4.1a3.5 3.5 0 0 1 0 6.8"/><path d="M21.5 21v-1.5a4.5 4.5 0 0 0-3.2-4.3"/></svg>People</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:#5E5C56"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5E5C56" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Settings</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;color:#6B6A66">Nav pills</div>
+      <div style="display:flex;gap:10px">
+        <div style="height:44px;width:44px;border-radius:999px;background:rgba(255,255,255,0.6);backdrop-filter:blur(16px);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:18px;color:#0B2D26">‹</div>
+        <div style="height:44px;padding:0 16px;border-radius:999px;background:rgba(255,255,255,0.6);backdrop-filter:blur(16px);box-shadow:0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06);display:grid;place-items:center;font-size:15px;font-weight:600;color:#0B2D26">Edit</div>
+        <div style="height:44px;width:44px;border-radius:999px;background:#0B2D26;box-shadow:0 3px 10px rgba(0,0,0,0.15);display:grid;place-items:center;font-size:22px;color:#fff">+</div>
+      </div>
+    </div>
+    <div style="font-size:13px;color:#5E5C56;max-width:360px;line-height:1.5">Content scrolls under glass. Line icons, 1.7 stroke at rest; selected tab gets 2.0 stroke in brand green with a stone fill. Production maps to SF Symbols: house, book.closed, person.2, gearshape.</div>
+  </div>
+</section>
+
+</div>
+</x-dc>
+</body>
+</html>
