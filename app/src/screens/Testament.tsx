@@ -1,66 +1,38 @@
-import React from 'react';
-import { Animated, View } from 'react-native';
-import {
-  archiveRecord,
-  askDeleteRecord,
-  confirmRecord,
-  openDoc,
-  pick,
-  reviewAnswer,
-  saveLater,
-  saveRecord,
-  soon,
-} from '../actions';
-import { fadeUp, useEntrance } from '../anim';
-import {
-  Avatar,
-  Badge,
-  Card,
-  Chevron,
-  Dot,
-  GlassPill,
-  NavBar,
-  PlusButton,
-  PrimaryButton,
-  Row,
-  RowText,
-  Screen,
-  SecondaryButton,
-  Section,
-  SectionLabel,
-  Serif,
-  T,
-  Tap,
-  TextButton,
-  ring,
-  s as ui,
-} from '../components/ui';
-import { CATS, REC, RecordItem } from '../data';
-import { fieldDisplay, fieldKey, recipientsOf, recordStatus } from '../records';
-import { reviewList, useApp } from '../store';
+import React, { useState } from 'react';
+import { Platform, TextInput, View } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { useShallow } from 'zustand/react/shallow';
+import { restoreRecord } from '../actions';
+import { Badge, Card, Chevron, Dot, Empty, NavBar, Page, PlusButton, Row, RowText, Screen, Section, SectionLabel, T, Tap, ring, s as ui } from '../components/ui';
+import { CATS, RecordWithCat } from '../data';
+import { back, go, openCat, openRec, openReview } from '../nav';
+import { allRecords, categoriesWithRecords, recordStatus, useActiveRecords, useNameOf, useReviewList } from '../records';
+import { useApp } from '../store';
+import { smooth } from '../layout';
 import { color } from '../theme';
 
-const typeLabel = { fontSize: 12, fontWeight: '600', letterSpacing: 0.72, textTransform: 'uppercase', color: color.inkTertiary } as const;
+export const typeLabel = { fontSize: 12, fontWeight: '600', letterSpacing: 0.72, textTransform: 'uppercase', color: color.inkTertiary } as const;
 const pageTitle = { fontSize: 32, fontWeight: '700', letterSpacing: -0.32 } as const;
 
 // ─── Testament (tab) ──────────────────────────────────────────────────────────
 
 export function Testament() {
-  const confirmed = useApp((s) => s.confirmed);
-  const { push, openCat, openRec, openReview } = useApp.getState();
-  const review = reviewList(confirmed);
+  const records = useActiveRecords();
+  const review = useReviewList();
+  const archivedCount = useApp((s) => Object.keys(s.archived).filter((k) => s.archived[k] && !s.deleted[k]).length);
+  const cats = categoriesWithRecords(records);
   return (
     <Screen kind="tab">
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <T accessibilityRole="header" style={pageTitle}>Testament</T>
-        <PlusButton onPress={() => push('addRecord')} label="Add record" />
+        <PlusButton onPress={() => go('/add-record')} label="Add record" />
       </View>
-      <Tap onPress={soon} style={{ height: 40, borderRadius: 12, backgroundColor: color.search, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, gap: 8 }} accessibilityRole="search">
-        <View style={{ width: 14, height: 14, borderRadius: 7, borderWidth: 2, borderColor: color.inkMuted }} />
+      <Tap onPress={() => go('/search')} accessibilityRole="search" style={searchBox}>
+        <View style={searchIcon} />
         <T style={{ fontSize: 17, color: color.inkMuted }}>Search records</T>
       </Tap>
       {review.length > 0 && (
-        <Tap onPress={openReview} style={{ backgroundColor: color.warningBg, borderRadius: 12, paddingVertical: 14, paddingHorizontal: 18, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Tap onPress={openReview} scale style={{ backgroundColor: color.warningBg, borderRadius: 12, paddingVertical: 14, paddingHorizontal: 18, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <View style={{ gap: 2 }}>
             <T style={{ fontSize: 15, fontWeight: '600' }}>{review.length} records need a review</T>
             <T style={{ fontSize: 13, color: color.warning }}>Not confirmed in over a year</T>
@@ -77,12 +49,12 @@ export function Testament() {
         </Card>
       </Section>
       <View style={{ gap: 8 }}>
-        <SectionLabel>By category · {Object.keys(REC).length} records</SectionLabel>
+        <SectionLabel>By category · {records.length} records</SectionLabel>
         <Card>
-          {CATS.map((c, i) => {
-            const n = c.records.filter((r) => r.months >= 12 && !confirmed[r.id]).length;
+          {cats.map((c, i) => {
+            const n = review.filter((r) => r.cat.id === c.id).length;
             return (
-              <Row key={c.id} onPress={() => openCat(c.id)} last={i === CATS.length - 1} style={{ paddingVertical: 13 }}>
+              <Row key={c.id} onPress={() => openCat(c.id)} last={i === cats.length - 1} style={{ paddingVertical: 13 }}>
                 <T style={{ fontSize: 17 }}>{c.name}</T>
                 <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
                   {n > 0 && <Badge label={`${n} to review`} bg={color.warningBg} fg={color.warning} style={{ paddingVertical: 2, paddingHorizontal: 7 }} />}
@@ -93,20 +65,27 @@ export function Testament() {
             );
           })}
         </Card>
-        <T style={{ fontSize: 13, color: color.inkMuted, paddingVertical: 4, paddingHorizontal: 2 }}>Archived (2) · Recently updated</T>
+        <View style={{ flexDirection: 'row', gap: 6, paddingVertical: 4, paddingHorizontal: 2 }}>
+          <Tap onPress={() => go('/archived')}><T style={footLink}>Archived ({archivedCount + SEED_ARCHIVE.length})</T></Tap>
+          <T style={footLink}>·</T>
+          <Tap onPress={() => go('/recent')}><T style={footLink}>Recently updated</T></Tap>
+        </View>
       </View>
     </Screen>
   );
 }
+const footLink = { fontSize: 13, color: color.inkMuted } as const;
+const searchBox = { height: 40, borderRadius: 12, backgroundColor: color.search, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, gap: 8 } as const;
+const searchIcon = { width: 14, height: 14, borderRadius: 7, borderWidth: 2, borderColor: color.inkMuted } as const;
 
-// ─── Category ─────────────────────────────────────────────────────────────────
+// ─── Record card (used by category, search, recent) ──────────────────────────
 
-function RecordCard({ r }: { r: RecordItem }) {
+export function RecordCard({ r }: { r: RecordWithCat }) {
   const confirmed = useApp((s) => s.confirmed);
-  const openRec = useApp((s) => s.openRec);
-  const st = recordStatus(r, confirmed);
+  const nameOf = useNameOf();
+  const st = recordStatus(r, confirmed, nameOf);
   return (
-    <Tap onPress={() => openRec(r.id)} style={{ backgroundColor: '#fff', borderRadius: 12, padding: 16, gap: 10, boxShadow: ring }}>
+    <Tap onPress={() => openRec(r.id)} scale style={{ backgroundColor: '#fff', borderRadius: 12, padding: 16, gap: 10, boxShadow: ring }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
         <View style={{ gap: 3, flexShrink: 1 }}>
           <T style={typeLabel}>{r.type}</T>
@@ -121,31 +100,40 @@ function RecordCard({ r }: { r: RecordItem }) {
           <T style={meta}>{st.confirmedShort}</T>
         </View>
         <T style={meta}>→ {st.recipientsShort} · {st.condition}</T>
-        {r.docs.length > 0 && <T style={meta}>{r.docs.length} documents</T>}
+        {r.docs.length > 0 && <T style={meta}>{r.docs.length} document{r.docs.length > 1 ? "s" : ""}</T>}
       </View>
     </Tap>
   );
 }
 const meta = { fontSize: 13, color: color.inkSecondary, lineHeight: 18 } as const;
 
-export function Category() {
-  const catId = useApp((s) => s.catId);
-  const { back, push } = useApp.getState();
-  const cat = CATS.find((c) => c.id === catId) ?? CATS[0];
+const dashed = { borderWidth: 1, borderStyle: 'dashed', borderColor: color.bronze, borderRadius: 12, padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 } as const;
+
+// ─── Category ─────────────────────────────────────────────────────────────────
+
+export function Category({ id }: { id: string }) {
+  const records = useActiveRecords();
+  const cat = CATS.find((c) => c.id === id) ?? CATS[0];
+  const list = records.filter((r) => r.cat.id === cat.id);
+  // The car-insurance suggestion disappears once one has been added.
+  const showSuggest = !!cat.suggest && !list.some((r) => r.id.startsWith('new') && /car/i.test(r.title + r.fields.map((f) => f.value).join(' ')));
   return (
-    <Screen bottom={60 - 34}>
-      <NavBar onBack={back} right={<PlusButton onPress={() => push('addRecord')} label="Add record" />} />
+    <Screen bottom={26}>
+      <NavBar onBack={back} right={<PlusButton onPress={() => go(`/add-record?cat=${cat.id}`)} label="Add record" />} />
       <View style={{ gap: 6 }}>
         <T accessibilityRole="header" style={{ fontSize: 28, fontWeight: '700', lineHeight: 32 }}>{cat.name}</T>
         <T style={{ fontSize: 15, color: color.inkSecondary, lineHeight: 22 }}>{cat.blurb}</T>
       </View>
       <View style={{ gap: 10 }}>
-        {cat.records.map((r) => (
-          <RecordCard key={r.id} r={r} />
+        {list.map((r) => (
+          <Animated.View key={r.id} layout={smooth} entering={FadeIn} exiting={FadeOut}>
+            <RecordCard r={r} />
+          </Animated.View>
         ))}
+        {list.length === 0 && <Empty tone="neutral" icon="+" title="Nothing here yet" body="Add the first record in this category." />}
       </View>
-      {cat.suggest && (
-        <Tap onPress={() => push('addRecord')} style={dashed}>
+      {showSuggest && (
+        <Tap onPress={() => go('/add-record?template=car-ins')} scale style={dashed}>
           <View style={{ gap: 2 }}>
             <T style={{ fontSize: 15, fontWeight: '600' }}>{cat.suggest}</T>
             <T style={{ fontSize: 13, color: color.inkSecondary }}>Not recorded yet</T>
@@ -156,324 +144,118 @@ export function Category() {
     </Screen>
   );
 }
-const dashed = { borderWidth: 1, borderStyle: 'dashed', borderColor: color.bronze, borderRadius: 12, padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 } as const;
 
-// ─── Record ───────────────────────────────────────────────────────────────────
+// ─── Search ───────────────────────────────────────────────────────────────────
 
-const hideTimers: Record<string, ReturnType<typeof setTimeout>> = {};
+const SUGGESTIONS = ['Barclays', 'passport', 'Dubai', 'insurance', 'Kofi', 'loan'];
 
-function revealField(key: string, label: string, secure: 'mask' | 'face') {
-  const { revealed, set, withFace } = useApp.getState();
-  if (revealed[key]) {
-    set({ revealed: { ...revealed, [key]: false } });
-    return;
-  }
-  const show = () => {
-    set({ revealed: { ...useApp.getState().revealed, [key]: true } });
-    // Secrets re-mask themselves after 30 seconds.
-    clearTimeout(hideTimers[key]);
-    hideTimers[key] = setTimeout(() => set({ revealed: { ...useApp.getState().revealed, [key]: false } }), 30000);
-  };
-  if (secure === 'face') withFace('Reveal ' + label.toLowerCase(), show);
-  else show();
-}
-
-export function RecordScreen() {
-  const recId = useApp((s) => s.recId);
-  const confirmed = useApp((s) => s.confirmed);
-  const revealed = useApp((s) => s.revealed);
-  const { back, push } = useApp.getState();
-  const r = REC[recId] ?? REC.barclays;
-  const st = recordStatus(r, confirmed);
-  const recips = recipientsOf(r);
+export function Search() {
+  const records = useActiveRecords();
+  const nameOf = useNameOf();
+  const [q, setQ] = useState('');
+  const query = q.trim().toLowerCase();
+  // Secure values are never searched — only titles, types, recipients and non-secret fields.
+  const hits = query
+    ? records.filter((r) =>
+        [r.title, r.type, r.cat.name, r.to.map(nameOf).join(' '), ...r.fields.filter((f) => !f.secure).map((f) => f.label + ' ' + f.value)]
+          .join(' ')
+          .toLowerCase()
+          .includes(query),
+      )
+    : [];
   return (
-    <Screen bottom={60 - 34}>
-      <NavBar onBack={back} right={<GlassPill label="Edit" onPress={() => push('addRecord')} />} />
-      <View style={{ gap: 6 }}>
-        <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>
-          <T style={[typeLabel, { letterSpacing: 0.96 }]}>{r.type}</T>
-          {r.badge && <Badge label={r.badge} bg={color.stone} fg={color.bronzeInk} style={{ paddingVertical: 3, paddingHorizontal: 7 }} />}
+    <Screen cascade={false}>
+      <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
+        <View style={[searchBox, { flex: 1 }]}>
+          <View style={searchIcon} />
+          <TextInput
+            autoFocus
+            value={q}
+            onChangeText={setQ}
+            placeholder="Search records"
+            placeholderTextColor={color.inkMuted}
+            returnKeyType="search"
+            accessibilityLabel="Search records"
+            style={[{ flex: 1, fontSize: 17, color: color.ink }, Platform.OS === 'web' && ({ outlineStyle: 'none' } as object)]}
+          />
         </View>
-        <T accessibilityRole="header" style={{ fontSize: 26, fontWeight: '700', lineHeight: 30 }}>{r.title}</T>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-          <Dot c={st.dotColor} />
-          <T style={{ fontSize: 13, color: color.inkSecondary }}>{st.confirmedLong}</T>
-        </View>
+        <Tap onPress={back}><T style={{ fontSize: 17, color: color.brand, fontWeight: '600' }}>Cancel</T></Tap>
       </View>
-
-      {st.stale && (
-        <View style={{ backgroundColor: color.warningBg, borderRadius: 12, paddingVertical: 16, paddingHorizontal: 18, gap: 12 }}>
-          <T style={{ fontSize: 15, lineHeight: 21 }}>{st.reviewPrompt}</T>
-          <View style={{ flexDirection: 'row', gap: 8 }}>
-            <PrimaryButton label="Yes, still correct" onPress={() => confirmRecord(r.id)} style={{ flex: 1, height: 40, borderRadius: 10 }} textStyle={{ fontSize: 15 }} />
-            <PrimaryButton label="Update" onPress={() => push('addRecord')} style={{ flex: 1, height: 40, borderRadius: 10, backgroundColor: '#fff' }} textStyle={{ fontSize: 15, color: color.brand }} />
-          </View>
-        </View>
-      )}
-
-      {r.note && (
-        <Card style={{ padding: 18 }}>
-          <Serif style={{ fontSize: 20, lineHeight: 29 }}>{r.note}</Serif>
-        </Card>
-      )}
-
-      {r.fields.length > 0 && (
-        <Card>
-          {r.fields.map((f, i) => {
-            const key = fieldKey(r.id, i);
-            const d = fieldDisplay(f, !!revealed[key]);
-            return (
-              <View
-                key={key}
-                style={[
-                  ui.row,
-                  { paddingVertical: 13 },
-                  i < r.fields.length - 1 && ui.divider,
-                  f.secure === 'face' && { backgroundColor: color.stone },
-                ]}
-              >
-                <View style={{ gap: 3, flexShrink: 1 }}>
-                  <T style={{ fontSize: 13, color: color.inkSecondary }}>{f.label}</T>
-                  <T style={[{ fontSize: 17, lineHeight: 23, color: d.textColor }, d.mono && [ui.mono, { letterSpacing: 1.36 }]]}>{d.shown}</T>
-                </View>
-                {d.action && f.secure && (
-                  <Tap
-                    onPress={() => revealField(key, f.label, f.secure as 'mask' | 'face')}
-                    accessibilityLabel={`${d.action} ${f.label}`}
-                    hitSlop={8}
-                  >
-                    <T style={{ fontSize: 15, fontWeight: '600', color: color.brand, paddingVertical: 8, paddingLeft: 12 }}>{d.action}</T>
-                  </Tap>
-                )}
-              </View>
-            );
-          })}
-        </Card>
-      )}
-
-      {recips.length > 0 ? (
-        <Section label="Who receives this">
-          <Card>
-            {recips.map((p, i) => (
-              <Row key={p.id} onPress={() => push('ama')} last={i === recips.length - 1} style={{ paddingVertical: 12, justifyContent: 'flex-start' }}>
-                <Avatar initial={p.initial} dark={p.dark} size={32} fontSize={13} />
-                <View style={{ gap: 1, flex: 1 }}>
-                  <T style={{ fontSize: 17, fontWeight: '600' }}>{p.name}</T>
-                  <T style={{ fontSize: 13, color: color.inkSecondary }}>{p.when}</T>
-                </View>
-                <Chevron />
-              </Row>
+      {!query ? (
+        <Animated.View entering={FadeIn} style={{ gap: 10 }}>
+          <SectionLabel>Try</SectionLabel>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+            {SUGGESTIONS.map((s) => (
+              <Tap key={s} onPress={() => setQ(s)} scale style={{ paddingVertical: 8, paddingHorizontal: 14, borderRadius: 999, backgroundColor: '#fff', boxShadow: ring }}>
+                <T style={{ fontSize: 15 }}>{s}</T>
+              </Tap>
             ))}
-          </Card>
-        </Section>
-      ) : (
-        <Tap onPress={() => push('addRecord')} style={[dashed, { paddingVertical: 14, paddingHorizontal: 18 }]}>
-          <View style={{ gap: 2 }}>
-            <T style={{ fontSize: 15, fontWeight: '600' }}>Only you can see this</T>
-            <T style={{ fontSize: 13, color: color.inkSecondary }}>No recipient chosen yet</T>
           </View>
-          <T style={{ fontSize: 15, fontWeight: '600', color: color.brand }}>Choose</T>
-        </Tap>
-      )}
-
-      {r.docs.length > 0 && (
-        <Section label={`Documents · ${r.docs.length}`}>
-          <Card>
-            {r.docs.map(([name, m], i) => (
-              <Row key={name} onPress={openDoc} last={i === r.docs.length - 1} style={{ paddingVertical: 12, justifyContent: 'flex-start' }}>
-                <View style={{ width: 32, height: 40, borderRadius: 4, backgroundColor: color.stone, borderWidth: 1, borderColor: color.track }} />
-                <View style={{ gap: 1, flex: 1 }}>
-                  <T numberOfLines={1} style={{ fontSize: 15, fontWeight: '600' }}>{name}</T>
-                  <T style={{ fontSize: 13, color: color.inkSecondary }}>{m}</T>
-                </View>
-              </Row>
-            ))}
-          </Card>
-        </Section>
-      )}
-
-      <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 24, paddingVertical: 6 }}>
-        <Tap onPress={soon}><T style={linkText}>History</T></Tap>
-        <Tap onPress={() => archiveRecord(r.id)}><T style={linkText}>Archive</T></Tap>
-        <Tap onPress={() => askDeleteRecord(r.id)}><T style={[linkText, { color: color.danger }]}>Delete</T></Tap>
-      </View>
-    </Screen>
-  );
-}
-const linkText = { fontSize: 15, fontWeight: '600', color: color.brand } as const;
-
-// ─── Review ───────────────────────────────────────────────────────────────────
-
-const RESULT_TONE = {
-  Confirmed: { bg: color.positiveBg, fg: color.positive },
-  'To update': { bg: color.warningBg, fg: color.warning },
-  Later: { bg: color.neutralBg, fg: color.inkSecondary },
-} as const;
-
-export function Review() {
-  const confirmed = useApp((s) => s.confirmed);
-  const idx = useApp((s) => s.reviewIdx);
-  const results = useApp((s) => s.reviewResults);
-  const reviewN = useApp((s) => s.reviewN);
-  const { back, tabTo, openRec } = useApp.getState();
-  const list = reviewList(confirmed);
-  const r = list[idx];
-  const total = results.length + Math.max(0, list.length - idx);
-  const cardIn = useEntrance(reviewN, 300);
-  const doneIn = useEntrance(!r, 400);
-
-  if (!r) {
-    const c = results.filter((x) => x.label === 'Confirmed').length;
-    const u = results.filter((x) => x.label === 'To update').length;
-    const summary = (c ? `${c} confirmed` : 'Nothing confirmed') + (u ? `, ${u} to update` : '') + '. We’ll ask again in a year.';
-    return (
-      <Screen gap={20} bottom={40 - 34}>
-        <NavBar onBack={back} title="Review" />
-        <Animated.View style={[{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 14 }, fadeUp(doneIn)]}>
-          <View style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: color.positiveBg, alignItems: 'center', justifyContent: 'center' }}>
-            <T style={{ color: color.positive, fontSize: 24, fontWeight: '700' }}>✓</T>
-          </View>
-          <Serif style={{ fontSize: 34, lineHeight: 37 }}>All reviewed.</Serif>
-          <T style={{ fontSize: 15, color: color.inkSecondary, lineHeight: 22.5, maxWidth: 300, textAlign: 'center' }}>{summary}</T>
+          <T style={{ fontSize: 13, color: color.inkMuted, lineHeight: 19, marginTop: 8 }}>Passwords, account numbers and other secrets are never searched or shown in results.</T>
         </Animated.View>
-        {results.length > 0 && (
-          <Card>
-            {results.map((x, i) => (
-              <Row key={x.id + i} onPress={() => openRec(x.id)} last={i === results.length - 1} style={{ paddingVertical: 12 }}>
-                <T numberOfLines={1} style={{ fontSize: 15, flexShrink: 1 }}>{x.title}</T>
-                <Badge label={x.label} bg={RESULT_TONE[x.label].bg} fg={RESULT_TONE[x.label].fg} />
-              </Row>
-            ))}
-          </Card>
-        )}
-        <PrimaryButton label="Back to Home" onPress={() => tabTo('homeOk')} />
-      </Screen>
-    );
-  }
-
-  const st = recordStatus(r, confirmed);
-  return (
-    <Screen gap={20} bottom={40 - 34}>
-      <NavBar onBack={back} title="Review" />
-      <View style={{ flexDirection: 'row', gap: 6 }}>
-        {Array.from({ length: Math.max(total, 1) }, (_, i) => (
-          <View key={i} style={{ flex: 1, height: 4, borderRadius: 2, backgroundColor: i < results.length ? color.brand : color.track }} />
-        ))}
-      </View>
-      <View style={{ gap: 8 }}>
-        <T accessibilityRole="header" style={{ fontSize: 26, fontWeight: '700', lineHeight: 30 }}>Is this still correct?</T>
-        <T style={{ fontSize: 15, color: color.inkSecondary, lineHeight: 22 }}>
-          Record {results.length + 1} of {total} · {r.cat.name}
-        </T>
-      </View>
-      <Animated.View style={fadeUp(cardIn)}>
-        <View style={{ backgroundColor: '#fff', borderRadius: 16, padding: 20, gap: 14, boxShadow: `0 8px 24px rgba(26,26,26,0.08), ${ring}` }}>
-          <View style={{ gap: 3 }}>
-            <T style={typeLabel}>{r.type}</T>
-            <T style={{ fontSize: 22, fontWeight: '700', lineHeight: 26 }}>{r.title}</T>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-              <Dot c={color.warning} />
-              <T style={{ fontSize: 13, color: color.warning }}>{st.confirmedLong}</T>
-            </View>
-          </View>
-          <View style={{ borderTopWidth: 1, borderTopColor: color.hairline }}>
-            {r.fields.slice(0, 3).map((f, i) => {
-              const d = fieldDisplay(f, false);
-              return (
-                <View key={i} style={{ paddingVertical: 11, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12, borderBottomWidth: 1, borderBottomColor: color.hairline }}>
-                  <T style={{ fontSize: 13, color: color.inkSecondary }}>{f.label}</T>
-                  <T style={[{ fontSize: 15, textAlign: 'right', flexShrink: 1 }, d.mono && [ui.mono, { letterSpacing: 1.2 }]]}>{d.shown}</T>
-                </View>
-              );
-            })}
-          </View>
-          <T style={{ fontSize: 13, color: color.inkSecondary, lineHeight: 19 }}>
-            → {st.recipientsShort} · {st.condition}
-          </T>
+      ) : (
+        <View style={{ gap: 10 }}>
+          <SectionLabel>{hits.length} {hits.length === 1 ? 'result' : 'results'}</SectionLabel>
+          {hits.map((r) => (
+            <Animated.View key={r.id} entering={FadeIn.duration(200)} exiting={FadeOut.duration(120)} layout={smooth}>
+              <RecordCard r={r} />
+            </Animated.View>
+          ))}
+          {hits.length === 0 && <Empty tone="neutral" icon="?" title="No matches" body={`Nothing matches “${q.trim()}”. Try a name, a bank or a category.`} />}
         </View>
-      </Animated.View>
-      <View style={{ flex: 1 }} />
-      <View style={{ gap: 10 }}>
-        <PrimaryButton label="Yes, still correct" onPress={() => reviewAnswer('Confirmed')} />
-        <View style={{ flexDirection: 'row', gap: 10 }}>
-          <SecondaryButton label="Needs updating" onPress={() => reviewAnswer('To update')} style={{ flex: 1 }} />
-          <TextButton label="Ask me later" onPress={() => reviewAnswer('Later')} style={{ flex: 1, height: 48 }} textStyle={{ fontSize: 15 }} />
-        </View>
-      </View>
+      )}
     </Screen>
   );
 }
 
-// ─── Add record · recipients step ─────────────────────────────────────────────
+// ─── Archived ─────────────────────────────────────────────────────────────────
 
-function Check({ on }: { on: boolean }) {
-  return on ? (
-    <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: color.brand, alignItems: 'center', justifyContent: 'center' }}>
-      <T style={{ color: '#fff', fontSize: 13, fontWeight: '700' }}>✓</T>
-    </View>
-  ) : (
-    <View style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: color.border }} />
-  );
-}
+const SEED_ARCHIVE = [
+  { title: 'HSBC savings account (closed 2024)', sub: 'Financial record · archived Jan 2025' },
+  { title: 'Old Vodafone contract', sub: 'Digital account · archived Mar 2025' },
+];
 
-const PICK_ROWS = [
-  { k: 'ama', initial: 'A', dark: true, name: 'Ama Mensah', role: 'Daughter · Primary contact' },
-  { k: 'kofi', initial: 'K', name: 'Kofi Mensah', role: 'Son · Backup contact' },
-  { k: 'efua', initial: 'E', name: 'Efua Boateng', role: 'Solicitor · Recipient only' },
-] as const;
-
-export function AddRecord() {
-  const picks = useApp((s) => s.picks);
-  const { back, tabTo } = useApp.getState();
+export function Archived() {
+  const archived = useApp(useShallow((s) => allRecords(s).filter((r) => s.archived[r.id])));
   return (
-    <Screen gap={20} bottom={40 - 34}>
-      <NavBar
-        onBack={back}
-        right={
-          <Tap onPress={saveLater}>
-            <T style={{ fontSize: 15, fontWeight: '600', color: color.brand, paddingVertical: 10 }}>Save & finish later</T>
-          </Tap>
-        }
-      />
-      <View style={{ flexDirection: 'row', gap: 6 }} accessibilityLabel="Step 4 of 6">
-        {[0, 1, 2, 3, 4, 5].map((i) => (
-          <View key={i} style={{ flex: 1, height: 4, borderRadius: 2, backgroundColor: i < 4 ? color.brand : color.track }} />
-        ))}
-      </View>
-      <View style={{ gap: 8 }}>
-        <T accessibilityRole="header" style={{ fontSize: 26, fontWeight: '700', lineHeight: 30 }}>Who should receive this?</T>
-        <T style={{ fontSize: 15, color: color.inkSecondary, lineHeight: 22 }}>Barclays current account. You’ll choose when in the next step. Only you can see it until then.</T>
-      </View>
+    <Page title="Archived" lead="Archived records aren’t released to anyone. Restore one to put it back in your Testament.">
       <Card>
-        {PICK_ROWS.map((p, i) => (
-          <Tap
-            key={p.k}
-            onPress={() => pick(p.k)}
-            accessibilityRole="checkbox"
-            accessibilityState={{ checked: picks[p.k] }}
-            style={[pickRow, i < 2 && ui.divider, picks[p.k] && { backgroundColor: color.surfaceMuted }]}
-          >
-            <Check on={picks[p.k]} />
-            <Avatar initial={p.initial} dark={'dark' in p && p.dark} />
-            <RowText title={p.name} sub={p.role} />
-          </Tap>
+        {archived.map((r) => (
+          <Row key={r.id}>
+            <RowText title={r.title} sub={`${r.type} · archived just now`} titleStyle={{ fontSize: 15 }} />
+            <Tap onPress={() => restoreRecord(r.id)} hitSlop={8}><T style={{ fontSize: 15, fontWeight: '600', color: color.brand }}>Restore</T></Tap>
+          </Row>
+        ))}
+        {SEED_ARCHIVE.map((a, i) => (
+          <Row key={a.title} last={i === SEED_ARCHIVE.length - 1}>
+            <RowText title={a.title} sub={a.sub} titleStyle={{ fontSize: 15, color: color.inkSecondary }} />
+          </Row>
         ))}
       </Card>
-      <Tap
-        onPress={() => pick('none')}
-        accessibilityRole="checkbox"
-        accessibilityState={{ checked: picks.none }}
-        style={[pickRow, { backgroundColor: picks.none ? color.surfaceMuted : '#fff', borderRadius: 12, boxShadow: ring }]}
-      >
-        <Check on={picks.none} />
-        <RowText title="No one yet" sub="Keep it private. You can add people later." />
-      </Tap>
-      <Tap onPress={() => tabTo('people')}>
-        <T style={{ fontSize: 15, fontWeight: '600', color: color.brand, paddingHorizontal: 2 }}>+ Add a new trusted person</T>
-      </Tap>
-      <View style={{ flex: 1 }} />
-      <PrimaryButton label="Continue" onPress={saveRecord} />
-    </Screen>
+    </Page>
   );
 }
-const pickRow = { paddingVertical: 14, paddingHorizontal: 18, flexDirection: 'row', gap: 14, alignItems: 'center' } as const;
+
+// ─── Recently updated ─────────────────────────────────────────────────────────
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const dateValue = (s: string) => {
+  const m = s.match(/(\d+) (\w{3}) (\d{4})/);
+  return m ? Number(m[3]) * 400 + MONTHS.indexOf(m[2]) * 32 + Number(m[1]) : 0;
+};
+
+export function Recent() {
+  const records = useActiveRecords();
+  const confirmed = useApp((s) => s.confirmed);
+  const score = (r: RecordWithCat) => (confirmed[r.id] || r.id.startsWith('new') ? 1e9 : dateValue(r.confirmed));
+  const sorted = [...records].sort((a, b) => score(b) - score(a)).slice(0, 10);
+  return (
+    <Page title="Recently updated" lead="The ten records you’ve added, changed or confirmed most recently.">
+      <View style={{ gap: 10 }}>
+        {sorted.map((r) => (
+          <RecordCard key={r.id} r={r} />
+        ))}
+      </View>
+    </Page>
+  );
+}

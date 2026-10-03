@@ -23,7 +23,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "name": "Last Testament \u2014 Owner app"
+      "name": "Last Testament \u2014 Owner app",
+      "output": "single"
     },
     "plugins": [
       "expo-font",
@@ -32,8 +33,10 @@
         {
           "faceIDPermission": "Face ID confirms sensitive actions like revealing secrets and pausing check-ins."
         }
-      ]
+      ],
+      "expo-router"
     ],
-    "backgroundColor": "#F6F4EF"
+    "backgroundColor": "#F6F4EF",
+    "scheme": "lasttestament"
   }
 }

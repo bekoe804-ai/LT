@@ -1,34 +1,42 @@
 import React from 'react';
-import { Animated, Platform, StyleSheet, View } from 'react-native';
-import { jump } from './actions';
-import { useEntrance } from './anim';
+import { Platform, StyleSheet, View } from 'react-native';
+import Animated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { T, Tap } from './components/ui';
-import { ScreenId, useApp } from './store';
+import { go, jumpHome } from './nav';
+import { HomeState, useApp } from './store';
 import { color, font } from './theme';
 
-export const START_POINTS: { label: string; screen: ScreenId }[] = [
-  { label: 'Home · protected', screen: 'homeOk' },
-  { label: 'Home · missed check-in', screen: 'homeMissed' },
-  { label: 'Home · new account', screen: 'homeNew' },
-  { label: 'Check-in notification', screen: 'checkin' },
+export const START_POINTS: { label: string; run: () => void }[] = [
+  { label: 'Home · protected', run: () => jumpHome('ok') },
+  { label: 'Home · missed check-in', run: () => jumpHome('missed') },
+  { label: 'Home · new account', run: () => jumpHome('new') },
+  {
+    label: 'Check-in notification',
+    run: () => {
+      jumpHome('ok' as HomeState);
+      setTimeout(() => go('/checkin'), 80);
+    },
+  },
+  { label: 'App lock screen', run: () => useApp.getState().set({ unlocked: false, lockReason: 'launch', demoMenu: false }) },
 ];
 
 export const FLOWS = [
   'Home → “I’m okay” → Face ID',
-  'Home → “3 records to review” → review each',
-  'Home → “Add car insurance” → Insurance',
-  'Testament → any category → open a record → Reveal / Face ID',
-  'Testament → + → choose people → Save',
-  'People → Ama → scenarios → Preview',
-  'Settings → Security → Lock account',
-  'Settings → Check-ins → switch scenario',
+  'Home → records to review → review each',
+  'Home → “Add car insurance” → 6-step wizard',
+  'Testament → category → record → Reveal / Copy',
+  'Testament → + → type → details → files → people → when → save',
+  'People → + → invite a new trusted person',
+  'People → Ama → Preview as Ama → switch scenario',
+  'Settings → Security → Lock / sessions / codes',
+  'Settings → Accessibility → Larger text, Reduce motion',
 ];
 
 export const eyebrow = { fontFamily: font.jost, fontSize: 11, letterSpacing: 2.2, textTransform: 'uppercase', color: color.inkTertiary, marginBottom: 4 } as const;
 
 export function StartButton({ label, onPress }: { label: string; onPress: () => void }) {
   return (
-    <Tap onPress={onPress} style={styles.start}>
+    <Tap onPress={onPress} scale style={styles.start}>
       <T style={{ fontSize: 14, fontWeight: '600' }}>{label}</T>
     </Tap>
   );
@@ -41,17 +49,18 @@ export function StartButton({ label, onPress }: { label: string; onPress: () => 
 export function DemoMenu() {
   const open = useApp((s) => s.demoMenu);
   const set = useApp((s) => s.set);
-  const enter = useEntrance(open, 360);
   if (!open || Platform.OS === 'web') return null;
   return (
-    <>
-      <Tap onPress={() => set({ demoMenu: false })} accessibilityLabel="Close demo menu" style={[StyleSheet.absoluteFill, { zIndex: 50, backgroundColor: 'rgba(26,26,26,0.35)' }]} />
-      <Animated.View style={[styles.sheet, { transform: [{ translateY: enter.interpolate({ inputRange: [0, 1], outputRange: [600, 0] }) }] }]}>
+    <View style={[StyleSheet.absoluteFill, { zIndex: 50 }]}>
+      <Animated.View entering={FadeIn} exiting={FadeOut} style={StyleSheet.absoluteFill}>
+        <Tap onPress={() => set({ demoMenu: false })} accessibilityLabel="Close demo menu" style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(26,26,26,0.35)' }]} />
+      </Animated.View>
+      <Animated.View entering={SlideInDown.springify().damping(20)} exiting={SlideOutDown.duration(200)} style={styles.sheet}>
         <View style={styles.grabber} />
         <View style={{ gap: 6 }}>
           <T style={eyebrow}>Start from</T>
           {START_POINTS.map((p) => (
-            <StartButton key={p.screen} label={p.label} onPress={() => jump(p.screen)} />
+            <StartButton key={p.label} label={p.label} onPress={p.run} />
           ))}
         </View>
         <View style={{ gap: 6 }}>
@@ -59,7 +68,7 @@ export function DemoMenu() {
           <T style={{ fontSize: 13, lineHeight: 21, color: color.inkSecondary }}>{FLOWS.join('\n')}</T>
         </View>
       </Animated.View>
-    </>
+    </View>
   );
 }
 
@@ -70,7 +79,6 @@ const styles = StyleSheet.create({
     left: 12,
     right: 12,
     bottom: 12,
-    zIndex: 51,
     backgroundColor: color.canvas,
     borderRadius: 20,
     paddingTop: 24,

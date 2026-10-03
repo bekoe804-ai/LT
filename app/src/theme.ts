@@ -5,6 +5,7 @@ export const color = {
   canvas: '#F6F4EF', // ivory app background
   surface: '#FFFFFF',
   surfaceMuted: '#FBFAF7', // selected row
+  pressed: '#F2EFE9', // row highlight while pressed
   stone: '#EFE9DD', // warm stone fill (avatars, info panels, Face ID rows)
   search: '#ECE9E2',
   page: '#EBE8E1', // web page behind the phone

@@ -1,12 +1,10 @@
 import React from 'react';
 import { Image, ScrollView, View } from 'react-native';
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
-import { jump } from './actions';
 import { eyebrow, FLOWS, START_POINTS, StartButton } from './DemoMenu';
 import { T } from './components/ui';
 import { InsetsOverride } from './insets';
-import { PhoneApp } from './PhoneApp';
-import { SCREEN_NAMES, useApp } from './store';
+import { usePathname } from 'expo-router';
 import { color, font } from './theme';
 
 const logo = require('../assets/brand/logo-horizontal.png');
@@ -57,8 +55,8 @@ function Device({ children }: { children: React.ReactNode }) {
 }
 
 /** Web build: the prototype's presentation — sidebar of start points beside the phone. */
-export function WebDemo() {
-  const screen = useApp((s) => s.screen);
+export function WebDemo({ children }: { children: React.ReactNode }) {
+  const path = usePathname();
   return (
     <ScrollView style={{ flex: 1, backgroundColor: color.page }} contentContainerStyle={{ flexGrow: 1 }}>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 48, paddingVertical: 40, paddingHorizontal: 48, alignItems: 'flex-start' }}>
@@ -66,23 +64,21 @@ export function WebDemo() {
           <Image source={logo} style={{ height: 34, width: 34 * (590 / 100) }} accessibilityLabel="Last Testament" />
           <T style={{ fontFamily: font.serif, fontSize: 30, lineHeight: 33 }}>Owner app — clickable demo</T>
           <T style={{ fontSize: 14, lineHeight: 21, color: color.inkSecondary }}>
-            Tap anything in the phone. Sensitive actions ask for Face ID; the tab bar, cards, rows and buttons navigate.
+            Tap anything in the phone — every screen connects. Sensitive actions ask for Face ID. On a real phone, swipe from the left edge to go back.
           </T>
           <View style={{ gap: 6 }}>
             <T style={eyebrow}>Start from</T>
             {START_POINTS.map((p) => (
-              <StartButton key={p.screen} label={p.label} onPress={() => jump(p.screen)} />
+              <StartButton key={p.label} label={p.label} onPress={p.run} />
             ))}
           </View>
           <View style={{ gap: 6 }}>
             <T style={eyebrow}>Try these flows</T>
             <T style={{ fontSize: 13, lineHeight: 21, color: color.inkSecondary }}>{FLOWS.join('\n')}</T>
           </View>
-          <T style={{ fontSize: 12, color: color.inkMuted }}>Current: {SCREEN_NAMES[screen]}</T>
+          <T style={{ fontSize: 12, color: color.inkMuted }}>Current: {path}</T>
         </View>
-        <Device>
-          <PhoneApp />
-        </Device>
+        <Device>{children}</Device>
       </View>
     </ScrollView>
   );

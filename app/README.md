@@ -1,50 +1,73 @@
 # Last Testament — Owner app (Expo)
 
-React Native / Expo (SDK 57) build of `project/Owner App Prototype.dc.html`:
-the clickable Owner app demo with the 14 screens, demo content, Face ID gating,
-confirmation sheets, toasts and push / pop / fade transitions.
+A clickable, animated build of the Owner app from `project/Owner App Prototype.dc.html`,
+extended so **every tap leads somewhere**: 41 routes, no "coming soon" dead ends.
 
-## Run
+## Run it on your phone
 
 ```bash
 cd app
 npm install
-npx expo start          # scan the QR code with Expo Go (iOS / Android)
-npx expo start --web    # browser: phone frame + "Start from" sidebar, like the prototype
+npx expo start
 ```
 
-On device there's no sidebar. **Long-press the Last Testament mark on Home** to
-open the demo menu (Home · protected / missed check-in / new account, Check-in
-notification, plus the suggested flows).
+Install **Expo Go** from the App Store / Play Store and scan the QR code. Everything
+used here ships inside Expo Go, so you don't need a development build.
 
-## Face ID
+- The app opens on a **lock screen** and asks for Face ID (real Face ID / fingerprint
+  if your phone has it set up, otherwise a simulated scan).
+- **Long-press the Last Testament mark** on Home for the demo menu: Home states
+  (protected / missed check-in / new account), the check-in notification, and the lock screen.
+- Swipe from the left edge to go back, like any iPhone app.
 
-Actions that reveal secrets, pause or confirm check-ins, lock the account or
-confirm a destructive sheet call `withFace()` in `src/store.ts`. On a device
-with biometrics enrolled it uses the real Face ID / fingerprint prompt via
-`expo-local-authentication`. If none is enrolled, and on web, it shows the
-prototype's simulated Face ID overlay for 1.1 s.
+`npx expo start --web` gives the browser version: phone frame plus a "Start from" sidebar.
+
+## What's connected
+
+| Area | Screens |
+| --- | --- |
+| Home | 3 states · notifications & activity (every notification opens its subject) · profile |
+| Testament | categories · search (never searches secrets) · archived (restore) · recently updated |
+| Record | detail with Reveal / Face ID / Copy (clipboard clears in 60 s) · history · secure document viewer · edit (Face ID if recipients change, "Discard changes?" guard) |
+| Add record | 6 steps: type → template details → documents (upload progress, file-too-large state) → recipients → when → review & save |
+| Review | one-by-one review of stale records, summary with "Update now" |
+| People | live counts from data · person profile grouped by circumstance (expand "N more") · edit details · change role · replace · remove (Undo) · preview as recipient (Today / each scenario) · 4-step invite |
+| Safety | release plan with live numbers · release history · check-in settings (frequency, channels, reminders) · check-in prompt |
+| Settings | profile · notification preferences · privacy (real screenshot blocking on device) · accessibility (Larger text, Reduce motion — both work) · time zone · help FAQ · message support → request detail · legal · sign out → signed-out screen |
+| Security | Face ID toggle · two-step method · recovery codes (Face ID to show, regenerate) · password with strength meter · recovery contact · trusted devices · active sessions · sign-in activity · emergency lock · pause account · delete account (type DELETE) |
+
+Changes are live for the session: new records, archived/restored, edits, invited people,
+role changes and confirmations all update counts, lists, history and the activity feed.
+
+## Motion
+
+- **Navigation** — native stack (`react-native-screens`): iOS push/pop with the previous
+  screen visible underneath and full-screen swipe-back. Add record, Add person and the
+  document viewer rise from the bottom; the check-in prompt and tabs cross-fade.
+- **Screens** cascade in (10 px lift, 35 ms stagger); lists re-flow smoothly when items
+  are added or removed (Reanimated layout animations).
+- **Controls** — cards and buttons spring down when pressed; rows highlight like table
+  cells; the tab-bar highlight, segmented controls, switches and checkmarks spring into place.
+- **Wizards** slide steps left/right in the direction you're going; progress bars fill.
+- **Face ID** — overlay with a pulsing glyph, then a green tick and a success haptic.
+- **Sheets and toasts** spring up and slide away; destructive sheets give a warning haptic.
+- **Reduce motion** (Settings → Accessibility) swaps slides and springs for fades.
+
+On web, Reanimated's layout and cascade animations are turned off because the browser
+stack re-shows screens in a way that leaves them stuck. Phones get the full motion.
 
 ## Structure
 
-| Path | What |
-| --- | --- |
-| `src/theme.ts` | Colour / type tokens from Foundations (deep green, stone, ivory, bronze, semantic colours) |
-| `src/data.ts` | Demo persona and all 33 records, ported verbatim from the prototype |
-| `src/store.ts` | Zustand store: navigation stack, review flow, reveals, dialogs, toasts, Face ID |
-| `src/actions.ts` | Prototype behaviours (I'm okay, pause, archive / delete, lock, delete account …) |
-| `src/records.ts` | Derived record status: last confirmed, review prompt, masking |
-| `src/components/ui.tsx` | Cards, rows, buttons, badges, avatars, nav bar |
-| `src/components/chrome.tsx` | Glass tab bar, Face ID overlay, dialog sheet, toast |
-| `src/screens/*` | Home (3 states), Testament / Category / Record / Review / Add record, People / Ama / Release plan, Check-in / Settings / Security |
-| `src/PhoneApp.tsx` | Single-stack navigator with the prototype's 340 ms transitions |
-| `src/WebDemo.tsx` | Web-only presentation: iPhone frame + sidebar |
-
-Navigation is a small custom stack rather than Expo Router, to keep the
-prototype's exact behaviour: tab switches cross-fade and clear the stack,
-pushed screens hide the floating tab bar, and the side panel or demo menu can
-jump to any state. Moving to Expo Router is straightforward once the real
-screen inventory (onboarding, recipient portal) settles.
-
-`assets/brand/` holds the logo and mark with their off-white backgrounds made
-transparent. The prototype got the same effect with `mix-blend-mode: multiply`.
+```
+src/app/            Expo Router routes (one file per screen, thin wrappers)
+src/screens/        Screen components: Home, Testament, Record, Flows (review + add record),
+                    People, Safety, Settings, Security
+src/components/     ui.tsx (cards, rows, buttons, inputs, toggles, segmented, progress…)
+                    chrome.tsx (glass tab bar, Face ID, sheets, toasts, lock screen)
+src/store.ts        Zustand session state + Face ID / haptics / toasts
+src/actions.ts      Behaviours (check-ins, record CRUD, people, security, settings)
+src/records.ts      Derived data: live records, review list, who-receives-what, plan numbers
+src/data.ts         Demo persona, 33 records, people, conditions, add-record templates
+src/nav.ts          Navigation helpers over expo-router
+src/theme.ts        Colour and type tokens
+```

@@ -2,7 +2,9 @@
 // `Owner App Prototype.dc.html`. Persona: Nana Mensah (owner); Ama (daughter,
 // primary contact), Kofi (son, backup contact), Efua (solicitor, recipient only).
 
-export type PersonId = 'ama' | 'kofi' | 'efua';
+export type PersonId = string;
+export type Role = 'primary' | 'backup' | 'recipient';
+export type InviteStatus = 'accepted' | 'invited' | 'declined';
 export type CondId = 'pass' | 'inc' | 'unr';
 /** 'mask' = tap to reveal; 'face' = Face ID required to reveal. */
 export type Secure = 'mask' | 'face' | null;
@@ -59,10 +61,54 @@ export interface Scenario {
   note: string;
 }
 
-export const PEOPLE: Record<PersonId, { name: string; initial: string; dark?: boolean }> = {
-  ama: { name: 'Ama', initial: 'A', dark: true },
-  kofi: { name: 'Kofi', initial: 'K' },
-  efua: { name: 'Efua', initial: 'E' },
+export interface Person {
+  id: PersonId;
+  /** Short name used across the app ("Ama"). */
+  name: string;
+  full: string;
+  initial: string;
+  /** Primary contact gets the dark avatar. */
+  dark?: boolean;
+  relationship: string;
+  role: Role;
+  status: InviteStatus;
+  /** "Accepted 2 Sep" / "Invited · 3d" */
+  statusNote: string;
+  email: string;
+  phone: string;
+}
+
+export const ROLE_LABEL: Record<Role, string> = {
+  primary: 'Primary contact',
+  backup: 'Backup contact',
+  recipient: 'Recipient only',
+};
+
+export const ROLE_HELP: Record<Role, string> = {
+  primary: 'First person we ask to confirm if we can’t reach you.',
+  backup: 'Steps in if the primary contact is unavailable.',
+  recipient: 'Receives assigned records but plays no part in confirmation.',
+};
+
+export const INITIAL_PEOPLE: Person[] = [
+  { id: 'ama', name: 'Ama', full: 'Ama Mensah', initial: 'A', dark: true, relationship: 'Daughter', role: 'primary', status: 'accepted', statusNote: 'Accepted 2 Sep', email: 'ama.mensah@gmail.com', phone: '+44 7700 900 901' },
+  { id: 'kofi', name: 'Kofi', full: 'Kofi Mensah', initial: 'K', relationship: 'Son', role: 'backup', status: 'accepted', statusNote: 'Accepted yesterday', email: 'kofi.mensah@outlook.com', phone: '+44 7700 900 517' },
+  { id: 'efua', name: 'Efua', full: 'Efua Boateng', initial: 'E', relationship: 'Solicitor', role: 'recipient', status: 'invited', statusNote: 'Invited · 3d', email: 'efua@boatengsolicitors.co.uk', phone: '+44 20 8688 4410' },
+];
+
+/** Legacy lookup for the three demo people (records reference these ids). */
+export const PEOPLE: Record<string, { name: string; initial: string; dark?: boolean }> = Object.fromEntries(
+  INITIAL_PEOPLE.map((p) => [p.id, { name: p.name, initial: p.initial, dark: p.dark }]),
+);
+
+export const COND_ORDER: CondId[] = ['unr', 'inc', 'pass'];
+
+export const COND_SHORT: Record<CondId, string> = { unr: 'Unreachable', inc: 'Incapacitated', pass: 'After passing' };
+
+export const COND_HELP: Record<CondId, string> = {
+  unr: 'Released if we can’t reach you and a trusted person confirms it. For emergency and travel details.',
+  inc: 'Released if you can’t act for yourself, after a second person or a medical letter confirms it.',
+  pass: 'Your broader legacy, released only after your passing is verified and a 7-day wait.',
 };
 
 export const COND: Record<CondId, string> = {
@@ -130,11 +176,93 @@ export const CATS: Category[] = [
  ]},
 ];
 
+/** Static seed records, keyed by id. Live records (with edits, archive, new ones) come from the store. */
 export const REC: Record<string, RecordWithCat> = {};
 CATS.forEach((c) => c.records.forEach((r) => { REC[r.id] = { ...r, cat: c }; }));
+
+export const F_ = F;
 
 export const SCEN: Scenario[] = [
   { title:'If I’m unreachable', desc:'Only what helps people find or help you — nothing financial, nothing private.', s1:'Two check-ins missed and 14 days without a reply', s2:'Ama confirms she can’t reach you either', s3:'48-hour waiting period — we keep trying', ama:'2 records', kofi:'2 records', efua:'Nothing', note:'21 records stay sealed.' },
   { title:'If I’m incapacitated', desc:'What your family needs to keep life running while you can’t.', s1:'Ama or Kofi reports it and verifies their identity', s2:'A second trusted person confirms, or a medical letter is reviewed', s3:'3-day waiting period — we keep trying to reach you', ama:'4 records', kofi:'4 records', efua:'Nothing', note:'19 records stay sealed.' },
   { title:'After my passing', desc:'Your broader legacy — accounts, property, documents and the messages you’ve written.', s1:'Ama or Kofi reports it and verifies their identity', s2:'A second trusted person confirms, or a certificate is reviewed', s3:'7-day waiting period — we keep trying to reach you', ama:'8 records', kofi:'6 records', efua:'2 documents', note:'5 records are assigned to no one and stay private.' }
+];
+
+// ─── Add-record templates ─────────────────────────────────────────────────────
+// Structured templates rather than one generic text field. Each field carries a
+// realistic sample so the demo can be clicked through without typing.
+
+export interface TemplateField {
+  label: string;
+  sample: string;
+  secure?: Secure;
+}
+
+export interface Template {
+  id: string;
+  catId: string;
+  name: string;
+  type: string;
+  hint: string;
+  titleSample: string;
+  note?: string;
+  fields: TemplateField[];
+}
+
+export const TEMPLATES: Template[] = [
+  { id: 'bank', catId: 'fin', name: 'Bank account', type: 'Financial record', hint: 'Current, savings or business accounts', titleSample: 'Monzo joint account', fields: [
+    { label: 'Account number', sample: '41829077', secure: 'mask' },
+    { label: 'Sort code', sample: '04-00-04', secure: 'mask' },
+    { label: 'Online banking password', sample: 'Kente#Sunday7', secure: 'face' },
+    { label: 'Notes', sample: 'Used for household shopping. Ama is a joint holder.' },
+  ] },
+  { id: 'owe', catId: 'fin', name: 'Money I owe', type: 'Money I owe', hint: 'Loans and debts to settle', titleSample: 'Loan from Auntie Akosua', fields: [
+    { label: 'Amount outstanding', sample: 'GH₵ 6,000' },
+    { label: 'Repayment', sample: 'GH₵ 500 a month' },
+    { label: 'My wish', sample: 'Please repay her before the house is shared.' },
+  ] },
+  { id: 'owed', catId: 'fin', name: 'Money owed to me', type: 'Money owed to me', hint: 'People who owe you', titleSample: 'Loan to Pastor Owusu', fields: [
+    { label: 'Amount', sample: '£1,200' },
+    { label: 'Agreed', sample: 'Repay by Christmas 2026' },
+    { label: 'My wish', sample: 'If I’m gone, give it to the church building fund.' },
+  ] },
+  { id: 'property', catId: 'prop', name: 'Property', type: 'Asset record', hint: 'Homes, land and buildings', titleSample: 'Plot of land, East Legon', fields: [
+    { label: 'Ownership', sample: 'Sole owner · leasehold 99 years' },
+    { label: 'Documents held by', sample: 'Lawyer Mensah-Bonsu, Kumasi' },
+    { label: 'Site plan number', sample: 'LC/GA/7781/2018', secure: 'mask' },
+  ] },
+  { id: 'vehicle', catId: 'prop', name: 'Vehicle', type: 'Asset record', hint: 'Cars and other vehicles', titleSample: 'Honda Jazz, 2017', fields: [
+    { label: 'Registration', sample: 'KY17 HJD', secure: 'mask' },
+    { label: 'Logbook', sample: 'Grey folder, study desk' },
+    { label: 'Spare key', sample: 'With Mrs Patel at no. 16' },
+  ] },
+  { id: 'car-ins', catId: 'ins', name: 'Car insurance', type: 'Insurance record', hint: 'Suggested · your RAV4 isn’t covered here yet', titleSample: 'Direct Line car insurance', fields: [
+    { label: 'Policy number', sample: 'DL-MTR-551092', secure: 'mask' },
+    { label: 'Vehicle', sample: 'Toyota RAV4 Hybrid · LB22 KVP' },
+    { label: 'Renewal', sample: '9 March each year' },
+    { label: 'Claims line', sample: '0345 246 8704', secure: 'mask' },
+  ] },
+  { id: 'life-ins', catId: 'ins', name: 'Life or health insurance', type: 'Insurance record', hint: 'Policies that pay out', titleSample: 'Bupa health cover', fields: [
+    { label: 'Policy number', sample: 'BUPA-77120-NM', secure: 'mask' },
+    { label: 'Cover', sample: 'Individual · includes dental' },
+    { label: 'Claims line', sample: '0345 600 3091', secure: 'mask' },
+  ] },
+  { id: 'business', catId: 'biz', name: 'Business', type: 'Business record', hint: 'Companies and shareholdings', titleSample: 'Share in Osu Market stall', fields: [
+    { label: 'Shareholding', sample: 'Nana 50% · Auntie Akosua 50%' },
+    { label: 'If I’m incapacitated', sample: 'Akosua runs it. Keep paying the two staff.' },
+  ] },
+  { id: 'idea', catId: 'biz', name: 'Unfinished idea', type: 'Unfinished idea', hint: 'Ideas, recipes, creative work', titleSample: 'Cookbook of family recipes', note: 'Forty recipes from my mother and grandmother, with the stories behind them. I have written up eleven. The rest are in the blue notebook.', fields: [
+    { label: 'Where it is', sample: 'Blue notebook, kitchen drawer · Google Doc “Recipes”' },
+  ] },
+  { id: 'document', catId: 'docs', name: 'Important document', type: 'Record', hint: 'Certificates, deeds, IDs', titleSample: 'Birth certificate', fields: [
+    { label: 'Where the original is', sample: 'Fireproof box, master bedroom' },
+    { label: 'Notes', sample: 'Ghana-issued. A certified copy is with Efua.' },
+  ] },
+  { id: 'digital', catId: 'dig', name: 'Digital account', type: 'Digital account', hint: 'Email, social, subscriptions', titleSample: 'Instagram', fields: [
+    { label: 'Username', sample: '@nanas.kitchen' },
+    { label: 'Password', sample: 'Jollof4Ever!', secure: 'face' },
+    { label: 'My wish', sample: 'Keep the business page running if Kofi wants it.' },
+  ] },
+  { id: 'letter', catId: 'msg', name: 'Letter', type: 'Private message', hint: 'Words for someone you love', titleSample: 'Letter to Kofi', note: 'My dear Kofi,\n\nYou were always the one who fixed things. I want you to know how proud I am —', fields: [] },
+  { id: 'wishes', catId: 'wish', name: 'Wishes & instructions', type: 'Legacy instruction', hint: 'Wishes, not a legal will', titleSample: 'What to do with my clothes', note: 'Give the kente to Ama. The church clothes bank can have the rest. Keep my mother’s headwrap in the family.', fields: [] },
 ];
